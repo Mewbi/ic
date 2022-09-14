@@ -1,5 +1,8 @@
 # Simple implemation of newtons method to find root of a function
 # Uses only the concept function and your derivate
+
+import functions as fn
+
 def f(x): # Example function
     return x**2 - x - 1
 
@@ -24,7 +27,7 @@ def newtons_method(f, fp, start, n = 10, tolerance=1e-10):
     raise Exception("Newton's Method didn't converge.")
 
 try:
-    c = newtons_method(f, fp, 1, 1000)
+    c = newtons_method(fn.fn1, fp, fn.pt1(), 1000)
     print("Converge in {}".format(c))
 except Exception as e:
     print(e)

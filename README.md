@@ -73,26 +73,3 @@ But in many cases, we will not have an analytic function of molecule energy.
 The algorithm should work in these case, receiving the energy value in some
 point, and calculate the minimum without the function.
 
-## Benchmark
-
-Just a simples bech with newtons_method 2 write in `python` and `golang`
-
-```bash
-# Python
-time python3 ./newtons-method-2.py 
-Converge in (0.6234994049308765, 0.02803775852868567)
-
-real 0m0,024s
-user 0m0,024s
-sys  0m0,000s
-```
-
-```bash
-# Golang
-time ./newtons-method-2 
-Converge in [0.6234994049308766 0.028037758528685664] 
-
-real 0m0,003s
-user 0m0,000s
-sys  0m0,003s
-```

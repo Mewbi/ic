@@ -54,6 +54,7 @@ def newtons_method(f, fp, start, n_iter=10, tolerance=1e-10):
     ( prev_x , prev_y ) = start
     for _ in range(n_iter):
         (new_x, new_y) = newton_step(f, fp, prev_x, prev_y)
+        print((new_x, new_y), f(new_x, new_y))
         ( grad_x , grad_y ) = f(new_x ,new_y)
         if abs(grad_x) + abs(grad_y) < tolerance:
             return (new_x, new_y)

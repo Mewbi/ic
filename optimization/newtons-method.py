@@ -4,52 +4,62 @@
 import functions as fn
 import graph
 
-def secant_step(f, pts, gap):
-    pts_tmp = pts[:]
-    pts_new = []
-    for i, p in enumerate(pts):
-        pts_tmp[i] = p+gap
-        print(pts, pts_tmp, f(pts), f(pts_tmp))
 
-        v = p - f(pts)*((sum(pts)-sum(pts_tmp))/(f(pts)-f(pts_tmp)))
-        pts_new.append(v)
-        pts_tmp = pts[:]
+def secant_step(f, old_p, new_p, old_pts, new_pts):
+    # Secant
+    return old_p - f(old_pts) * ((old_p-new_p) / (f(old_pts) - f(new_pts) ))
 
-    return pts_new
-    # Secant 
-#    return x1 - f(x1)*((x1-x2)/(f(x1)-f(x2)))
+def check_converge(functions, pts, tolerance):
+    for f in functions:
+        if abs(f(pts)) > tolerance:
+            return False
+    return True
 
-def secant_step2(f, pts, gap):
-    pts_tmp = pts[:]
-    pts_tmp = [x+gap for x in pts_tmp]
-    v = f(pts)*((sum(pts)-sum(pts_tmp))/(f(pts)-f(pts_tmp)))
-    pts_new = []
-    for _, p in enumerate(pts):        
-        pts_new.append(p-v)
+def newtons_method(function, derivates, pts, gap, n = 10, tolerance=1e-5):
+    x = [pts[0]]
+    y = [pts[1]]
+    z = [function(pts)]
 
-    return pts_new
-    # Secant 
-#    return x1 - f(x1)*((x1-x2)/(f(x1)-f(x2)))
+    # Define a next point
+    old = pts
+    new = []
+    for p in pts:
+        new.append(p+gap)
 
-def newtons_method(f, point, gap, n = 10, tolerance=1e-10):
-    x = [point[0]]
-    y = [point[1]]
-    z = [f(point)]
     for _ in range(n):
-        new = secant_step2(f, point, gap)
-        print(new, f(new))
-        x.append(new[0])
+        new_tmp = []
+        d_values = []
+        for p, d in enumerate(derivates):
+            d_values.append(d(old))
+            v = secant_step(d, old[p], new[p], old, new)
+            new_tmp.append(v)
+
+        old = new[:]
+        new = new_tmp[:]
+
+        print("Function = {:.4f} - Points {} - Derivates {}".format( function(new) , new, d_values))
         y.append(new[1])
-        z.append(f(new))
-        if abs(f(new)) < tolerance:
+        x.append(new[0])
+        z.append(function(new))
+
+
+        if check_converge(derivates, new, tolerance):
             return new, [x, y, z]
-        point = new[:]
+
+
     raise Exception("Newton's Method didn't converge.")
 
 
 try:
-    c, pts = newtons_method(fn.fn2, fn.pt2(), 0.1, 1000000)
-    graph.plot_graph(fn.fn2, pts[0], pts[1], pts[2])
-    print("Converge in {}".format(c))
+    f = fn.functions[0] # Main function f(x,y)
+    d = fn.derivates[0] # Partial derivates df/dx, df/dy
+    p = fn.points[0] # Initial point
+
+    print("Starting !!!!!")
+
+    c, pts = newtons_method(f, d, p(), 0.1, 1000000, 1e-3)
+        
+    print("Converge in {}  - Function Value = {:.4f}".format(c, f(c)))
+    graph.plot_graph(f, pts[0], pts[1], pts[2])
 except Exception as e:
     print(e)

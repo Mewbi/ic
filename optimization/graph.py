@@ -17,9 +17,10 @@ def plot_graph(fn, p_x, p_y, p_z):
     X, Y = np.meshgrid(x, y)
     zs = np.array([fn([x,y]) for x,y in zip(np.ravel(X), np.ravel(Y))])
     Z = zs.reshape(X.shape)
-    ax.plot_wireframe(X, Y, Z, rstride=1, cstride=1)
+    #ax.plot_wireframe(X, Y, Z, rstride=50, cstride=50)
+    ax.plot_wireframe(X, Y, Z, rstride=1, cstride=1, alpha=0.5)
 
     # Plot points
-    ax.scatter(p_x, p_y, p_z, c=p_z, linewidth=2, marker='o', cmap='viridis')
-
+    #ax.scatter(p_x, p_y, p_z, c=p_z, linewidth=2, marker='o', cmap='viridis')
+    ax.plot(p_x, p_y, p_z, color = 'r', marker = 'o')
     plt.show()

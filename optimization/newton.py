@@ -15,7 +15,6 @@ def dist(pts):
     '''
     This function return... - func description
     parameters
-    pts - float array
     '''
     s = 0
     for p in pts:
@@ -72,15 +71,15 @@ def newtons_method(function, derivates, pts, gap, n = 10, tolerance=1e-5):
 
 
 try:
-    f = fn.functions[4] # Main function f(x,y)
-    d = fn.derivates[4] # Partial derivates df/dx, df/dy
-    p = fn.points[4] # Initial point
+    f = fn.functions[1] # Main function f(x,y)
+    d = fn.derivates[1] # Partial derivates df/dx, df/dy
+    p = fn.points[1] # Initial point
 
     print("Starting !!!!!")
 
     c, pts = newtons_method(f, d, p(), 0.5, 1000000, 1e-7)
         
     print("Converge in {}  - Function Value = {:.4f}".format(c, f(c)))
-    graph.plot_graph(f, pts[0], pts[1], pts[2])
+    # graph.plot_graph(f, pts[0], pts[1], pts[2])
 except Exception as e:
     print(e)

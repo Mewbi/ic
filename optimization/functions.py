@@ -123,7 +123,26 @@ def pt_fn5():
     return [x, y]
 
 
+def fn6(p):
+    x = p[0]
+    y = p[1]
+    return x**2 + y**2
 
-functions = [fn1, fn2, fn3, fn4, fn5]
-derivates = [[dx_fn1, dy_fn1], [dx_fn2, dy_fn2], [dx_fn3, dy_fn3], [dx_fn4, dy_fn4], [dx_fn5, dy_fn5]]
-points = [pt_fn1, pt_fn2, pt_fn3, pt_fn4, pt_fn5]
+def dx_fn6(p):
+    x = p[0]
+    y = p[1]
+    return 2*x
+
+def dy_fn6(p):
+    x = p[0]
+    y = p[1]
+    return 2*y
+
+def pt_fn6():
+    x = 10
+    y = 20
+    return [x, y]
+
+functions = [fn1, fn2, fn3, fn4, fn5, fn6]
+derivates = [[dx_fn1, dy_fn1], [dx_fn2, dy_fn2], [dx_fn3, dy_fn3], [dx_fn4, dy_fn4], [dx_fn5, dy_fn5], [dx_fn6, dy_fn6]]
+points = [pt_fn1, pt_fn2, pt_fn3, pt_fn4, pt_fn5, pt_fn6]

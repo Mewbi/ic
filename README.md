@@ -37,19 +37,9 @@ real minimum.
 
 ## Steps
 
-Probably we will use the newthon method in this project.
+Will be used the secant method to converge the function.
 
 But to direct our studies, the following steps will be followed:
-
-### Root of Function
-
-To understand better the newthon method, the first step is implement a way to find
-roots of a generic function.
-
-> Why start searching root of a function?
-
-Simple, it's the simpler way to understand this method. We can avoid necessity to
-calculate the Hessian and others annoying steps.
 
 ### Minimize Function
 

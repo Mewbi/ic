@@ -7,7 +7,8 @@ func.derivates = [fn.dx_fn3, fn.dy_fn3]
 
 try:
     point = func.converge_analytical()
-    print(point)
-except:
-    print("Deu ruim")
-
+    print("Ponto Calculado Analiticamente: {}".format(point))
+    point = func.converge_numerical()
+    print("Ponto Calculado Numericamente: {} ".format(point))
+except Exception as err:
+    print(err)

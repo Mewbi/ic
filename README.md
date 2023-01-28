@@ -13,53 +13,73 @@ My notes could be found [here](https://energetic-blinker-147.notion.site/IC-5f13
 ## Objetive
 
 The main objetive of this research is found a way to receive a generic function
-with `n` parameters, an initial point and a variation value and minimize this
-function returning the energy of molecule, the position and the gradient value.
+with `n` parameters, an initial point and return a point where the function
+converge, this point could be a local maximum, local minimum or a saddle.
 
-Something like
+Some cases (probably most), we cannot found the exactly point where all partial
+derivatives is equal to zero. So this method have a tolerance value close to zero.
+
+## Method
+
+This method is based to secant method to converge the function.
+
+## Example
+
+The following code is and example of a function `f(x,y) = -sin(x)*sin(y)`
+converging using numerical and analytical method.
+
+The difference between both method is, in analytical we must specify the
+function, an initial point and all partial derivaties of function. In numerical
+method, we just need specify the function and initial point.
 
 ```python
-def fn(x1, x2, ..., xn):
-...
+import math
+from optimization import optimization as op
 
-p = (x1, x2, ..., xn)
+# The function
+def fn(p):
+    x = p[0]
+    y = p[1]
+    return -math.sin(x)*math.sin(y)
 
-h = 0.1
+# Partial derivative to X
+def dx_fn(p):
+    x = p[0]
+    y = p[1]
+    return -math.cos(x)*math.sin(y)
 
-energy, position, grad = minimize(fn, p, h)
+# Partial derivative to Y
+def dy_fn(p):
+    x = p[0]
+    y = p[1]
+    return -math.cos(y)*math.sin(x)
+
+
+initial_point = [2.5, 0.8]
+func = op.Function(fn, initial_point)
+
+# Converge numerically
+try:
+    point = func.converge_numerically()
+    print("[ Numerically] - Converge point: {} ".format(point))
+except Exception as err:
+    print(err)
+
+
+# Converge analytically
+func.derivatives = [dx_fn, dy_fn]
+try:
+    point = func.converge_analytically()
+    print("[ Analytically ] - Converge point: {} ".format(point))
+except Exception as err:
+    print(err)
 ```
 
-Some cases (probably most), we cannot found the exactly point when `grad == 0`,
-so this function will have a tolerance value.
+Output
 
-Return `gradient` value is important to check how much distance we are from the
-real minimum.
+```bash
+[ Numerically] - Converge point: [1.5707915451117773, 1.5707913195622745] 
+[ Analytically ] - Converge point: [1.5707965450768195, 1.5707963195694736]
+```
 
-## Steps
-
-Will be used the secant method to converge the function.
-
-But to direct our studies, the following steps will be followed:
-
-### Minimize Function
-
-Understading the previous step, now we should found the minimum points of a function.
-
-It's an "improve" of the previous method. But in this case we probably gonna use
-the first and second derivate of the function.
-
-### Applying in Molecule
-
-With the previous algorithm in hands, apply in some real cases.
-
-Use real molecule energy functions to find the stable points.
-
-### Apply to a non Analytic Function
-
-This step is a little bit abstract.
-
-But in many cases, we will not have an analytic function of molecule energy.
-
-The algorithm should work in these case, receiving the energy value in some
-point, and calculate the minimum without the function.
-
+## Applying in Geometric Optimization

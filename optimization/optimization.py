@@ -30,6 +30,9 @@ class Function:
     DEFAULT_MAX_ITERATIONS = 100000
     DEFAULT_TOLERANCE = 1e-5
 
+    def __call__(self, point):
+        return self._function(point)
+
     def __lambda_derivative(self, i):
         return lambda x: self.__derivative_numerical(x, i)
 
@@ -94,7 +97,11 @@ class Function:
         '''
         Calculate the next point based in secant method
         '''
-        v = old_point - f(old_points) * (( (old_point-new_point) / ( f(old_points) - f(new_points) ) ))
+        try:
+            v = old_point - f(old_points) * (( (old_point-new_point) / ( f(old_points) - f(new_points) ) ))
+        except ZeroDivisionError:
+            #print("Ponto: {} - Derivada {} - Função {}\nPonto: {} - Derivada {} - Função {}".format(old_points, f(old_points), self(old_points), new_points, f(new_points), self(new_points)))
+            return old_point
         return v
 
     def __converge_method(self, gap, n, tolerance, numerical):
@@ -107,7 +114,8 @@ class Function:
                 new_points = old[:]
                 new_points[i] += gap
                 new.append(self.__converge_step(derivative, old_point, old, new_points, new_points[i]))
-                
+            
+            print(new)
             old = new[:]
             if self.__check_converge(new, derivatives, tolerance):
                 return True, new[:]

@@ -115,7 +115,7 @@ class Function:
                 new_points[i] += gap
                 new.append(self.__converge_step(derivative, old_point, old, new_points, new_points[i]))
             
-            print(new)
+            #print(new)
             old = new[:]
             if self.__check_converge(new, derivatives, tolerance):
                 return True, new[:]

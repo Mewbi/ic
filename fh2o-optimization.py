@@ -1,45 +1,75 @@
 import numpy as np
-import li_dawes_guo as ldg
+from fh2o_module import li_dawes_guo as ldg
 from optimization import optimization as op
-import random
 
 # Defined points
-points = [
-    #[0, 0, 0, 0, 0, 0],
-    [0.900, 0.900, 9, 100, 2, 1],
-    [0.800, 0.800, 11, 90, 2, 1],
-    [0.700, 0.700, 11, 90, 2, 1],
-    #[0.9668, 0.9668, 2.2992, 105.07, 70.54, -83.05],
-    #[0.234, 0.234, 0.234, 0.234, 0.234, 0.234],
-    #[0.152, 0.464, 0.687, 0.664, 0.753, 0.678],
-    #[1.124, 2.234, 0.234, 0.654, 0.616, 1.523],
-    #[0.734, 0.842, 0.876, 0.123, 0.535, 0.345],
-]
+# points = [
+#    [0.900, 0.900, 9, 100, 2, 1],
+#    [0.9668, 0.9668, 2.2992, 105.07, 70.54, -83.05],
+#]
 
-ldg.init()
 
-print("---------------DEFINED POINTS---------------")
-for point in points:
-    print("\n\nTrying to converge from: {} - Initial energy of f_h2o: {}".format(point, ldg.pes(point)))
+def try_converge(point):
+
+    print("Initial Point: {}".format(point))
     func = op.Function(ldg.pes, point)
 
     try:
-        p = func.converge_numerically(tolerance=0.00001)
-        print("Converge in point: {}\n Energy of f_h2o: {}".format(p, ldg.pes(p)))
+        p = func.converge_numerically(tolerance=0.00001, max_iterations=10000)
+        print("Converge: Success")
+        print("Converge in: {}".format(p))
     except Exception as err:
-        print(err)
+        print("Converge: Fail")
 
-#print("\n\n---------------RANDOM POINTS---------------")
-#for i in range(5):
-#    point = [random.uniform(0.1, 5.0) for _ in range(6)]
-#    print("\n\nTrying to converge from: {} - Initial energy of f_h2o: {}".format(point, ldg.pes(point)))
-#    func = op.Function(ldg.pes, point)
+def gradual_converge(point, relevant_vars, variation, limit):
 
-#    try:
-#        p = func.converge_numerically(gap = 10.0)
-#        print("Converge in point: {}\n Energy of f_h2o: {}".format(p, ldg.pes(p)))
-#        with open("converge.txt", "a") as file1:
-            # Writing data to a file
-#            file1.write("Initial Point: {}\nConverge in: {}\nEnergy F2HO: {}\n\n".format(point, p, ldg.pes(p)))
-#    except Exception as err:
-#        print(err)
+    for var_idx, is_relevant in enumerate(relevant_vars):
+        if not is_relevant:
+            continue
+
+        for l in range(limit):
+            p = point[:]
+            p[var_idx] -= point[var_idx] * (variation * l)
+            try_converge(p)
+
+        for l in range(limit):
+            p = point[:]
+            p[var_idx] += point[var_idx] * (variation * l)
+            try_converge(p)
+
+geometries = [
+    {
+        "specie": "F + H2O",
+        "stationary": [0.9613, 0.9613, 10, 104.20, 0, 0],
+        "relevant_vars": [True, True, False, True, False, False] 
+    },
+    {
+        "specie": "R-vdW (F--H2O)",
+        "stationary": [0.9668, 0.9668, 2.2992, 105.07, 70.54, -83.05],
+        "relevant_vars": [True, True, True, True, True, True] 
+    },
+    {
+        "specie": "TS",
+        "stationary": [0.9705, 1.0389, 1.3128, 103.00, 121.99, 68.72],
+        "relevant_vars": [True, True, True, True, True, True] 
+    },
+    {
+        "specie": "P-vdW (HO--HF)",
+        "stationary": [0.9738, 1.8037, 0.9330, 111.48, 179.16, 0],
+        "relevant_vars": [True, True, True, True, True, True] 
+    },
+    {
+        "specie": "HO+HF",
+        "stationary": [0.9730, 10, 0.9202, 0, 0, 0],
+        "relevant_vars": [True, False, True, False, False, False] 
+    },
+]
+
+
+
+ldg.init()
+
+for geometry in geometries:
+    print("\nSpecie: {}".format(geometry['specie']))
+    print("Stationary Geometry: {}".format(geometry['stationary']))
+    gradual_converge(geometry['stationary'], geometry['relevant_vars'], 0.05, 5)

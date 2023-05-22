@@ -107,7 +107,7 @@ class Function:
     def __converge_method(self, gap, n, tolerance, numerical):
         derivatives = self.derivatives_numerical if numerical else self.derivatives
         old = self._point
-        for _ in range(n):
+        for iteration in range(n):
             new = []
             for i, derivative in enumerate(derivatives):
                 old_point = old[i]
@@ -118,9 +118,9 @@ class Function:
             #print(new)
             old = new[:]
             if self.__check_converge(new, derivatives, tolerance):
-                return True, new[:]
+                return True, new[:], iteration + 1
 
-        return False, []
+        return False, [], 0
 
     def converge_analytically(self, gap = DEFAULT_GAP, max_iterations = DEFAULT_MAX_ITERATIONS, tolerance = DEFAULT_TOLERANCE):
         '''
@@ -144,12 +144,12 @@ class Function:
         if not self.derivatives:
             raise ValueError("Partial derivatives not defined.")
 
-        converge, point = self.__converge_method(gap, max_iterations, tolerance, False)
+        converge, point, iterations = self.__converge_method(gap, max_iterations, tolerance, False)
 
         if not converge:
             raise ValueError("Method didn't converge.")
 
-        return point
+        return point, iterations
 
 
     def __derivative_numerical(self, point, index):
@@ -182,9 +182,9 @@ class Function:
                     Point where function has converged
         '''
 
-        converge, point = self.__converge_method(gap, max_iterations, tolerance, True)
+        converge, point, iterations = self.__converge_method(gap, max_iterations, tolerance, True)
 
         if not converge:
             raise ValueError("Method didn't converge.")
 
-        return point
+        return point, iterations

@@ -1,12 +1,7 @@
+import json
 import numpy as np
 from fh2o_module import li_dawes_guo as ldg
 from optimization import optimization as op
-
-# Defined points
-# points = [
-#    [0.900, 0.900, 9, 100, 2, 1],
-#    [0.9668, 0.9668, 2.2992, 105.07, 70.54, -83.05],
-#]
 
 
 def try_converge(point):
@@ -15,27 +10,65 @@ def try_converge(point):
     func = op.Function(ldg.pes, point)
 
     try:
-        p = func.converge_numerically(tolerance=0.00001, max_iterations=10000)
+        p, iterations = func.converge_numerically(tolerance=0.00001, max_iterations=10000)
         print("Converge: Success")
         print("Converge in: {}".format(p))
+        return True, p, iterations
     except Exception as err:
         print("Converge: Fail")
+        return False, [], 0
 
-def gradual_converge(point, relevant_vars, variation, limit):
+def gradual_converge(geometry, variation, limit):
 
+    point = geometry["stationary"]
+    relevant_vars = geometry["relevant_vars"]
+
+    data = {
+            "specie": geometry["specie"]
+            }
     for var_idx, is_relevant in enumerate(relevant_vars):
         if not is_relevant:
             continue
 
-        for l in range(limit):
-            p = point[:]
-            p[var_idx] -= point[var_idx] * (variation * l)
-            try_converge(p)
+        data_var = []
+        var_name = vars_name[var_idx]
 
+        # -25 to -5 percent
         for l in range(limit):
             p = point[:]
-            p[var_idx] += point[var_idx] * (variation * l)
-            try_converge(p)
+            p[var_idx] -= point[var_idx] * (variation * (limit - l))
+            success, converge_point, iterations = try_converge(p)
+            data_var.append({
+                "initial point": "{}".format(p),
+                "converge": success,
+                "converge point": "{}".format(converge_point),
+                "iterations": iterations
+            })
+
+        # Try converge in 0%
+        success, converge_point, iterations = try_converge(point)
+        data_var.append({
+            "initial point": "{}".format(point),
+            "converge": success,
+            "converge point": "{}".format(converge_point),
+            "iterations": iterations
+        })
+
+        # 5 to 25 percent
+        for l in range(limit):
+            p = point[:]
+            p[var_idx] += point[var_idx] * (variation * (l + 1))
+            success, converge_point, iterations = try_converge(p)
+            data_var.append({
+                "initial point": "{}".format(p),
+                "converge": success,
+                "converge point": "{}".format(converge_point),
+                "iterations": iterations
+            })
+
+        data[var_name] = data_var
+
+    return data
 
 geometries = [
     {
@@ -65,11 +98,26 @@ geometries = [
     },
 ]
 
-
+vars_name = [
+    "R HO",
+    "R OH'",
+    "R H'F",
+    "θ HOH'",
+    "θ OH'F",
+    "φ HOH'F"
+]
 
 ldg.init()
+
+result = []
 
 for geometry in geometries:
     print("\nSpecie: {}".format(geometry['specie']))
     print("Stationary Geometry: {}".format(geometry['stationary']))
-    gradual_converge(geometry['stationary'], geometry['relevant_vars'], 0.05, 5)
+    data = gradual_converge(geometry, 0.05, 5)
+    result.append(data)
+
+with open('result-optimization-1-var.json', 'w') as f:
+    json.dump(result, f)
+
+print(result)

@@ -1,3 +1,4 @@
+import csv
 import json
 import numpy as np
 from fh2o_module import li_dawes_guo as ldg
@@ -117,7 +118,33 @@ for geometry in geometries:
     data = gradual_converge(geometry, 0.05, 5)
     result.append(data)
 
-with open('result-optimization-1-var.json', 'w') as f:
-    json.dump(result, f)
+#with open('result-optimization-1-var.json', 'w') as f:
+#    json.dump(result, f)
 
-print(result)
+
+# Save Result in CSV
+header = ["specie", 'variable', "variation", "converge", "iterations", "init", "final"]
+variations = [-25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25]
+with open('result-optimization-1-var.csv', 'w') as f:
+    writer = csv.writer(f)
+    writer.writerow(header)
+
+    for d in result:
+        specie = d["specie"]
+
+        for var in vars_name:
+
+            if not var in d:
+                continue
+        
+            for i, v in enumerate(d[var]):
+                variation = variations[i]
+                converge = v["converge"]
+                iterations = v["iterations"]
+                init = v["initial point"]
+                final = v["converge point"]
+
+                row = [specie, var, variation, converge, iterations, init, final]
+                writer.writerow(row)
+                
+

@@ -1,5 +1,5 @@
 import math
-from optimization import optimization as op
+from optimization import cbpd as op
 
 # The function
 def fn(p):

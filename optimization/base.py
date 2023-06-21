@@ -16,6 +16,7 @@ class Function:
     def __init__(self, function, point):
         self.function = function
         self.point = point
+        self.dimension = len(point)
 
         self.derivatives_numerical = []
         for i, _ in enumerate(point):
@@ -45,6 +46,14 @@ class Function:
             raise ValueError("Point is not iterable")
 
     @property
+    def dimension(self):
+        return self._dimension
+    
+    @dimension.setter
+    def dimension(self, dimension):
+        self._dimension = dimension
+
+    @property
     def derivatives(self):
         return self._derivatives
 
@@ -63,6 +72,18 @@ class Function:
             self._derivatives.append(derivative)
     
     def __derivative_numerical(self, point, index):
+        '''
+        Calculate the partial derivative numerically based in derivative definition
+        '''
+        old = np.copy(point)
+        new = np.copy(point)
+        old[index] -= self.DEFAULT_GAP_NUMERICAL
+        new[index] += self.DEFAULT_GAP_NUMERICAL
+        f = self._function
+        d = ( f(new) - f(old) ) / ( 2 * self.DEFAULT_GAP_NUMERICAL )
+        return d
+    
+    def __derivative_numerical_bkp(self, point, index):
         '''
         Calculate the partial derivative numerically based in derivative definition
         '''

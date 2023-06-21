@@ -1,22 +1,25 @@
+#!/usr/bin/env python3
+
 import csv
 import json
 import numpy as np
 from fh2o_module import li_dawes_guo as ldg
 from optimization import cbpd
 from optimization import scipy as scp
+from geometries import *
 
-def f(x, y):
-    return x**2 - (3/2)*x*y + y**2
+def f(x):
+    return x[0]**3 - (3/2)*x[0]*x[1] + x[1]**2
 
 def try_converge(point):
 
     print("Initial Point: {}".format(point))
     #func = cbpd.FunctionCBPD(ldg.pes, point)
-    #func = scp.FunctionScipy(ldg.pes, point)
-    func = scp.FunctionScipy(f, [1.1, 2.2])
+    func = scp.FunctionScipy(ldg.pes, point)
+    #func = scp.FunctionScipy(f, point)
 
     try:
-        p, iterations, init_val, final_val = func.converge(method='BFGS',
+        p, iterations, init_val, final_val = func.converge(method='Newton-CG',
                                       tolerance=0.00001,
                                       max_iterations=1000)
         #p, iterations, init_val, final_val = func.converge_numerically(tolerance=0.00001, max_iterations=10000)
@@ -85,34 +88,6 @@ def gradual_converge(geometry, variation, limit):
 
     return data
 
-geometries = [
-    {
-        "specie": "F + H2O",
-        "stationary": [0.9613, 0.9613, 10, 104.20, 0, 0],
-        "relevant_vars": [True, True, False, True, False, False] 
-    },
-    {
-        "specie": "R-vdW (F--H2O)",
-        "stationary": [0.9668, 0.9668, 2.2992, 105.07, 70.54, -83.05],
-        "relevant_vars": [True, True, True, True, True, True] 
-    },
-    {
-        "specie": "TS",
-        "stationary": [0.9705, 1.0389, 1.3128, 103.00, 121.99, 68.72],
-        "relevant_vars": [True, True, True, True, True, True] 
-    },
-    {
-        "specie": "P-vdW (HO--HF)",
-        "stationary": [0.9738, 1.8037, 0.9330, 111.48, 179.16, 0],
-        "relevant_vars": [True, True, True, True, True, True] 
-    },
-    {
-        "specie": "HO+HF",
-        "stationary": [0.9730, 10, 0.9202, 0, 0, 0],
-        "relevant_vars": [True, False, True, False, False, False] 
-    },
-]
-
 vars_name = [
     "R HO",
     "R OH'",
@@ -131,7 +106,8 @@ ldg.init()
 
 # x0 = converge_point
 # x0[0] *= 1.01
-# success, converge_point, iterations, init_val, final_val = try_converge(x0)
+
+# success, converge_point, iterations, init_val, final_val = try_converge([1.1, 2.2])
 # print(success, converge_point, iterations, init_val, final_val)
 
 # exit()

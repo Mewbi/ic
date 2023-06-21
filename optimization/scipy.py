@@ -27,17 +27,31 @@ class FunctionScipy(base.Function):
     def __init__(self, function, point):
         super().__init__(function, point)
 
+        n = self.dimension
         self.hessian_numerical = []
-        for i, _ in enumerate(self.point):
-            for j, _ in enumerate(self.point):
-                self.hessian_numerical.append(self.__second_derivate(i, j))
+
+        for i in range(n):
+            self.hessian_numerical.append([])
+            for j in range(n):
+                self.hessian_numerical[i].append(self.__second_derivate(i, j))
 
     def __second_derivate(self, i, j):
         f = self.derivatives_numerical[i]
         return lambda x: self.__derivative_numerical(f, x, j)
-        
-    
+
+
     def __derivative_numerical(self, f, point, index):
+        '''
+        Calculate the partial derivative numerically of function
+        '''
+        old = np.copy(point)
+        new = np.copy(point)
+        old[index] -= base.Function.DEFAULT_GAP_NUMERICAL
+        new[index] += base.Function.DEFAULT_GAP_NUMERICAL
+        d = ( f(new) - f(old) ) / (2 * base.Function.DEFAULT_GAP_NUMERICAL)
+        return d
+    
+    def __derivative_numerical_bkp(self, f, point, index):
         '''
         Calculate the partial derivative numerically of function
         '''
@@ -68,32 +82,27 @@ class FunctionScipy(base.Function):
             '''
 
             hessian = self.hessian_numerical
-            h = np.array()
-            print(hessian)
-            for line in hessian:
-                l = np.array()
-                for f in line:
-                    np.append(l, f(x))
-                np.append(l, h)
+            n = self.dimension
+            h = np.empty((n,n))
+            
+            for i, line in enumerate(hessian):
+                for j, f in enumerate(line):
+                    h[i,j] = f(x)
             return h
                 
 
-        print('inside converge: before minimize')
         init_val = self.function(self.point)
-        print('hess: {}'.format(hess(point)))
 
         res = optimize.minimize(self.function, self.point,
-                                      method=method, jac=grad, tol=tolerance,
+                                      method=method, jac=grad, tol=tolerance, hess=hess,
                                       callback=None, options={'maxiter':max_iterations})
         #print('inside converge: after')
 
         converge = res.success
-        point = res.x
+        point = res.x.tolist()
         iterations = res.nit
         final_val = self.function(point)
 
-        print(f'Results from scipy: {res}')
-        print(f'Message from scipy: {res.message}')
 
         if not converge:
             raise ValueError("Method didn't converge.")

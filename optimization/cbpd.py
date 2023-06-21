@@ -146,6 +146,7 @@ class FunctionCBPD(base.Function):
 
         init_value = self.function(self.point)
         converge, point, iterations = self.__converge_method(gap, max_iterations, tolerance, True)
+        point = point.tolist()
 
         if not converge:
             raise ValueError("Method didn't converge.")

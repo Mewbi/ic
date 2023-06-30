@@ -18,17 +18,17 @@ def try_converge(point):
     func = scp.FunctionScipy(ldg.pes, point)
     #func = scp.FunctionScipy(f, point)
 
-    try:
-        p, iterations, init_val, final_val = func.converge(method='Newton-CG',
-                                      tolerance=0.00001,
-                                      max_iterations=1000)
-        #p, iterations, init_val, final_val = func.converge_numerically(tolerance=0.00001, max_iterations=10000)
+    result = func.converge(method='Newton-CG',
+                                  tolerance=0.00001,
+                                  max_iterations=1000)
+    #p, iterations, init_val, final_val = func.converge_numerically(tolerance=0.00001, max_iterations=10000)
+    if result['converge']:
         print("Converge: Success")
-        print("Converge in: {}".format(p))
-        return True, p, iterations, init_val, final_val
-    except Exception as err:
-        print("Converge: Fail: {}".format(err))
-        return False, [], 0, 0, 0
+        print("Converge in: {}".format(result['point']))
+    else:
+        print("Converge: Fail")
+
+    return result['converge'], result['point'], result['iterations'], result['init_value'], result['final_value']
 
 def gradual_converge(geometry, variation, limit):
 
@@ -127,7 +127,7 @@ for geometry in geometries:
 # Save Result in CSV
 header = ["specie", 'variable', "variation", "converge", "iterations", "init_value", "final_value", "init_point", "final_point"]
 variations = [-25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25]
-with open('result-optimization-1-var.csv', 'w') as f:
+with open('results/result-optimization-1-var.csv', 'w') as f:
     writer = csv.writer(f)
     writer.writerow(header)
 

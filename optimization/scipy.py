@@ -51,60 +51,81 @@ class FunctionScipy(base.Function):
         d = ( f(new) - f(old) ) / (2 * base.Function.DEFAULT_GAP_NUMERICAL)
         return d
     
-    def __derivative_numerical_bkp(self, f, point, index):
+    def __grad(self, x):
         '''
-        Calculate the partial derivative numerically of function
-        '''
-        old = np.copy(point)
-        new = np.copy(point)
-        new[index] += base.Function.DEFAULT_GAP_NUMERICAL
-        d = ( f(new) - f(old) ) / base.Function.DEFAULT_GAP_NUMERICAL
-        return d
+        x -> np.array
 
+        return: np.array (same size of x0)
+        '''
+        derivatives = self.derivatives_numerical
+        return np.array([d(x) for d in derivatives])
+
+
+    def __hess(self, x):
+        '''
+        x -> np.array
+
+        return: np.array
+        '''
+
+        hessian = self.hessian_numerical
+        n = self.dimension
+        h = np.empty((n,n))
+        
+        for i, line in enumerate(hessian):
+            for j, f in enumerate(line):
+                h[i,j] = f(x)
+        return h
 
     def converge(self, method='CG',
                  max_iterations = base.Function.DEFAULT_MAX_ITERATIONS,
                  tolerance = base.Function.DEFAULT_TOLERANCE):
-        def grad(x):
-            '''
-            x -> np.array
+        '''
+        Finds the closest convergence point based on the initial point using scipy methods 
 
-            return: np.array (same size of x0)
-            '''
-            derivatives = self.derivatives_numerical
-            return np.array([d(x) for d in derivatives])
+            Parameters
+            ----------
+                max_iterations: int, optional
+                    Max iterations to try converge the function
+                tolerance float, optional
+                    How close gradient should be to converge
 
-        def hess(x):
-            '''
-            x -> np.array
+            Returns
+            ----------
+                A dict mapping the result of convergence processs
 
-            return: np.array
-            '''
+                {
+                    'converge': bool, # True if function has converged and False if not
 
-            hessian = self.hessian_numerical
-            n = self.dimension
-            h = np.empty((n,n))
-            
-            for i, line in enumerate(hessian):
-                for j, f in enumerate(line):
-                    h[i,j] = f(x)
-            return h
-                
+                    'point': float list, # Point where function has converged or stopped
 
-        init_val = self.function(self.point)
+                    'iterations': int, # Number of iterations
+
+                    'init_value': float, # Init value of function
+
+                    'final_value': float # Final value of function
+                }
+        '''
+
+        init_value = self.function(self.point)
 
         res = optimize.minimize(self.function, self.point,
-                                      method=method, jac=grad, tol=tolerance, hess=hess,
+                                      method=method, jac=self.__grad, tol=tolerance, hess=self.__hess,
                                       callback=None, options={'maxiter':max_iterations})
+
         #print('inside converge: after')
 
         converge = res.success
         point = res.x.tolist()
         iterations = res.nit
-        final_val = self.function(point)
+        final_value = self.function(point)
 
+        result = {
+            'converge': converge,
+            'point': point,
+            'iterations': iterations,
+            'init_value': init_value,
+            'final_value': final_value
+        }
 
-        if not converge:
-            raise ValueError("Method didn't converge.")
-
-        return point, iterations, init_val, final_val
+        return result

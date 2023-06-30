@@ -62,12 +62,11 @@ class FunctionCBPD(base.Function):
                 new_points[i] += gap
                 new.append(self.__converge_step(derivative, old_point, old, new_points, new_points[i]))
             
-            #print(new)
             old = np.copy(new)
             if self.__check_converge(new, derivatives, tolerance):
                 return True, np.copy(new), iteration + 1
 
-        return False, [], 0
+        return False, np.copy(old), n
 
     def converge_analytically(self, 
                               gap = base.Function.DEFAULT_GAP, 
@@ -87,17 +86,19 @@ class FunctionCBPD(base.Function):
 
             Returns
             ----------
-                float list
-                    Point where function has converged
-                
-                int
-                    Number of iterations
+                A dict mapping the result of convergence processs
 
-                float
-                    Init value of function
+                {
+                    'converge': bool, # True if function has converged and False if not
 
-                float
-                    Final value of function
+                    'point': float list, # Point where function has converged or stopped
+
+                    'iterations': int, # Number of iterations
+
+                    'init_value': float, # Init value of function
+
+                    'final_value': float # Final value of function
+                }
         '''
 
         if not self.derivatives:
@@ -105,12 +106,17 @@ class FunctionCBPD(base.Function):
 
         init_value = self.function(self.point)
         converge, point, iterations = self.__converge_method(gap, max_iterations, tolerance, False)
-
-        if not converge:
-            raise ValueError("Method didn't converge.")
-
         final_value = self.function(point)
-        return point, iterations, init_value, final_value
+
+        result = {
+            'converge': converge,
+            'point': point,
+            'iterations': iterations,
+            'init_value': init_value,
+            'final_value': final_value
+        }
+
+        return result
 
 
     def converge_numerically(self, 
@@ -131,26 +137,33 @@ class FunctionCBPD(base.Function):
 
             Returns
             ----------
-                float list
-                    Point where function has converged
-                                    
-                int
-                    Number of iterations
+                A dict mapping the result of convergence processs
 
-                float
-                    Init value of function
+                {
+                    'converge': bool, # True if function has converged and False if not
 
-                float
-                    Final value of function
+                    'point': float list, # Point where function has converged or stopped
+
+                    'iterations': int, # Number of iterations
+
+                    'init_value': float, # Init value of function
+
+                    'final_value': float # Final value of function
+                }
         '''
+
 
         init_value = self.function(self.point)
         converge, point, iterations = self.__converge_method(gap, max_iterations, tolerance, True)
         point = point.tolist()
-
-        if not converge:
-            raise ValueError("Method didn't converge.")
-        
         final_value = self.function(point)
 
-        return point, iterations, init_value, final_value
+        result = {
+            'converge': converge,
+            'point': point,
+            'iterations': iterations,
+            'init_value': init_value,
+            'final_value': final_value
+        }
+
+        return result

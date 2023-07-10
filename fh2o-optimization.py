@@ -11,16 +11,18 @@ from geometries import *
 def f(x):
     return x[0]**3 - (3/2)*x[0]*x[1] + x[1]**2
 
-def try_converge(point):
+def try_converge(point, relevant_vars):
 
     print("Initial Point: {}".format(point))
     #func = cbpd.FunctionCBPD(ldg.pes, point)
-    func = scp.FunctionScipy(ldg.pes, point)
+    func = scp.FunctionScipy(ldg.pes, point, relevant_vars)
     #func = scp.FunctionScipy(f, point)
 
-    result = func.converge(method='Newton-CG',
-                                  tolerance=0.00001,
-                                  max_iterations=1000)
+    #result = func.converge(method='Newton-CG',
+    #                              tolerance=0.00001,
+    #                              max_iterations=1000)
+    result = func.converge_newtown(tolerance=0.00001,
+                                  max_iterations=50)
     #p, iterations, init_val, final_val = func.converge_numerically(tolerance=0.00001, max_iterations=10000)
     if result['converge']:
         print("Converge: Success")
@@ -28,7 +30,7 @@ def try_converge(point):
     else:
         print("Converge: Fail")
 
-    return result['converge'], result['point'], result['iterations'], result['init_value'], result['final_value']
+    return result['converge'], result['point'], result['iterations'], result['grad'], result['init_value'], result['final_value']
 
 def gradual_converge(geometry, variation, limit):
 
@@ -49,23 +51,25 @@ def gradual_converge(geometry, variation, limit):
         for l in range(limit):
             p = point[:]
             p[var_idx] -= point[var_idx] * (variation * (limit - l))
-            success, converge_point, iterations, init_val, final_val = try_converge(p)
+            success, converge_point, iterations, grad, init_val, final_val = try_converge(p, relevant_vars)
             data_var.append({
                 "initial point": "{}".format(p),
                 "converge": success,
                 "converge point": "{}".format(converge_point),
                 "iterations": iterations,
+                "gradient": grad,
                 "init value": init_val,
                 "final value": final_val
             })
 
         # Try converge in 0%
-        success, converge_point, iterations, init_val, final_val = try_converge(point)
+        success, converge_point, iterations, grad, init_val, final_val = try_converge(point, relevant_vars)
         data_var.append({
             "initial point": "{}".format(point),
             "converge": success,
             "converge point": "{}".format(converge_point),
             "iterations": iterations,
+            "gradient": grad,
             "init value": init_val,
             "final value": final_val
         })
@@ -74,12 +78,13 @@ def gradual_converge(geometry, variation, limit):
         for l in range(limit):
             p = point[:]
             p[var_idx] += point[var_idx] * (variation * (l + 1))
-            success, converge_point, iterations, init_val, final_val = try_converge(p)
+            success, converge_point, iterations, grad, init_val, final_val = try_converge(p, relevant_vars)
             data_var.append({
                 "initial point": "{}".format(p),
                 "converge": success,
                 "converge point": "{}".format(converge_point),
                 "iterations": iterations,
+                "gradient": grad,
                 "init value": init_val,
                 "final value": final_val
             })
@@ -125,7 +130,7 @@ for geometry in geometries:
 
 
 # Save Result in CSV
-header = ["specie", 'variable', "variation", "converge", "iterations", "init_value", "final_value", "init_point", "final_point"]
+header = ["specie", 'variable', "variation", "converge", "iterations", "gradient", "init_value", "final_value", "init_point", "final_point"]
 variations = [-25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25]
 with open('results/result-optimization-1-var.csv', 'w') as f:
     writer = csv.writer(f)
@@ -143,12 +148,13 @@ with open('results/result-optimization-1-var.csv', 'w') as f:
                 variation = variations[i]
                 converge = v["converge"]
                 iterations = v["iterations"]
+                gradient = v["gradient"]
                 init_val = v["init value"]
                 final_val = v["final value"]
                 init = v["initial point"]
                 final = v["converge point"]
 
-                row = [specie, var, variation, converge, iterations, init_val, final_val, init, final]
+                row = [specie, var, variation, converge, iterations, gradient, init_val, final_val, init, final]
                 writer.writerow(row)
                 
 

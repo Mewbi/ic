@@ -13,12 +13,14 @@ class Function:
     def __lambda_derivative(self, i):
         return lambda x: self.__derivative_numerical(x, i)
     
-    def __init__(self, function, point):
+    def __init__(self, function, point, optimize_vars = []):
         self.function = function
         self.point = point
         self.dimension = len(point)
+        self.optimize_vars = optimize_vars
 
         self.derivatives_numerical = []
+
         for i, _ in enumerate(point):
             self.derivatives_numerical.append(self.__lambda_derivative(i))
 
@@ -71,6 +73,23 @@ class Function:
                 raise ValueError("Derivative {} is not a python callable function".format(derivative))
             self._derivatives.append(derivative)
     
+    @property
+    def optimize_vars(self):
+        return self._optimize_vars
+
+    @optimize_vars.setter
+    def optimize_vars(self, optimize):
+        if type(optimize) is not list:
+            raise ValueError("Optimize vars must be a list of boolean")
+
+        if len(optimize) == 0:
+            optimize = [True for _ in range(self.dimension)]
+
+        if len(optimize) != self.dimension:
+            raise ValueError("Optimize vars must have the same length as the function dimension")
+
+        self._optimize_vars = optimize
+
     def __derivative_numerical(self, point, index):
         '''
         Calculate the partial derivative numerically based in derivative definition
@@ -93,3 +112,18 @@ class Function:
         f = self._function
         d = ( f(new) - f(old) ) / self.DEFAULT_GAP_NUMERICAL
         return d
+
+class Result:
+
+    def __init__(self, converge=False):
+        self.converge = converge
+
+    @property
+    def converge(self):
+        return self._converge
+
+    @converge.setter
+    def converge(self, converge):
+        if type(converge) is not bool:
+            raise ValueError("Converge value is not a boolean")
+        self._converge = converge

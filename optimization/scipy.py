@@ -1,4 +1,5 @@
 import numpy as np
+from numpy import linalg
 from scipy import optimize
 
 from optimization import base
@@ -24,16 +25,27 @@ class FunctionScipy(base.Function):
         Try to convert a function using Newtons Method
     '''
 
-    def __init__(self, function, point):
-        super().__init__(function, point)
+    def __init__(self, function, point, optimize_vars = []):
+        super().__init__(function, point, optimize_vars)
 
         n = self.dimension
         self.hessian_numerical = []
 
+        optimize = self.optimize_vars
+        pos_x = 0
         for i in range(n):
+            if optimize[i] is not True:
+                continue
+
             self.hessian_numerical.append([])
+            
             for j in range(n):
-                self.hessian_numerical[i].append(self.__second_derivate(i, j))
+                if optimize[j] is not True:
+                    continue
+                self.hessian_numerical[pos_x].append(self.__second_derivate(i, j))
+            pos_x += 1
+    
+
 
     def __second_derivate(self, i, j):
         f = self.derivatives_numerical[i]
@@ -58,7 +70,13 @@ class FunctionScipy(base.Function):
         return: np.array (same size of x0)
         '''
         derivatives = self.derivatives_numerical
-        return np.array([d(x) for d in derivatives])
+        optimize = self.optimize_vars
+        grad = []
+        for i, d in enumerate(derivatives):
+            if optimize[i] is not True:
+                continue
+            grad.append(d(x))
+        return np.array(grad)
 
 
     def __hess(self, x):
@@ -69,13 +87,116 @@ class FunctionScipy(base.Function):
         '''
 
         hessian = self.hessian_numerical
-        n = self.dimension
+        n = len(hessian)
         h = np.empty((n,n))
         
         for i, line in enumerate(hessian):
             for j, f in enumerate(line):
                 h[i,j] = f(x)
         return h
+
+    def __points_optimize(self, x):
+        p = []
+        optimize = self.optimize_vars
+        for i, point in enumerate(x):
+            if optimize[i] is not True:
+                continue
+            p.append(point)
+
+        return np.array(p)
+
+    def __points_optimize_to_full_size(self, x, x_opt):
+        if len(x) == len(x_opt):
+            return x_opt
+
+        n = self.dimension
+        optimize = self.optimize_vars
+        x_new = np.empty(n)
+        for i, opt in enumerate(optimize):
+            if opt is True:
+                # Pop the first item from array
+                x_new[i], x_opt = x_opt[0], x_opt[1:]
+                continue
+            x_new[i] = x[i]
+        return x_new
+
+    def converge_newtown(self,
+                         max_iterations = base.Function.DEFAULT_MAX_ITERATIONS,
+                         tolerance = base.Function.DEFAULT_TOLERANCE):
+        '''
+        Finds the closest convergence point based on the initial point using scipy methods 
+
+            Parameters
+            ----------
+                max_iterations: int, optional
+                    Max iterations to try converge the function
+                tolerance float, optional
+                    How close gradient should be to converge
+
+            Returns
+            ----------
+                A dict mapping the result of convergence processs
+
+                {
+                    'converge': bool, # True if function has converged and False if not
+
+                    'point': float list, # Point where function has converged or stopped
+
+                    'iterations': int, # Number of iterations
+
+                    'gradient': float, # Grandient value of function
+
+                    'init_value': float, # Init value of function
+
+                    'final_value': float # Final value of function
+                }
+        '''
+
+        init_value = self.function(self.point)
+        converge = False
+        iterations = 0
+        p = np.copy(self.point)
+
+
+        np.set_printoptions(linewidth=100)
+        grad = self.__grad(p)
+        norm_grad = linalg.norm(grad)
+        print("\n Trying to converge: {}".format(p.tolist()))
+        for _ in range(max_iterations):
+            
+            grad = self.__grad(p)
+            norm_grad = linalg.norm(grad)
+            if norm_grad < tolerance:
+                converge = True
+                break
+            
+            hess = self.__hess(p)
+            det = linalg.det(hess)
+            if det == 0: # Cannot get inv matrix when det is zero
+                print("Matriz Singular")
+                break
+
+            hess_inv = linalg.inv(hess)
+            p_optimize = self.__points_optimize(p)
+            p_optimize = p_optimize - hess_inv @ grad
+            p = self.__points_optimize_to_full_size(p, p_optimize)
+            iterations += 1
+
+        norm_grad = f"{norm_grad:.1e}"
+        point = p.tolist()
+        final_value = self.function(point)
+
+        result = {
+            'converge': converge,
+            'point': point,
+            'iterations': iterations,
+            'grad': norm_grad,
+            'init_value': init_value,
+            'final_value': final_value
+        }
+
+        return result
+
 
     def converge(self, method='CG',
                  max_iterations = base.Function.DEFAULT_MAX_ITERATIONS,

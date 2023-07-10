@@ -31,7 +31,7 @@ geometries = [
 geometries = [
     {
         "specie": "F + H2O",
-        "stationary": [0.9609, 0.9609, 10, 104.1477, 0, 0],
+        "stationary": [0.9609, 0.9609, 20, 104.1477, 300, 300],
         "relevant_vars": [True, True, False, True, False, False] 
     },
     {
@@ -41,22 +41,22 @@ geometries = [
     },
     {
         "specie": "TS",
-        "stationary": [0.9705, 1.0389, 1.3128, 103.00, 121.99, 68.72],
+        "stationary": [0.9693, 1.0250, 1.3536, 103.2989, 118.2898, 68.3691],
         "relevant_vars": [True, True, True, True, True, True] 
     },
     {
         "specie": "P-vdW (HO--HF)",
-        "stationary": [0.9728, 1.7700, 0.9354, 108.6700, 173.6379, 7.6140],
+        "stationary": [0.9728, 1.7700, 0.9354, 108.6504, 173.6165, -0.0737],
         "relevant_vars": [True, True, True, True, True, True] 
     },
     {
         "specie": "HO+HF",
-        "stationary": [0.9728, 10, 0.9223, 0, 0, 0],
+        "stationary": [0.9728, 20, 0.9223, 300, 300, 300],
         "relevant_vars": [True, False, True, False, False, False] 
     },
     {
         "specie": "P'-vdW (HO--FH)",
-        "stationary": [0.9735, 3.9974, 0.9220, 17.51, 46.76, 0],
+        "stationary": [0.9735, 3.9974, 0.9220, 17.51, 46.76, 0.0001],
         "relevant_vars": [True, True, True, True, True, True] 
     },
 ]

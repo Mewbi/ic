@@ -135,24 +135,11 @@ class FunctionScipy(base.Function):
 
             Returns
             ----------
-                A dict mapping the result of convergence processs
-
-                {
-                    'converge': bool, # True if function has converged and False if not
-
-                    'point': float list, # Point where function has converged or stopped
-
-                    'iterations': int, # Number of iterations
-
-                    'gradient': float, # Grandient value of function
-
-                    'init_value': float, # Init value of function
-
-                    'final_value': float # Final value of function
-                }
+                A Result object with informations about convergence process
         '''
 
-        init_value = self.function(self.point)
+        init_point = self.point
+        init_value = self.function(init_point)
         converge = False
         iterations = 0
         p = np.copy(self.point)
@@ -186,14 +173,15 @@ class FunctionScipy(base.Function):
         point = p.tolist()
         final_value = self.function(point)
 
-        result = {
-            'converge': converge,
-            'point': point,
-            'iterations': iterations,
-            'grad': norm_grad,
-            'init_value': init_value,
-            'final_value': final_value
-        }
+        result = base.Result(
+                    converge = converge,
+                    init_point = init_point,
+                    final_point = point,
+                    init_value = init_value,
+                    final_value = final_value,
+                    iterations = iterations,
+                    gradient = norm_grad,
+                )
 
         return result
 

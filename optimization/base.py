@@ -114,9 +114,51 @@ class Function:
         return d
 
 class Result:
+    '''
+    Result of convergence process
 
-    def __init__(self, converge=False):
+    ...
+
+    Attributes
+    ----------
+    converge: bool
+        True if function has converged and False if not
+
+    init_point: float list
+        Initial point of optimization
+    
+    final_point: float list
+        Point where function has converged or stopped
+
+    iterations: int
+        Number of iterations
+
+    gradient: float
+        Gradient value of function
+
+    init_value: float
+        Init value of function
+
+    final_value: float 
+        Final value of function
+    '''
+
+    def __init__(self, 
+                 converge = False,
+                 init_point = [],
+                 final_point = [],
+                 init_value = 0.0,
+                 final_value = 0.0,
+                 iterations = 0,
+                 gradient = "0"
+                 ):
         self.converge = converge
+        self.init_point = init_point
+        self.final_point = final_point
+        self.init_value = init_value
+        self.final_value = final_value
+        self.iterations = iterations
+        self.gradient = gradient
 
     @property
     def converge(self):
@@ -127,3 +169,111 @@ class Result:
         if type(converge) is not bool:
             raise ValueError("Converge value is not a boolean")
         self._converge = converge
+
+    @property
+    def init_point(self):
+        return self._init_point
+
+    @init_point.setter
+    def init_point(self, init_point):
+        try:
+            iter(init_point)
+        except:
+            raise ValueError("Init point is not iterable")
+        self._init_point = init_point
+
+    @property
+    def final_point(self):
+        return self._final_point
+
+    @final_point.setter
+    def final_point(self, final_point):
+        try:
+            iter(final_point)
+        except:
+            raise ValueError("Final point is not iterable")
+        
+        if len(final_point) != len(self.init_point):
+            raise ValueError("Final point must have same dimension as init point")
+
+        self._final_point = final_point
+
+    @property
+    def init_value(self):
+        return self._init_value
+
+    @init_value.setter
+    def init_value(self, init_value):
+        if type(init_value) is not float:
+            raise ValueError("Init value is not a float number")
+        self._init_value = init_value
+
+    @property
+    def final_value(self):
+        return self._final_value
+
+    @final_value.setter
+    def final_value(self, final_value):
+        if type(final_value) is not float:
+            raise ValueError("Final value is not a float number")
+        self._final_value = final_value
+
+    @property
+    def iterations(self):
+        return self._iterations
+
+    @iterations.setter
+    def iterations(self, iterations):
+        if type(iterations) is not int:
+            raise ValueError("Iterations value is not a integer number")
+        self._iterations = iterations
+
+    @property
+    def gradient(self):
+        return self._gradient
+
+    @gradient.setter
+    def gradient(self, gradient):
+        if type(gradient) is not str:
+            raise ValueError("Gradient value must be a string value")
+        self._gradient = gradient
+
+class Results():
+    '''
+    Results of many optimizations process
+
+    ...
+
+    Attributes
+    ----------
+    results: Result list
+        List of Result objects
+
+    Methods
+    ----------
+    csv():
+        Generate a CSV file with results values
+
+    json():
+        Generate a JSON file with results values
+    '''
+
+    def __init__(self, results):
+        self.results = results
+
+    @property
+    def results(self):
+        return self._results
+
+    @results.setter
+    def results(self, results):
+        try:
+            iter(results)
+        except:
+            raise ValueError("Results must be iterable")
+
+        for result in results:
+            if type(result) is not Result:
+                raise ValueError("Values of results list must a a Result object")
+        self._results = results
+

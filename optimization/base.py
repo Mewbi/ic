@@ -1,4 +1,5 @@
 import numpy as np
+import csv
 
 class Function:
 
@@ -150,7 +151,10 @@ class Result:
                  init_value = 0.0,
                  final_value = 0.0,
                  iterations = 0,
-                 gradient = "0"
+                 gradient = "0",
+                 specie = "",
+                 variable = "",
+                 variation = 0,
                  ):
         self.converge = converge
         self.init_point = init_point
@@ -159,6 +163,10 @@ class Result:
         self.final_value = final_value
         self.iterations = iterations
         self.gradient = gradient
+
+        self.specie = specie
+        self.variable = variable
+        self.variation = variation
 
     @property
     def converge(self):
@@ -238,6 +246,36 @@ class Result:
             raise ValueError("Gradient value must be a string value")
         self._gradient = gradient
 
+    @property
+    def specie(self):
+        return self._specie
+
+    @specie.setter
+    def specie(self, specie):
+        if type(specie) is not str:
+            raise ValueError("Specie value must be a string value")
+        self._specie = specie
+
+    @property
+    def variable(self):
+        return self._variable
+
+    @variable.setter
+    def variable(self, variable):
+        if type(variable) is not str:
+            raise ValueError("Variable value must be a string value")
+        self._variable = variable
+
+    @property
+    def variation(self):
+        return self._variation
+
+    @variation.setter
+    def variation(self, variation):
+        if type(variation) is not int and type(variation) is not float:
+            raise ValueError("Variation value must be a number")
+        self._variation = variation
+
 class Results():
     '''
     Results of many optimizations process
@@ -258,8 +296,21 @@ class Results():
         Generate a JSON file with results values
     '''
 
-    def __init__(self, results):
-        self.results = results
+    FIELDS_ORDER = [
+        "specie",
+        "variable",
+        "variation",
+        "converge",
+        "iterations",
+        "gradient",
+        "init_value",
+        "final_value",
+        "init_point",
+        "final_point"
+    ]
+
+    def __init__(self):
+        self.results = None
 
     @property
     def results(self):
@@ -267,6 +318,10 @@ class Results():
 
     @results.setter
     def results(self, results):
+        if results == None:
+            self._results = results
+            return
+
         try:
             iter(results)
         except:
@@ -277,3 +332,24 @@ class Results():
                 raise ValueError("Values of results list must a a Result object")
         self._results = results
 
+    def add_single_result(self, result):
+        if type(result) is not Result:
+            raise ValueError("Result must a a Result object")
+
+        if self.results == None:
+            self.results = [result]
+            return
+
+        self.results.append(result)
+
+    def csv(self, filename = 'result.csv'):
+        with open(filename, 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(self.FIELDS_ORDER)
+
+            for result in self.results:
+                row = []
+                for field in self.FIELDS_ORDER:
+                    value = getattr(result, field)
+                    row.append(value)
+                writer.writerow(row)

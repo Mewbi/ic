@@ -1,5 +1,6 @@
-import numpy as np
 import csv
+import math
+import numpy as np
 
 class Function:
 
@@ -7,6 +8,7 @@ class Function:
     DEFAULT_GAP_NUMERICAL = 1e-5
     DEFAULT_MAX_ITERATIONS = 100000
     DEFAULT_TOLERANCE = 1e-5
+    FAIL_CONVERGE_VALUE = 115.302739153 # When PES value 'explode'
 
     def __call__(self, point):
         return self._function(point)
@@ -143,6 +145,7 @@ class Result:
     final_value: float 
         Final value of function
     '''
+
 
     def __init__(self, 
                  converge = False,
@@ -334,13 +337,88 @@ class Results():
 
     def add_single_result(self, result):
         if type(result) is not Result:
-            raise ValueError("Result must a a Result object")
+            raise ValueError("Result must a be a Result object")
 
         if self.results == None:
             self.results = [result]
             return
 
         self.results.append(result)
+
+    def add_multiple_results(self, results):
+        try:
+            iter(results)
+        except:
+            raise ValueError("Results must be iterable")
+
+        for result in results:
+            self.add_single_result(result)
+
+    def normalize_final_points(self):
+        max_values     = np.copy([])
+        min_values     = np.copy([])
+        trunc_decimals = np.copy([])
+
+        results = self.results
+        for result in results:
+            if result.converge == False:
+                continue
+
+            point = result.final_point
+
+            if max_values.size == 0:
+                max_values = np.copy(point)
+
+            if min_values.size == 0:
+                min_values = np.copy(point)
+
+            for i, value in enumerate(point):
+                if value > max_values[i]:
+                    max_values[i] = value
+
+                if value < min_values[i]:
+                    min_values[i] = value
+
+        for i, max_v in enumerate(max_values):
+            min_v = min_values[i]
+            diff = max_v - min_v
+
+            if diff == 0:
+                trunc = len(str(max_v).split('.')[1])
+                trunc_decimals = np.append(trunc_decimals, trunc)
+                continue
+
+            trunc = 0
+            while True:
+                if math.trunc(diff * (10 ** trunc)) != 0:
+                    break
+                trunc += 1
+
+            trunc_decimals = np.append(trunc_decimals, trunc - 1)
+
+
+        for i, result in enumerate(results):
+            if result.converge == False:
+                continue
+
+            point = result._final_point
+
+            for i, value in enumerate(point):
+                value = self.__truncate(value, trunc_decimals[i])
+                point[i] = value
+
+            result.final_point = point
+            results[i] = result
+
+        self.results = results
+
+
+    def __truncate(self, number, digits):
+        nb_decimals = len(str(number).split('.')[1])
+        if nb_decimals <= digits:
+            return number
+        stepper = 10.0 ** digits
+        return math.trunc(stepper * number) / stepper
 
     def csv(self, filename = 'result.csv'):
         with open(filename, 'w') as f:

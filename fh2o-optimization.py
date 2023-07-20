@@ -34,7 +34,9 @@ def try_converge(point, relevant_vars, geometry, var_name, variation):
     result.variation = variation
     return result
 
-def gradual_converge(results, geometry, variation, limit):
+def gradual_converge(geometry, variation, limit):
+
+    results = base.Results()
 
     point = geometry["stationary"]
     relevant_vars = geometry["relevant_vars"]
@@ -82,6 +84,8 @@ ldg.init()
 results = base.Results()
 
 for geometry in geometries:
-    results = gradual_converge(results, geometry, 0.05, 5)
+    r = gradual_converge(geometry, 0.05, 5)
+    r.normalize_final_points()
+    results.add_multiple_results(r.results)
 
 results.csv('results/result-optimization-1-var.csv')

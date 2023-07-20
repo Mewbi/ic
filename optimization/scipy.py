@@ -173,6 +173,9 @@ class FunctionScipy(base.Function):
         point = p.tolist()
         final_value = self.function(point)
 
+        if final_value == self.FAIL_CONVERGE_VALUE:
+            converge = False
+
         result = base.Result(
                     converge = converge,
                     init_point = init_point,
@@ -228,6 +231,9 @@ class FunctionScipy(base.Function):
         point = res.x.tolist()
         iterations = res.nit
         final_value = self.function(point)
+
+        if final_value == self.FAIL_CONVERGE_VALUE:
+            converge = False
 
         result = {
             'converge': converge,

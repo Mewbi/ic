@@ -85,7 +85,7 @@ results = base.Results()
 
 for geometry in geometries:
     r = gradual_converge(geometry, 0.05, 5)
-    r.normalize_final_points()
+    r.normalize_final_points(geometry["energy"])
     results.add_multiple_results(r.results)
 
 results.csv('results/result-optimization-1-var.csv')

@@ -312,6 +312,8 @@ class Results():
         "final_point"
     ]
 
+    VARIATION_TOLERANCE = 5e-1
+
     def __init__(self):
         self.results = None
 
@@ -354,7 +356,7 @@ class Results():
         for result in results:
             self.add_single_result(result)
 
-    def normalize_final_points(self):
+    def normalize_final_points(self, refence_value=None):
         max_values     = np.copy([])
         min_values     = np.copy([])
         trunc_decimals = np.copy([])
@@ -362,6 +364,9 @@ class Results():
         results = self.results
         for result in results:
             if result.converge == False:
+                continue
+            
+            if refence_value is not None and abs(refence_value - result.final_value) > self.VARIATION_TOLERANCE:
                 continue
 
             point = result.final_point
@@ -399,6 +404,9 @@ class Results():
 
         for i, result in enumerate(results):
             if result.converge == False:
+                continue
+
+            if refence_value is not None and abs(refence_value - result.final_value) > self.VARIATION_TOLERANCE:
                 continue
 
             point = result._final_point

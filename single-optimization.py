@@ -15,4 +15,5 @@ func = scp.FunctionScipy(ldg.pes, point, optimize_vars)
 result = func.converge_newtown(tolerance=0.00001,
                                max_iterations=100)
 
-print(result)
+print(result.final_point)
+result.plot()

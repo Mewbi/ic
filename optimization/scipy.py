@@ -3,6 +3,7 @@ from numpy import linalg
 from scipy import optimize
 
 from optimization import base
+from optimization import result
 
 class FunctionScipy(base.Function):
     '''
@@ -176,17 +177,17 @@ class FunctionScipy(base.Function):
         if final_value == self.FAIL_CONVERGE_VALUE:
             converge = False
 
-        result = base.Result(
-                    converge = converge,
-                    init_point = init_point,
-                    final_point = point,
-                    init_value = init_value,
-                    final_value = final_value,
-                    iterations = iterations,
-                    gradient = norm_grad,
-                )
+        r = result.Result(
+                converge = converge,
+                init_point = init_point,
+                final_point = point,
+                init_value = init_value,
+                final_value = final_value,
+                iterations = iterations,
+                gradient = norm_grad,
+            )
 
-        return result
+        return r
 
 
     def converge(self, method='CG',

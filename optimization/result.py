@@ -171,14 +171,14 @@ class Result:
 
     @variation.setter
     def variation(self, variation):
-        if type(variation) is not int and type(variation) is not float:
+        if type(variation) is not int and type(variation) is not float and not np.isreal(variation):
             raise ValueError("Variation value must be a number")
         self._variation = variation
 
     def __calculate_coords(self):
         p = self.final_point
 
-        if len(p) == 6:
+        if len(p) != 6:
             raise ValueError("Probably the final result is not from the F+H20 reaction, there will be no plot")
 
         R1 = p[0]
@@ -245,12 +245,8 @@ class Result:
         ax = fig.add_subplot(111, projection='3d')
         ax.set_facecolor('darkgrey')
         ax.axis('off')
-        ax.set_xlabel('Eixo X')
-        ax.set_ylabel('Eixo Y')
-        ax.set_zlabel('Eixo Z')
 
-        # Plotar os pontos
-        #ax.scatter(x, y, z, c='r', marker='o')
+        # Plot points
         ax.scatter(H1.X, H1.Y, H1.Z, c=H1.color, marker='o', s=H1.size)
         ax.scatter(H2.X, H2.Y, H2.Z, c=H2.color, marker='o', s=H2.size)
         ax.scatter(O.X,  O.Y,  O.Z,  c=O.color,  marker='o', s=O.size)
@@ -261,15 +257,15 @@ class Result:
         ax.text(O.X,  O.Y,  O.Z,  O.label,  fontweight='bold')
         ax.text(F.X,  F.Y,  F.Z,  F.label,  fontweight='bold')
 
-        # Plotar as linhas entre os pontos
+        # Plot lines between points
         ax.plot([H1.X, O.X], [H1.Y, O.Y], [H1.Z, O.Z], c='b')
         ax.plot([H2.X, O.X], [H2.Y, O.Y], [H2.Z, O.Z], c='b')
         ax.plot([H1.X, F.X], [H1.Y, F.Y], [H1.Z, F.Z], c='b')
         
-        # Ajustar a escala dos eixos para melhor visualização
+        # Adjust scale
         ax.auto_scale_xyz([np.min(x), np.max(x)], [np.min(y), np.max(y)], [np.min(z), np.max(z)])
 
-        # Mostrar o plot
+        # Plot
         plt.show()
 
 class Results():
@@ -448,3 +444,61 @@ class Element:
         self.color = color
         self.size = 20 * 4 * size
         self.label = label
+
+    @property
+    def X(self):
+        return self._X
+
+    @X.setter
+    def X(self, value):
+        self.__valid_point(value, "X")
+        self._X = value
+
+    @property
+    def Y(self):
+        return self._Y
+
+    @Y.setter
+    def Y(self, value):
+        self.__valid_point(value, "Y")
+        self._Y = value
+
+    @property
+    def Z(self):
+        return self._Z
+
+    @Z.setter
+    def Z(self, value):
+        self.__valid_point(value, "Z")
+        self._Z = value
+
+    def __valid_point(self, value, coord):
+        if type(value) is not int and type(value) is not float and not np.isreal(value):
+            raise ValueError("Value of {} must be a number. Receive: {}".format(coord, type(value)))
+
+    @property
+    def color(self):
+        return self._color
+
+    @color.setter
+    def color(self, c):
+        if type(c) is not str:
+            raise ValueError("Color must be a string")
+
+        c = c.strip()
+
+        if len(c) == 0:
+            raise ValueError("Color cannot be a empty string")
+
+        self._color = c
+
+    @property
+    def label(self):
+        return self._label
+
+    @label.setter
+    def label(self, l):
+        if type(l) is not str:
+            raise ValueError("Label must be a string")
+
+        self._label = l

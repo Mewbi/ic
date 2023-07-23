@@ -177,6 +177,10 @@ class Result:
 
     def __calculate_coords(self):
         p = self.final_point
+
+        if len(p) == 6:
+            raise ValueError("Probably the final result is not from the F+H20 reaction, there will be no plot")
+
         R1 = p[0]
         R2 = p[1]
         R3 = p[2]

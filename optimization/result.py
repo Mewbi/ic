@@ -2,6 +2,7 @@ import csv
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
 from numpy import linalg
 from mpl_toolkits.mplot3d import Axes3D
@@ -34,7 +35,18 @@ class Result:
 
     final_value: float 
         Final value of function
+
+    specie: string
+        The specie of optimization
+
+    variable: string
+        Variable that was changed from optimal setting
     
+    variation: number
+        Variation of variable from optimal setting
+
+    convergence_steps: float lists
+        Each step os convergence process
 
     Methods
     ----------
@@ -54,6 +66,7 @@ class Result:
                  specie = "",
                  variable = "",
                  variation = 0,
+                 convergence_steps = [],
                  ):
         self.converge = converge
         self.init_point = init_point
@@ -62,10 +75,10 @@ class Result:
         self.final_value = final_value
         self.iterations = iterations
         self.gradient = gradient
-
         self.specie = specie
         self.variable = variable
         self.variation = variation
+        self.convergence_steps = convergence_steps
 
     @property
     def converge(self):
@@ -175,11 +188,28 @@ class Result:
             raise ValueError("Variation value must be a number")
         self._variation = variation
 
-    def __calculate_coords(self):
-        p = self.final_point
+    @property
+    def convergence_steps(self):
+        return self._convergence_steps
 
+    @convergence_steps.setter
+    def convergence_steps(self, steps):
+        try:
+            iter(steps)
+        except:
+            raise ValueError("Steps must be iterable")
+        
+        for step in steps:
+            try:
+                iter(step)
+            except:
+                raise ValueError("Each step must be iterable")
+
+        self._convergence_steps = steps
+
+    def __calculate_coords(self, p):
         if len(p) != 6:
-            raise ValueError("Probably the final result is not from the F+H20 reaction, there will be no plot")
+            raise ValueError("Probably the result is not from the F+H20 reaction, there will be no plot")
 
         R1 = p[0]
         R2 = p[1]
@@ -232,19 +262,26 @@ class Result:
 
         return H1, H2, O, F
 
-    def plot(self):
-
-        H1, H2, O, F = self.__calculate_coords()
-
-        x = np.array([H1.X, H2.X, O.X, F.X])
-        y = np.array([H1.Y, H2.Y, O.Y, F.Y])
-        z = np.array([H1.Z, H2.Z, O.Z, F.Z])
-
-        # Configure 3D plot
+    def __setup_plot(self):
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
         ax.set_facecolor('darkgrey')
         ax.axis('off')
+
+        return fig, ax
+
+    def plot(self):
+
+        p = self.final_point
+
+        H1, H2, O, F = self.__calculate_coords(p)
+
+        x = np.array([H1.X, H2.X, O.X, F.X])
+        y = np.array([H1.Y, H2.Y, O.Y, F.Y])
+        z = np.array([H1.Z, H2.Z, O.Z, F.Z])
+        
+        # Configure 3D plot
+        fig, ax = self.__setup_plot()
 
         # Plot points
         ax.scatter(H1.X, H1.Y, H1.Z, c=H1.color, marker='o', s=H1.size)
@@ -267,6 +304,60 @@ class Result:
 
         # Plot
         plt.show()
+
+    def save_steps(self, filename="convergence.gif"):
+        if len(self.convergence_steps) == 0:
+            raise ValueError("Empty convergence steps")
+
+        fig, ax = self.__setup_plot()
+        p = self.init_point
+        H1, H2, O, F = self.__calculate_coords(p)
+
+        # Dados dos pontos
+        x = np.array([H1.X, H2.X, O.X, F.X])
+        y = np.array([H1.Y, H2.Y, O.Y, F.Y])
+        z = np.array([H1.Z, H2.Z, O.Z, F.Z])
+
+        def init():
+            ax.scatter(H1.X, H1.Y, H1.Z, c=H1.color, marker='o', s=H1.size)
+            ax.scatter(H2.X, H2.Y, H2.Z, c=H2.color, marker='o', s=H2.size)
+            ax.scatter(O.X,  O.Y,  O.Z,  c=O.color,  marker='o', s=O.size)
+            ax.scatter(F.X,  F.Y,  F.Z,  c=F.color,  marker='o', s=F.size)
+
+            ax.text(H1.X, H1.Y, H1.Z, H1.label, fontweight='bold')
+            ax.text(H2.X, H2.Y, H2.Z, H2.label, fontweight='bold')
+            ax.text(O.X,  O.Y,  O.Z,  O.label,  fontweight='bold')
+            ax.text(F.X,  F.Y,  F.Z,  F.label,  fontweight='bold')
+
+            ax.plot([H1.X, O.X], [H1.Y, O.Y], [H1.Z, O.Z], c='b')
+            ax.plot([H2.X, O.X], [H2.Y, O.Y], [H2.Z, O.Z], c='b')
+            ax.plot([H1.X, F.X], [H1.Y, F.Y], [H1.Z, F.Z], c='b')
+
+            ax.auto_scale_xyz([np.min(x), np.max(x)], [np.min(y), np.max(y)], [np.min(z), np.max(z)])
+
+        def update(step):
+            nH1, nH2, nO, nF = self.__calculate_coords(step)
+            H1.X = nH1.X
+            H1.Y = nH1.Y
+            H1.Z = nH1.Z
+
+            H2.X = nH2.X
+            H2.Y = nH2.Y
+            H2.Z = nH2.Z
+
+            O.X = nO.X
+            O.Y = nO.Y
+            O.Z = nO.Z
+
+            F.X = nF.X
+            F.Y = nF.Y
+            F.Z = nF.Z
+            ax.clear()
+            init()
+
+        animation = FuncAnimation(fig, update, frames=self.convergence_steps, init_func=init, blit=False)
+        animation.save(filename, writer='pillow', fps=2)
+
 
 class Results():
     '''

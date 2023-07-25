@@ -123,7 +123,8 @@ class FunctionScipy(base.Function):
 
     def converge_newtown(self,
                          max_iterations = base.Function.DEFAULT_MAX_ITERATIONS,
-                         tolerance = base.Function.DEFAULT_TOLERANCE):
+                         tolerance = base.Function.DEFAULT_TOLERANCE,
+                         details = False):
         '''
         Finds the closest convergence point based on the initial point using scipy methods 
 
@@ -131,8 +132,12 @@ class FunctionScipy(base.Function):
             ----------
                 max_iterations: int, optional
                     Max iterations to try converge the function
+
                 tolerance float, optional
                     How close gradient should be to converge
+
+                details boolean, optional
+                    Save details of convergence process
 
             Returns
             ----------
@@ -142,6 +147,7 @@ class FunctionScipy(base.Function):
         init_point = self.point
         init_value = self.function(init_point)
         converge = False
+        convergence_steps = []
         iterations = 0
         p = np.copy(self.point)
 
@@ -149,9 +155,11 @@ class FunctionScipy(base.Function):
         np.set_printoptions(linewidth=100)
         grad = self.__grad(p)
         norm_grad = linalg.norm(grad)
+
         print("\n Trying to converge: {}".format(p.tolist()))
+        
         for _ in range(max_iterations):
-            
+
             grad = self.__grad(p)
             norm_grad = linalg.norm(grad)
             if norm_grad < tolerance:
@@ -169,6 +177,9 @@ class FunctionScipy(base.Function):
             p_optimize = p_optimize - hess_inv @ grad
             p = self.__points_optimize_to_full_size(p, p_optimize)
             iterations += 1
+            
+            if details:
+                convergence_steps.append(p.tolist())
 
         norm_grad = f"{norm_grad:.1e}"
         point = p.tolist()
@@ -178,13 +189,14 @@ class FunctionScipy(base.Function):
             converge = False
 
         r = result.Result(
-                converge = converge,
-                init_point = init_point,
-                final_point = point,
-                init_value = init_value,
-                final_value = final_value,
-                iterations = iterations,
-                gradient = norm_grad,
+                converge          = converge,
+                init_point        = init_point,
+                final_point       = point,
+                init_value        = init_value,
+                final_value       = final_value,
+                iterations        = iterations,
+                gradient          = norm_grad,
+                convergence_steps = convergence_steps
             )
 
         return r
@@ -226,7 +238,6 @@ class FunctionScipy(base.Function):
                                       method=method, jac=self.__grad, tol=tolerance, hess=self.__hess,
                                       callback=None, options={'maxiter':max_iterations})
 
-        #print('inside converge: after')
 
         converge = res.success
         point = res.x.tolist()

@@ -18,4 +18,5 @@ result = func.converge_newtown(tolerance=0.00001,
 
 print(result.final_point)
 print(result.convergence_steps)
+result.plot()
 result.save_steps()

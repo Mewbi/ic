@@ -4,6 +4,7 @@
 import numpy as np
 
 from optimization import base
+from optimization import result
 
 class FunctionCBPD(base.Function):
     '''
@@ -86,37 +87,27 @@ class FunctionCBPD(base.Function):
 
             Returns
             ----------
-                A dict mapping the result of convergence processs
-
-                {
-                    'converge': bool, # True if function has converged and False if not
-
-                    'point': float list, # Point where function has converged or stopped
-
-                    'iterations': int, # Number of iterations
-
-                    'init_value': float, # Init value of function
-
-                    'final_value': float # Final value of function
-                }
+                A Result object with informations about convergence process
         '''
 
         if not self.derivatives:
             raise ValueError("Partial derivatives not defined.")
 
+        init_point = self.point
         init_value = self.function(self.point)
         converge, point, iterations = self.__converge_method(gap, max_iterations, tolerance, False)
         final_value = self.function(point)
 
-        result = {
-            'converge': converge,
-            'point': point,
-            'iterations': iterations,
-            'init_value': init_value,
-            'final_value': final_value
-        }
+        r = result.Result(
+                converge          = converge,
+                init_point        = init_point,
+                final_point       = point,
+                init_value        = init_value,
+                final_value       = final_value,
+                iterations        = iterations,
+            )
 
-        return result
+        return r
 
 
     def converge_numerically(self, 
@@ -137,33 +128,22 @@ class FunctionCBPD(base.Function):
 
             Returns
             ----------
-                A dict mapping the result of convergence processs
-
-                {
-                    'converge': bool, # True if function has converged and False if not
-
-                    'point': float list, # Point where function has converged or stopped
-
-                    'iterations': int, # Number of iterations
-
-                    'init_value': float, # Init value of function
-
-                    'final_value': float # Final value of function
-                }
+                A Result object with informations about convergence process
         '''
 
-
+        init_point = self.point
         init_value = self.function(self.point)
         converge, point, iterations = self.__converge_method(gap, max_iterations, tolerance, True)
         point = point.tolist()
         final_value = self.function(point)
 
-        result = {
-            'converge': converge,
-            'point': point,
-            'iterations': iterations,
-            'init_value': init_value,
-            'final_value': final_value
-        }
+        r = result.Result(
+                converge          = converge,
+                init_point        = init_point,
+                final_point       = point,
+                init_value        = init_value,
+                final_value       = final_value,
+                iterations        = iterations,
+            )
 
-        return result
+        return r

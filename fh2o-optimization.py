@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-import numpy as np
 from fh2o_module import li_dawes_guo as ldg
-from optimization import base
 from optimization import cbpd
+from optimization import result
 from optimization import scipy as scp
 from geometries import *
 
@@ -13,16 +12,17 @@ def f(x):
 def try_converge(point, relevant_vars, geometry, var_name, variation):
 
     print("Initial Point: {}".format(point))
-    #func = cbpd.FunctionCBPD(ldg.pes, point)
-    func = scp.FunctionScipy(ldg.pes, point, relevant_vars)
-    #func = scp.FunctionScipy(f, point)
+    func = cbpd.FunctionCBPD(ldg.pes, point)
+    #func = scp.FunctionScipy(ldg.pes, point, relevant_vars)
 
     #result = func.converge(method='Newton-CG',
     #                              tolerance=0.00001,
     #                              max_iterations=1000)
-    result = func.converge_newtown(tolerance=0.00001,
-                                  max_iterations=50)
-    #p, iterations, init_val, final_val = func.converge_numerically(tolerance=0.00001, max_iterations=10000)
+    #result = func.converge_newtown(tolerance=0.00001,
+    #                              max_iterations=50)
+
+    result = func.converge_numerically(tolerance=0.00001, 
+                                       max_iterations=10000)
 
     if result.converge:
         print("Converge: Success - {}".format(result.final_point))
@@ -36,7 +36,7 @@ def try_converge(point, relevant_vars, geometry, var_name, variation):
 
 def gradual_converge(geometry, variation, limit):
 
-    results = base.Results()
+    results = result.Results()
 
     point = geometry["stationary"]
     relevant_vars = geometry["relevant_vars"]
@@ -81,11 +81,11 @@ vars_name = [
 ldg.init()
 
 
-results = base.Results()
+results = result.Results()
 
 for geometry in geometries:
     r = gradual_converge(geometry, 0.05, 5)
     r.normalize_final_points(geometry["energy"])
     results.add_multiple_results(r.results)
 
-results.csv('results/result-optimization-1-var.csv')
+results.csv('results/cbpd-1var.csv')

@@ -124,6 +124,7 @@ class FunctionScipy(base.Function):
     def converge_newtown(self,
                          max_iterations = base.Function.DEFAULT_MAX_ITERATIONS,
                          tolerance = base.Function.DEFAULT_TOLERANCE,
+                         gradient = "norm",
                          details = False):
         '''
         Finds the closest convergence point based on the initial point using scipy methods 

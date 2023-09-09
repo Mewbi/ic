@@ -103,14 +103,29 @@ class Function:
         d = ( f(new) - f(old) ) / ( 2 * self.DEFAULT_GAP_NUMERICAL )
         return d
     
-    def __derivative_numerical_bkp(self, point, index):
-        '''
-        Calculate the partial derivative numerically based in derivative definition
-        '''
-        old = np.copy(point)
-        new = np.copy(point)
-        new[index] += self.DEFAULT_GAP_NUMERICAL
-        f = self._function
-        d = ( f(new) - f(old) ) / self.DEFAULT_GAP_NUMERICAL
-        return d
+    def euclidian_norm(self, funcs, x):
+        sum = 0
+        optimize = self.optimize_vars
+        if len(optimize) == 0:
+            optimize = [True] * len(funcs)
 
+        for i, func in enumerate(funcs):
+            if optimize[i] is not True:
+                continue
+            sum += func(x)
+
+        return np.square(sum)
+
+    def maximum_norm(self, funcs, x):
+        max = 0
+        optimize = self.optimize_vars
+        if len(optimize) == 0:
+            optimize = [True] * len(funcs)
+
+        for i, func in enumerate(funcs):
+            if optimize[i] is not True:
+                continue
+            value = abs(func(x))
+            if value > max:
+                max = value
+        return max

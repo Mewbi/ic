@@ -1,0 +1,38 @@
+\section{Introdução}
+
+A otimização geométrica de estruturas moleculares é um ramo de pesquisa da química
+computacional que busca por meio de algoritmos identificar conformações moleculares que
+são estáveis, ou que sejam uma configuração de uma etapa de uma reação química. Tais
+conformações são relevantes de serem conhecidas não somente para ter conhecimento sobre
+como funcionam as reações, mas também podem ser aplicadas em um novo contexto, como
+por exemplo, a criação de novos fármacos.
+
+Toda molécula possui uma Superfície de Energia Potencial (PES, do inglês Potential
+Energy Surface), variando a configuração da molécula (mudando o tamanho das ligações ou
+os ângulos entre ligações) irá proporcionar variações na energia necessária para manter a
+molécula naquele estado. Dessa forma, a otimização geométrica busca identificar os pontos
+estacionários na PES, que representam as conformações estáveis da molécula ou estados de
+transição. [1]
+
+Existem diversos métodos utilizados na química computacional para otimizar uma
+função, sendo um dos conceitualmente mais simples o Método de Newton que é um processo
+iterativo que converge para máximos locais, mínimos locais ou pontos de sela, que são
+quando o gradiente da função é zero, ou seja, quando todas as suas derivadas parciais são
+zero [4] . Outro método que vale destaque é o Método da Secante para localizar raízes de uma
+função unidimensional. Ele pode ser utilizado para evitar o uso da derivada da função no
+Método de Newton de identificação de raízes, o que é conveniente para evitar o custo
+computacional de se calcular a derivada de uma função, que costuma ser alto [5] .
+
+Um algoritmo que identifica as raízes das derivadas parciais de uma função é um
+algoritmo de otimização, que pode ser utilizado para otimizar funções de PES e obter a
+conformação molecular nesses estados [1] . O objeto de estudo do projeto será a construção de
+um algoritmo de otimização de funções PES. A estratégia será utilizar o Método de Newton
+de localização de raízes de uma função unidimensional adaptando para funções
+multidimensionais, utilizando o Método da Secante para evitar o custo computacional do
+cálculo da derivada analítica utilizado em cada etapa do Método de Newton.
+
+O algoritmo será utilizado para convergir para um ponto estacionário da função PES
+que descreve a reação entre flúor e água (\ce{F + H2O -> FH + HO}) [2,3] e assim mediar a sua performance.
+Espera-se que capacidade de convergência, isto é, a velocidade, precisão e número de
+iterações necessárias para convergir uma função deva ser similar ao Método de Newton que
+utiliza-se dos gradiente e hessianas da função para realizar a otimização da função.

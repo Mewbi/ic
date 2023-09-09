@@ -1,0 +1,28 @@
+\begin{thebibliography}{1}
+
+\bibitem{fh2o_first_sep}
+Jun Li, Richard Dawes, and Hua Guo.
+\newblock {An ab initio based full-dimensional global potential energy surface
+  for FH2O(X2A') and dynamics for the F + H2O $\to$ HF + HO reaction}.
+\newblock {\em The Journal of Chemical Physics}, 137(9):094304, 09 2012.
+
+\bibitem{fh2o_sep_fortran_module}
+Jun Li, Bin Jiang, and Hua Guo.
+\newblock Permutation invariant polynomial neural network approach to fitting
+  potential energy surfaces. ii. four-atom systems permutation invariant
+  polynomial neural network approach to fitting potential energy surfaces. ii.
+  four-atom systems.
+\newblock {\em The Journal of Chemical Physics}, 13910:204103, 11 2013.
+
+\bibitem{calculo_1}
+J.~Stewart.
+\newblock {\em C{\'A}LCULO VOLUME 1 - TRADU{\c{C}}{\~A}O DA 6{\textregistered}
+  EDI{\c{C}}{\~A}O NORTE-AMERICANA.}
+\newblock Cengage Learning Edi{\c{c}}{\~o}es Ltda., 2010.
+
+\bibitem{calculo_numerico_aplicado}
+J.V.C. Vargas and L.K. Araki.
+\newblock {\em C{\'a}lculo Num{\'e}rico Aplicado}.
+\newblock MANOLE, 2016.
+
+\end{thebibliography}

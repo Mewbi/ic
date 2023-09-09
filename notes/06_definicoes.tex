@@ -1,0 +1,9 @@
+\section{Definições}
+
+\subsection{Otimização}
+
+O processo de otimização do contexto desse trabalho consiste em localizar o mínimo local da função que descreve a superfície de energia potencial que está sendo estudada. Nesse processo, fornecendo uma geometria inicial da molécula em estudo, ou seja, um valor inicial para os argumentos da função que descreve a SEP, será retornado a geometria em que a SEP tem valor mínimo local. O processo é feito por iterações até que o algoritmo de otimização consiga convergir (otimizar) ou chegue no limite de iterações definidas.
+
+\subsection{Iterações}
+
+Uma iteração, nesse contexto, consiste em cada etapa no processo de otimização. Inicialmente temos ponto do domínio da função, é realizado então a etapa de convergência, que é justamente o enfoque do projeto, que consiste em realizar um processo matemático para definir um próximo ponto do domínio que idealmente deve ser mais próximo do mínimo local da função. Caso o novo ponto definido esteja próximo o suficiente do mínimo local, é dito que o algoritmo convergiu e o processo de otimização é finalizado. A definição se o ponto está próximo o suficiente é feita com o uso de norma, no caso a norma euclidiana, nesse processo é calculado a norma do gradiente da função calculada no novo ponto e verificado se é igual ou menor ao valor de tolerância, caso seja é definido que o algoritmo convergiu. O valor de tolerância é um parâmetro que define o quão próximo o ponto deve estar do mínimo local para ser considerado que o ponto está no ponto mínimo. Quanto menos iterações forem feitas e quanto menor o custo computacional envolvido em cada iteração, é dito que o algoritmo é mais eficiente.

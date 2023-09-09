@@ -1,0 +1,144 @@
+ % Formatação BR ABNT
+\documentclass[
+    article,
+    12pt,
+    oneside,
+    a4paper,
+    brazil,
+    sumario=traditional
+]{abntex2}
+
+% Pacotes
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage{listings}
+%\usepackage{cite}
+%\usepackage{biblatex}% pacote para citações
+\usepackage{braket}% pacote para notação bracket
+\usepackage{fancyhdr}% pacote para header e footer7
+\usepackage{hyperref}% pacote para URLs
+\usepackage{amsmath}% pacote para matrizes
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm} % Ambientes para exemplos, teoremas, provas e definições
+\usepackage{mathtools}
+\usepackage{siunitx}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{array}      % Traz algumas funcionalidades úteis
+\usepackage{verbatim}   % Traz algumas funcionalidades úteis
+\usepackage{graphicx}   % Inclusão de figuras
+\usepackage{epstopdf}   % Converte as imagens em EPS para PDF
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,
+    urlcolor=black,
+    citecolor=black,
+    hidelinks
+}
+% Code and Hilighting 
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{dsfont}
+\usepackage{pgfplots}
+\usepackage{adjustbox}
+%\usepackage{minted}
+
+%Chemistry
+\usepackage[version=4]{mhchem}
+
+% \usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tikz} % Criação de Imagens e Gráficos
+\usetikzlibrary{matrix}
+\usetikzlibrary{calc}
+
+\DeclareMathOperator{\diag}{diag}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolor}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolor},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+\fancyhead[R]{Otimização de Geometria Molecular}
+
+% Configuração
+% Biblatex
+%\bibliographystyle{plain} % We choose the "plain" reference style
+%\addbibresource{ref.bib}
+
+
+\begin{document}
+\input{01_capa}
+\clearpage
+
+\input{02_folha_de_rosto}
+\clearpage
+
+% header
+\setlength{\headheight}{35pt}
+\pagestyle{fancy}
+%\begin{boldmath}
+ 
+%\maketitle
+
+\newpage
+\tableofcontents
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Início %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{03_resumo}
+\clearpage
+
+\input{04_introducao}
+\clearpage
+
+\input{06_definicoes}
+\clearpage
+
+\input{05_fundamentacao_teorica}
+\clearpage
+
+\input{07_metodologia}
+% Metodologia 
+%   - Materias e Metodos
+%   - Etapas da Pesquisa 
+\clearpage
+
+\input{08_resultados}
+\clearpage
+
+\input{09_conclusoes}
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Final %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Referências}
+\newpage
+%\bibliography{ref} % Entries are in the refs.bib file
+%\printbibliography
+%\end{boldmath}
+\bibliography{ref}{}
+\bibliographystyle{plain}
+\end{document}

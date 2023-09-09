@@ -1,0 +1,25 @@
+\section{Resumo}
+
+A química computacional é uma área que estuda reações químicas por meio de
+métodos computacionais. Problemas de otimização de estruturas moleculares são uma de suas
+subáreas de estudo e nela é possível, por exemplo, identificar as conformações estáveis que
+uma molécula por obter em um determinado cenário. É de interesse científico o entendimento
+dessas configurações moleculares, pois a mesma molécula com configurações distintas pode
+interagir de maneiras diferentes. Esse conhecimento é muitas vezes aplicado no contexto
+farmacêutico, que permite criar diferentes medicamentos tendo o conhecimento das possíveis
+conformações que os componentes podem possuir. Uma maneira de se obter essas
+conformações é utilizando métodos que otimizem funções de Superfície de Energia Potencial,
+que são funções que descrevem qual a energia de uma molécula para as diferentes
+configurações. Existem diversos métodos que são utilizados para a otimização de funções,
+sendo que cada um possui características positivas e negativas. O Método de Newton, por
+exemplo, possui uma fácil implementação e possui uma boa taxa de convergência
+(localização de pontos estacionários na função), contudo possui etapas com alto custo
+computacional no que envolve o cálculo do Hessiana da função. Outro método é o da
+Secante, que permite identificar raízes de uma função sem o uso da sua derivada (o que
+garante um baixo custo computacional), contudo esse é utilizado apenas para funções
+unidimensionais. O objetivo do projeto é o desenvolvimento de um algoritmo de otimização
+de geometria molecular, que se baseia nos Métodos de Newton e Secante, de maneira que
+possua uma taxa de convergência similar ao Método de Newton, porém com um menor custo
+computacional. O desempenho do algoritmo será avaliado fazendo uma comparação com os
+resultados utilizando o método de Newton na reação em fase gasosa entre flúor e água
+(\ce{F + H2O -> FH + HO}).

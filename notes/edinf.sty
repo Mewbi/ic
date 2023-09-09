@@ -1,0 +1,48 @@
+ProvidesPackage{edinf}
+
+% Adiciona identação no primeiro parágrafo da seção/capítulo
+\usepackage{indentfirst}
+
+% Melhoras nos espaços entre palavras e letras
+\usepackage{microtype}
+
+% --------------------------------------------------------
+% Margens - Definidas segundo as normas da ABNT apresentadas no Guia de Normalização da UFABC: Margens superior e esquerda igual a 3 cm e inferior e direita igual a 2 cm.
+
+\usepackage{geometry} % Pacote para permissão de ajuste da margem
+%\usepackage[margin=3cm]{geometry} % Ajuste de todas as margens em 3cm
+
+\geometry{
+	top = 30mm,
+	left = 30mm,
+	bottom = 20mm,
+	right = 20mm
+}
+
+% --------------------------------------------------------
+% Espaçamento 1.5 entre linha - Aparentemente, o \linespread dá um resultado mais preciso que o \onehalfspace
+\usepackage{setspace} % Ajuste de espaçamento entre linhas
+\linespread{1.3}
+%\onehalfspacing
+
+% --------------------------------------------------------
+% Mostra o título do capítulo atual no topo da página.
+% --------------------------------------------------------
+% Estilo do Header (Cabeçalho) Customizado
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\thepage}
+\lhead{\nouppercase{\leftmark}}
+% \fancyhead[LE,RO]{\thepage}
+% \fancyhead[RE,LO]{\nouppercase{\leftmark}}
+\setlength{\headheight}{14.5pt}
+
+% --------------------------------------------------------
+% Citações no padrão ABNT
+\usepackage[num]{abntex2cite}
+\citebrackets[]
+
+% --------------------------------------------------------
+% Força o espaçamento, que o Latex coloca para ajustar o texto em uma página quando necessário, a ir para o final da página. Fica visualmente mais bonito.
+\raggedbottom

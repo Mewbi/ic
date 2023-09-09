@@ -1,0 +1,29 @@
+\changetocdepth {4}
+\babel@toc {brazil}{}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\contentsline {chapter}{Sum\'ario}{3}{section*.2}% 
+\contentsline {section}{\numberline {1}Resumo}{4}{section.0.1}% 
+\contentsline {section}{\numberline {2}Introdu\IeC {\c c}\IeC {\~a}o}{5}{section.0.2}% 
+\contentsline {section}{\numberline {3}Defini\IeC {\c c}\IeC {\~o}es}{6}{section.0.3}% 
+\contentsline {subsection}{\numberline {3.1}Otimiza\IeC {\c c}\IeC {\~a}o}{6}{subsection.0.3.1}% 
+\contentsline {subsection}{\numberline {3.2}Itera\IeC {\c c}\IeC {\~o}es}{6}{subsection.0.3.2}% 
+\contentsline {section}{\numberline {4}Fundamenta\IeC {\c c}\IeC {\~a}o Te\IeC {\'o}rica}{7}{section.0.4}% 
+\contentsline {subsection}{\numberline {4.1}M\IeC {\'e}todo de Newton}{7}{subsection.0.4.1}% 
+\contentsline {subsection}{\numberline {4.2}M\IeC {\'e}todo da Secante}{7}{subsection.0.4.2}% 
+\contentsline {subsection}{\numberline {4.3}M\IeC {\'e}todo de Newton Multidimensional}{8}{subsection.0.4.3}% 
+\contentsline {subsection}{\numberline {4.4}Rea\IeC {\c c}\IeC {\~a}o \ce {F + H2O -> FH + HO}}{8}{subsection.0.4.4}% 
+\contentsline {subsection}{\numberline {4.5}M\IeC {\'o}dulo Fortran para Fun\IeC {\c c}\IeC {\~a}o PES}{9}{subsection.0.4.5}% 
+\contentsline {section}{\numberline {5}Metodologia}{10}{section.0.5}% 
+\contentsline {subsection}{\numberline {5.1}Par\IeC {\^a}metros de Refer\IeC {\^e}ncia}{10}{subsection.0.5.1}% 
+\contentsline {subsubsection}{\numberline {5.1.1}Otimiza\IeC {\c c}\IeC {\~a}o com M\IeC {\'e}todo de Newton}{10}{subsubsection.0.5.1.1}% 
+\contentsline {subsubsection}{\numberline {5.1.2}Evitando Casos de Matriz Singular}{11}{subsubsection.0.5.1.2}% 
+\contentsline {subsection}{\numberline {5.2}Funcionamento CBPB}{12}{subsection.0.5.2}% 
+\contentsline {subsubsection}{\numberline {5.2.1}Interpreta\IeC {\c c}\IeC {\~a}o do M\IeC {\'e}todo}{13}{subsubsection.0.5.2.1}% 
+\contentsline {subsection}{\numberline {5.3}Avaliando Efici\IeC {\^e}ncia do Algoritmo}{14}{subsection.0.5.3}% 
+\contentsline {subsubsection}{\numberline {5.3.1}Variando Uma Vari\IeC {\'a}vel}{14}{subsubsection.0.5.3.1}% 
+\contentsline {subsubsection}{\numberline {5.3.2}Cen\IeC {\'a}rios Aleat\IeC {\'o}rios de Converg\IeC {\^e}ncia}{14}{subsubsection.0.5.3.2}% 
+\contentsline {section}{\numberline {6}Resultados}{16}{section.0.6}% 
+\contentsline {subsection}{\numberline {6.1}Variando Uma Vari\IeC {\'a}vel}{16}{subsection.0.6.1}% 
+\contentsline {subsection}{\numberline {6.2}Cen\IeC {\'a}rios Aleat\IeC {\'o}rios de Converg\IeC {\^e}ncia}{16}{subsection.0.6.2}% 
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\contentsline {chapter}{\MakeTextUppercase {Refer\^encias}}{18}{section*.13}% 

@@ -1,0 +1,5 @@
+[0] Config.pm:304> INFO - This is Biber 2.12
+[0] Config.pm:307> INFO - Logfile is '00_main.aux.blg'
+[25] biber:315> INFO - === qui set 14, 2023, 19:44:44
+[124] Utils.pm:209> ERROR - Cannot find control file '00_main.aux.bcf'! - Did latex run successfully on your .tex file before you ran biber?
+[124] Biber.pm:114> INFO - ERRORS: 1

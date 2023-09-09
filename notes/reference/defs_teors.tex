@@ -1,0 +1,1375 @@
+\documentclass[a4paper,12pt]{extreport}
+
+\usepackage[top=2.0cm,left=2.5cm,right=2.0cm,bottom=2.25cm]{geometry}
+\linespread{1.25}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,allcolors=red}
+
+
+\usepackage[lastexercise]{exercise}
+\def\ExerciseName{Exercício}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{pdflscape}
+
+
+\usepackage{eufrak}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{bbold}
+\usepackage{multicol}
+\usepackage{physics}
+
+\usepackage{amsthm}
+\newtheorem{mydef}{Definição}
+\newtheorem{myobs}[mydef]{Observação}
+\newtheorem{myteo}[mydef]{Teorema}
+\newtheorem{mylem}[mydef]{Lema}
+
+
+% ----------- With or without spaces between theorems
+\newif\ifspacesbetweentheos
+% Comment line below for a continuous document,
+% without empty spaces
+\spacesbetweentheostrue
+
+\newcommand{\theospace}[1]{
+\ifspacesbetweentheos
+  \vspace{#1}
+\fi
+}
+\newcommand{\theonewpage}{
+\ifspacesbetweentheos
+  \newpage
+\fi
+}
+
+
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows.meta}
+\newcommand{\tikzmark}[1]{\tikz[baseline,remember picture] \coordinate (#1) {};}
+\usepackage{tikz-3dplot}
+
+\input{mathcommands}
+
+
+\newcommand*{\valor}[1]{\noindent$[$#1$]$\vspace{0.3cm}}
+\newcommand*{\valorItem}[1]{\noindent$[$#1$]$}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE Análise no $\mathbb{R}^n$ II}\vspace{0.5cm}
+
+  {\LARGE Definições e teoremas}\vspace{0.5cm}
+
+  {2\textsuperscript{o} quadrimestre - 2023}
+
+  {Yuri Alexandre Aoto}
+\end{center}
+
+
+% -------------------------------------
+\begin{mydef}
+  Um \emph{intervalo compacto} em \rn{} é um conjunto do tipo:
+  \begin{equation}
+    \begin{split}
+      I =& I_1 \times I_2 \times \cdots \times I_n\\
+      =& [a_1, b_1] \times [a_2, b_2] \times \cdots \times [a_n, b_n]\\
+      =& \left\{ (x_1, x_2, \cdots, x_n) \in \rn : x_i \in I_i \right\}\,,
+    \end{split}
+  \end{equation}
+  onde cada $I_i = [a_i, b_i]$ ($a_i, b_i \in \realnumb$)
+  é um intervalo real.
+\end{mydef}
+
+% -------------------------------------
+\begin{myobs}
+  A definição acima se estende naturalmente para intervalos abertos,
+  semi-abertos e não-limitados.
+\end{myobs}
+
+\theospace{6.0cm}
+
+
+% -------------------------------------
+\begin{mydef}
+  A medida ($n$-dimensional) do intervalo compacto
+  $I = I_1 \times I_2 \times \cdots \times I_n$,
+  onde $I_i = [a_i, b_i]$ ($a_i, b_i \in \realnumb$),
+  é
+  \begin{equation}
+    \begin{split}
+      \mu(I) =& \mu(I_1)\mu(I_2) \cdots \mu(I_n)\\
+      =& (b_1 - a_1)(b_2 - a_2) \cdots (b_n - a_n)\,.
+    \end{split}
+  \end{equation}
+\end{mydef}
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mydef}
+  \begin{enumerate}[label=\alph*)]
+  \item Uma partição do intervalo $I = [a,b] \subset \realnumb$
+    é um conjunto finito\linebreak
+    $\partition = \{x_0, x_1, \dots, x_m \}$ tal que
+    \begin{equation}
+      a = x_0 < x_1 < x_2 < \cdots < x_n = b\,.
+    \end{equation}
+  \item Uma partição do intervalo
+    $I = I_1 \times I_2 \times \cdots \times I_n \subset \rn$
+    é o produto cartesiano
+    \begin{equation}
+      \partition =
+      \partition_1 \times \partition_2
+      \times \cdots \times \partition_n\,,
+    \end{equation}
+    onde cada $\partition_i = \{x_{0_i}, x_{1_i}, \cdots, x_{m_i} \}$
+    é uma partição de $I_i$.
+  \end{enumerate}
+\end{mydef}
+
+% -------------------------------------
+\begin{myobs}\label{obs:partition}
+  \begin{enumerate}[label=\alph*)]
+  \item O conjunto de todas as partições do intervalo $I \subset \rn$
+    é representado por \allpartition{I};
+
+  \item Se $\partition$ e $\partition'$ são partições de $I$ tais que
+    $\partition' \supseteq \partition$,
+    dizemos que $\partition'$ é uma partição \emph{mais fina} que
+    (ou um \emph{refinamento} de) \partition{};
+
+  \item Se $\partition{} =
+    \partition_1 \times \partition_2 \times \cdots \times \partition_n$
+    é uma partição do intervalo
+    $I = I_1 \times I_2 \times \cdots \times I_n \subset \rn$,
+    essa partição divide $I$ em $k = m_1m_2 \cdots m_n$
+    subintervalos de \rn{},
+    onde $m_i$ é o número de pontos na partição
+    $\partition_i = \{x_{0_i}, x_{1_i}, \cdots, x_{m_i} \}$.
+    Cada um desses subintervalos é do tipo:
+    \begin{equation}
+      \mathcal{I}_\alpha =
+      [x_{j_1-1}, x_{j_1}] \times
+      [x_{j_2-1}, x_{j_2}] \times
+      \cdots \times
+      [x_{j_n-1}, x_{j_n}]\,,
+    \end{equation}
+    onde $\alpha \in \{1, ..., k\}$
+    para alguma ordem dos multi-índices
+    $\{j_1 \, j_2 \, ... \, j_n\}$.
+  \end{enumerate}
+\end{myobs}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mydef}
+  Sejam $I \subset \rn$ intervalo compacto e
+  $f:I \to \realnumb$ função limitada.
+  Se \partition é uma partição de $I$,
+  sejam $\mathcal{I_\alpha}$
+  os $k$ subintervalos correspondentes
+  (como na Observação \ref{obs:partition}).
+  Se, para cada $\alpha$,
+  tomamos $x_\alpha \in \mathcal{I}_\alpha$,
+  o número real
+  \begin{equation}
+    \mathcal{S}(\partition, f)
+    = \sum_{\alpha=1}^{k} f(x_\alpha) \mu(\mathcal{I}_\alpha)\,,
+  \end{equation}
+  é uma \emph{soma de Riemann}
+  para $f$ com relação à partição $\partition$.
+  Além disso, se considerarmos
+  \begin{equation}
+    m_\alpha(f) = \inf \{f(x): x \in \mathcal{I}_\alpha \}
+  \end{equation}
+  e
+  \begin{equation}
+    M_\alpha(f) = \sup \{f(x): x \in \mathcal{I}_\alpha \}\,,
+  \end{equation}
+  os seguintes números são chamados de
+  \emph{somas de Riemann inferior e superior}, respectivamente:
+  \begin{equation}
+    s(\partition, f) = \sum_{\alpha=1}^{k} m_\alpha(f) \mu(\Ical_\alpha)
+  \end{equation}
+  \begin{equation}
+    S(\partition, f) = \sum_{\alpha=1}^{k} M_\alpha(f) \mu(\Ical_\alpha)\,.
+  \end{equation}
+\end{mydef}
+
+
+\theonewpage
+
+% -------------------------------------
+\begin{mydef}[Função integrável por Riemann]\label{def:riemann_integravel}
+  Sejam $I \subset \rn$ intervalo compacto e\linebreak
+  $f:I \to \realnumb$ função limitada.
+  Dizemos que $f$ é \emph{integrável por Riemann}
+  (ou que é \emph{Riemann-integrável})
+  se existe $A \in \realnumb$ tal que,
+  dado $\varepsilon > 0$ qualquer,
+  existe $\partition_\varepsilon \in \allpartition{I}$
+  tal que se $\partition \supseteq \partition_\varepsilon$,
+  teremos
+  \begin{equation}
+    |\mathcal{S}(\partition, f) - A| < \varepsilon\,,
+  \end{equation}
+  para qualquer soma de Riemann $\mathcal{S}(\partition, f)$.
+\end{mydef}
+
+% -------------------------------------
+\begin{myobs}\label{obs:integral_notation}
+  Usamos as possíveis notações para o valor $A$ da
+  Definição \ref{def:riemann_integravel}:
+  \begin{equation}
+    \begin{split}
+      A =& \int_I f\\
+      =& \int_I f(x) dx\\
+      =& \int_I f(x_1, x_2, \dots, x_n) d(x_1, x_2, \dots, x_n)\\
+      =& \int_I f(x_1, x_2, \dots, x_n) dx_1 dx_2 \dots dx_n
+    \end{split}
+  \end{equation}
+\end{myobs}
+
+% -------------------------------------
+\begin{myobs}\label{obs:conj_riemann_int}
+  O conjunto de todas as funções integráveis por Riemann
+  definidas no interválo $I$ será denotado por
+  $\allriemannint{I}$.
+\end{myobs}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mydef}\label{def:integrais_sup_inf}
+  Sejam $I \subset \rn$ intervalo compacto e
+  $f:I \to \realnumb$ função limitada.
+  Os números
+  \begin{equation}
+    \lowint_I f =
+    \sup \{ s(\partition,f): \partition \in \allpartition{I} \}
+  \end{equation}
+  e
+  \begin{equation}
+    \upint_I f =
+    \inf \{ S(\partition,f): \partition \in \allpartition{I} \}\,,
+  \end{equation}
+  são chamados de \emph{integrais inferior e superior}, respectivamente,
+  da função f.
+\end{mydef}
+
+% -------------------------------------
+\begin{myobs}
+  Notações análogas às descritas na
+  Observação \ref{obs:integral_notation} valem
+  para as ingrais superior e inferior.
+\end{myobs}
+
+% -------------------------------------
+\begin{mydef}[Condição de Riemann]\label{def:cond_Riemann}
+  Sejam $I \subset \rn$ intervalo compacto e
+  $f:I \to \realnumb$ função limitada.
+  Dizemos que $f$ satisfaz a \emph{condição de Riemann}
+  em $I$ se, para qualquer $\varepsilon > 0$,
+  existe $\partition_\varepsilon \in \allpartition{I}$
+  tal que se $\partition \supseteq \partition_\varepsilon$
+  então
+  \begin{equation}
+    S(\partition,f) - s(\partition,f) < \varepsilon \,.
+  \end{equation}
+\end{mydef}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{myteo}\label{teo:int_sup_inf_riemann_int}
+  Sejam $I \subset \rn$ intervalo compacto e
+  $f:I \to \realnumb$ função limitada.
+  As seguintes condições são equivalentes:
+  \begin{enumerate}[label=\roman*)]
+  \item $f$ satisfaz a condição de Riemann em $I$;
+  \item $\lowint_I f = \upint_I f$;
+  \item $f \in \allriemannint{I} $.
+  \end{enumerate}    
+\end{myteo}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mydef}[Conjuntos com medida zero]\label{def:medida_zero}
+  Dizemos que um conjunto $T \subset \rn$ tem
+  \emph{medida $n$-dimensional zero}
+  (ou simplesmente \emph{medida zero},
+  ou ainda \emph{medida nula}) se,
+  para qualquer $\varepsilon > 0$,
+  $T$ pode ser coberto com uma coleção enumerável de intervalos
+  abertos de dimensão $n$,
+  cujas medidas somem um valor menor que $\varepsilon$:
+
+  $$ \forall \,\, \varepsilon > 0 \,,\quad
+  \exists \,\, \{I_i\}_{i=1}^\infty \text{ com }
+  T \subset \bigcup_{i=1}^\infty I_i
+  \quad : \quad
+  \sum_{i=0}^\infty \mu(I_k) < \varepsilon \,.$$
+\end{mydef}
+
+
+\theospace{5cm}
+
+
+% -------------------------------------
+\begin{myteo}\label{teo:uniao_enum_med_zero}
+  Dada uma coleção enumerável de conjuntos, $\{T_1, T_2, \dots \}$,
+  cada um com medida zero, então a sua união,
+  $\bigcup_{i=1}^\infty T_i$,
+  possui medida zero.
+  Isto é, a união enumerável de conjuntos de medida zero possui
+  medida zero.
+\end{myteo}  
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mydef}\label{def:oscilacao}
+  Sejam $I \subset \rn$ intervalo compacto e
+  $f:I \to \realnumb$ função limitada.
+  \begin{enumerate}[label=\alph*)]
+  \item Dado $T \subseteq I$, o número
+    \begin{equation}
+      \Omega_f(T) = \sup \{ f(x) - f(y) : x \in T, y \in T \}
+    \end{equation}
+    é a \emph{oscilação} de f em T;
+  \item Dado $x \in I$, o número\footnote{
+      $B(x,h) = \{y \in \rn : ||x-y|| < h\}$
+      é a bola aberta de centro $x$ e raio $h$.}
+    \begin{equation}
+      \omega_f(x) = \lim_{h \to 0+} \Omega_f(B(x,h) \cap I)
+    \end{equation}
+    é a \emph{oscilação} de $f$ em $x$.
+  \end{enumerate}
+\end{mydef}
+
+
+
+% -------------------------------------
+\begin{myteo}
+  Sejam $I \subset \rn$ intervalo compacto,
+  $f:I \to \realnumb$ função limitada,
+  e $\varepsilon > 0$.
+  Suponha que $\omega_f(x) < \varepsilon$
+  para todo $x \in I$.
+  Então, existe $\delta > 0$
+  (que depende apenas de $\varepsilon$),
+  tal que para cada subintervalo fechado
+  $T \subset I$ com lado máximo menor que $\delta$
+  tem-se $\Omega_f(T) < \varepsilon$.
+\end{myteo}
+
+\theospace{9cm}
+
+% -------------------------------------
+\begin{myteo}
+  Sejam $I \subset \rn$ intervalo compacto e
+  $f:I \to \realnumb$ função limitada.
+  Para cada $\varepsilon > 0$, o conjunto
+  \begin{equation}
+    D_\varepsilon = \{ x \in I: \omega_f(x) \ge \varepsilon \}
+  \end{equation}
+  é fechado.
+\end{myteo}
+
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{myteo}\label{teo:lebesgue_crit}
+  Sejam $I \subset \rn$ intervalo compacto e
+  $f:I \to \realnumb$ função limitada.
+  Seja $D$ o subconjunto de $I$ onde $f$ é descontínua.
+  Então, $f$ é integrável por Riemann se, e somente se,
+  $D$ tem medida zero.
+\end{myteo}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{myteo}[Integração repetida]\label{teo:int_repetidas}
+  Sejam $I_1 \subset \rn$ e $I_2 \subset \rnn$ intervalos compactos
+  e
+  $$
+  \begin{array}{rl}
+    f:I = I_1 \times I_2 &\to \realnumb\\
+    (x,y) &\mapsto f(x,y)
+  \end{array}
+  $$
+  função limitada.
+  Então
+  \begin{equation}
+    \lowint_I f(x,y) d(x,y)
+    \le \lowint_{I_1} \left[ \lowint_{I_2} f(x,y) dy \right] dx
+    \le \upint_{I_1} \left[ \lowint_{I_2} f(x,y) dy \right] dx
+    \le \upint_I f(x,y) d(x,y)\,,
+  \end{equation}
+  e
+  \begin{equation}
+    \lowint_I f(x,y) d(x,y)
+    \le \lowint_{I_1} \left[ \upint_{I_2} f(x,y) dy \right] dx
+    \le \upint_{I_1} \left[ \upint_{I_2} f(x,y) dy \right] dx
+    \le \upint_I f(x,y) d(x,y)\,.
+  \end{equation}
+  Se $f$ for integrável em $I$,
+  então as seguintes funções são integráveis:
+  $$\deffunc{\phi}{I_1} {\realnumb}{x}{\lowint_{I_2} f(x,y) dy}$$
+  e
+  $$\deffunc{\psi}{I_1} {\realnumb}{x}{\upint_{I_2} f(x,y) dy}\,.$$
+  E vale:
+  \begin{equation}
+    \int_I f(x,y) d(x,y)
+    = \int_{I_1} \phi(x) dx
+    = \int_{I_1} \psi(x) dx\,,
+  \end{equation}
+  isto é:
+  \begin{equation}
+    \int_I f(x,y) d(x,y)
+    = \int_{I_1} \left[ \lowint_{I_2} f(x,y) dy \right] dx
+    = \int_{I_1} \left[ \upint_{I_2} f(x,y) dy \right] dx\,.
+  \end{equation}
+  Valem também os resultados análogos para a integração primeiro
+  em $I_1$. Finalmente, se $f$ for contínua em $I$:
+  \begin{equation}
+    \int_I f(x,y) d(x,y)
+    = \int_{I_1} \left[ \int_{I_2} f(x,y) dy \right] dx
+    = \int_{I_2} \left[ \int_{I_1} f(x,y) dx \right] dy\,.
+  \end{equation}
+\end{myteo}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mydef}
+  Sejam $A \subset \rn$ um conjunto limitado e
+  $f: A \to \realnumb$ uma função limitada.
+  Seja $I$ um intervalo compacto de $\rn$
+  tal que $A \subset \mathrm{int}(I)$
+  e defina:
+  $$
+  \deffunc{\tilde f}{I}{\realnumb}{x}
+  {\left\{
+      \begin{array}{ll}
+        f(x) & \text{se } x \in A\\
+        0    & \text{se } x \notin A
+      \end{array}\right.
+  }\,.
+  $$
+  Então, definimos as \emph{integrais inferior e superior}
+  de $f$ por:
+  \begin{equation}
+    \lowint_A f = \lowint_I \tilde f
+    \quad\text{ e }\quad
+    \upint_A f = \upint_I \tilde f \,.
+  \end{equation}
+  respectivamente.
+  Se $\lowint_A f = \upint_A f$,
+  diremos que $f$ é \emph{integrável por Riemann}
+  e chamamos esse valor comum
+  de \emph{integral} da função $f$,
+  denotado por $\int_A f$.
+\end{mydef}
+
+% -------------------------------------
+\begin{myobs}
+  \begin{enumerate}[label=\alph*)]
+  \item Essa definição não depende da escolha de $I$;
+  \item Se $f$ for integrável então
+    \begin{equation}
+      \int_A f = \int_I \tilde f\,.
+    \end{equation}
+  \end{enumerate}
+\end{myobs}
+
+
+
+\theospace{3cm}
+
+
+
+% -------------------------------------
+\begin{mydef}
+  Seja $A \subset \rn$ um conjunto limitado.
+  Os \emph{conteúdos interno e externo} de $A$
+  são definidos por
+  \begin{equation}
+    \underline{c}(A) = \lowint_A 1 = \lowint_I \chi_A
+    \quad \text{ e } \quad
+    \overline{c}(A) = \upint_A 1 = \upint_I \chi_A\,,
+  \end{equation}
+  onde $I$ é um intervalo cujo interior contém $A$ e
+  $\chi_A$ é \emph{função característica} do conjunto $A$,
+  definida por
+  $$
+  \deffunc{\chi_A}{I}{\realnumb}{x}
+  {\left\{
+      \begin{array}{ll}
+        1 & \text{se } x \in A\\
+        0 & \text{se } x \notin A
+      \end{array}\right.
+  }\,.
+  $$
+\end{mydef}
+
+% -------------------------------------
+\begin{mydef}[Conjunto J-mensurável e conteúdo de Jordan]
+  Um conjunto limitado $A \subset \rn$
+  é dito ser \emph{J-mensurável}
+  se $\overline{c}(A) = \underline{c}(A)$.
+  O valor comum
+  $c(A) = \overline{c}(A) = \underline{c}(A)$
+  é chamado de \emph{conteúdo de Jordan} de A.
+\end{mydef}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{myteo}
+  Seja $A \subset \rn$ um conjunto limitado.
+  Então $A$ é J-mensurável se e somente se a fronteira de $A$
+  tem medida nula.
+\end{myteo}
+
+\theospace{9.5cm}
+
+
+% -------------------------------------
+\begin{myteo}
+  Seja $A \subset \rn$ um conjunto J-mensurável.
+  Então $f:A \to \realnumb$ é integrável se, e somente se,
+  o conjunto
+  $D = \{ x \in A \subset \rn : f \text{ não é contínua em } x\}$
+  tem medida nula.
+\end{myteo}
+
+
+\theospace{9.5cm}
+
+
+% -------------------------------------
+\begin{myobs}
+  \begin{enumerate}[label=\alph*)]
+  \item 
+    Em geral não nos importaremos em integrar
+    funções que não estejam definidas em um conjunto J-mensurável;
+    
+  \item Se $A$ é J-mensurável,
+    denotaremos por $\allriemannint{A}$
+    o conjunto das funções definidas em $A$
+    que são integráveis por Riemann.
+  \end{enumerate}
+\end{myobs}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mydef}
+  Seja $A \subset \rn$ um conjunto J-mensurável.
+  Uma coleção finita $\{\Acal_\alpha\}_{\alpha=1}^k$
+  de conjuntos J-mensuráveis é dita ser uma
+  \emph{decomposição} de $A$ se:
+  \begin{enumerate}[label=\alph*)]
+  \item $A = \bigcup_{\alpha=1}^k \Acal_\alpha$,
+  \item $\Acal_\alpha \cap \Acal_\beta \subset
+    \partial \Acal_\alpha \cup \partial \Acal_\beta$
+    quando $\alpha \ne \beta$.
+  \end{enumerate}  
+  Além disso, se $\Dcal = \{\Acal_\alpha\}_{\alpha=1}^k$
+  é uma decomposição de $A$,
+  chamamos de \emph{norma} de $\Dcal$
+  o número $|\Dcal| = \max_{\alpha} \{\mathrm{diam}(\Acal_\alpha)\}$,
+  onde $\mathrm{diam}(X) = \sup\{||x-y||: x, y \in X\}$
+  é o \emph{diâmetro} do conjunto $X$.
+\end{mydef}
+
+
+% -------------------------------------
+\begin{mydef}
+  Sejam $A \subset \rn$ um conjunto J-mensurável,
+  $\Dcal(A)$
+  o conjunto de todas as decomposições de $A$,
+  e
+  $$
+  \deffunc{X}{\Dcal(A)}{\realnumb}{\Dcal}{X(\Dcal)}
+  $$
+  uma função real definida em $\Dcal(A)$.
+  Chamamos de \emph{o limite de X quando $|\Dcal|$ tende a zero},
+  indicado por
+  $$\lim_{|\Dcal| \to 0} X(\Dcal)\,,$$
+  o número $a \in \realnumb$ (se existir) tal que,
+  dado qualquer $\varepsilon > 0$,
+  existe $\delta > 0$ tal que se $|\Dcal| < \delta$,
+  então $|a - X(\Dcal)| < \varepsilon$.
+\end{mydef}
+
+
+
+% -------------------------------------
+\begin{mydef}
+  Sejam $A \subset \rn$ um conjunto J-mensurável
+  e $\Dcal = \{\Acal_\alpha\}_{\alpha=1}^k$
+  uma decomposição de $A$.
+  Se, para cada $\alpha$,
+  tomamos $x_\alpha \in \Acal_\alpha$,
+  o número real
+  \begin{equation}
+    \mathcal{S}(\Dcal, f)
+    = \sum_{\alpha=1}^{k} f(x_\alpha) c(\Acal_\alpha)\,,
+  \end{equation}
+  é uma \emph{soma de Riemann}
+  para $f$ com relação à decomposição $\Dcal$.
+  Além disso, se considerarmos
+  \begin{equation}
+    m_\alpha(f) = \inf \{f(x): x \in \Acal_\alpha \}
+  \end{equation}
+  e
+  \begin{equation}
+    M_\alpha(f) = \sup \{f(x): x \in \Acal_\alpha \}\,,
+  \end{equation}
+  os seguintes números são chamadas de
+  \emph{somas de Riemann inferior e superior}, respectivamente:
+  \begin{equation}
+    s(\Dcal, f) = \sum_{\alpha=1}^{k} m_\alpha(f) c(\Acal_\alpha)
+  \end{equation}
+  \begin{equation}
+    S(\Dcal, f) = \sum_{\alpha=1}^{k} M_\alpha(f) c(\Acal_\alpha)\,.
+  \end{equation}
+
+\end{mydef}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{myteo}
+  Sejam $A \subset \rn$ um conjunto J-mensurável e
+  $f:A \to \realnumb$ função limitada.
+  Então
+  \begin{equation}
+    \lowint_A f
+    = \lim_{|\Dcal| \to 0} s(\Dcal,f)
+    = \sup \{s(\Dcal,f): \Dcal \in \Dcal(A)\}
+  \end{equation}
+  e
+  \begin{equation}
+    \upint_A f
+    = \lim_{|\Dcal| \to 0} S(\Dcal,f)
+    = \inf \{S(\Dcal,f): \Dcal \in \Dcal(A)\}\,.
+  \end{equation}
+  Além disso, $f$ é integrável se, se somente se,
+  $\lim_{|\Dcal| \to 0} \mathcal{S}(\Dcal,f)$ existe, e então
+  \begin{equation}
+    \int_A f = \lim_{|\Dcal| \to 0} \mathcal{S}(\Dcal,f)\,.
+  \end{equation}
+\end{myteo}
+
+
+\theospace{10cm}
+
+
+
+% -------------------------------------
+\begin{myteo}
+  Seja $A \subset \rn$ um conjunto J-mensurável
+  e suponha que $A = A_1 \cup A_2$,
+  onde $A_1$ e $A_2$ são conjuntos J-mensuráveis
+  de modo que $A_1$ e $A_2$ não tenham pontos interiores em comum.
+  Então, $f:A \to \realnumb$ é integrável se,
+  e somente se,
+  $f|_{A_1}$ e $f|_{A_2}$ são integráveis,
+  com
+  \begin{equation}
+    \int_A f = \int_{A_1} f|_{A_1} + \int_{A_2} f|_{A_2}\,.
+  \end{equation}
+\end{myteo}
+
+
+% -------------------------------------
+\begin{myobs}
+  Em geral, simplificamos a notação por
+  $\int_A f = \int_{A_1} f + \int_{A_2} f$.
+\end{myobs}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mylem}[Usado na demonstração dos teoremas anteriores]
+  Sejam $Y \subset X \subset \rn$ conjuntos J-mensuárveis,
+  com $c(Y) = 0$.
+  Para todo $\varepsilon > 0$,
+  existe $\delta > 0$ tal que,
+  se $\Dcal$ é uma decomposição de $X$ com $|\Dcal| < \delta$,
+  então a soma dos conteúdos dos conjuntos $\Acal_\alpha \in \Dcal$
+  tais que $d(\Acal_\alpha, Y) < \delta$ é menor que $\varepsilon$:
+  \begin{equation}
+    \sum_{\substack{
+        \alpha:\\
+        d(\Acal_\alpha, Y) < \delta}
+    }
+    c(\Acal_\alpha) < \varepsilon
+  \end{equation}
+\end{mylem}
+
+
+
+\theonewpage
+
+
+
+% -------------------------------------
+\begin{myteo}[Teorema do valor médio para integrais múltiplas]
+  Sejam $A \subset \rn$ conjunto J-mensurável,
+  $f:A \to \realnumb$
+  e
+  $g:A \to \realnumb$
+  funções integráveis em $A$,
+  com $g(x) > 0 \,\, \forall x \in A$.
+  Sejam também $m = \inf f(A)$
+  e $M = \sup f(A)$.
+  Então existe $\lambda \in [m, M]$ tal que
+  \begin{equation}
+    \int_A fg = \lambda \int_A g\,.
+  \end{equation}
+  Além disso,
+  se $A$ for conexo e $f$ for contínua,
+  existe $\tilde x \in A$ tal que:
+  \begin{equation}
+    \int_A fg = f(\tilde x) \int_Ag\,.
+  \end{equation}
+
+  Em particular, tomando $g(x) = 1$,
+  \begin{equation}
+    mc(A) \le \int_A f \le Mc(A)\,,
+  \end{equation}
+  existe $\lambda \in [m, M]$ tal que
+  \begin{equation}
+    \int_A f = \lambda c(A)\,,
+  \end{equation}
+  e, se $A$ for conexo e $f$ for contínua,
+  existe $\tilde x \in A$ tal que:
+  \begin{equation}
+    \int_A f = f(\tilde x) c(A)\,.
+  \end{equation}
+  
+\end{myteo}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mydef}
+  Seja \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{}
+  e denotemos
+  $\overbrace{\Vcal \times \Vcal \times \dots \times \Vcal}^{k\,\,vezes}$
+  por $\Vcal^k$.
+  Uma função $T:\Vcal^k \to \realnumb$ é dita ser \emph{multilinear} se
+  \begin{equation}
+    T(v_1, \dots, v_i + v'_i, \dots, v_k) =
+    T(v_1, \dots, v_i, \dots, v_k)
+    + T(v_1, \dots, v'_i, \dots, v_k)
+  \end{equation}
+  e
+  \begin{equation}
+    T(v_1, \dots,\alpha v_i, \dots, v_k) =
+    \alpha T(v_1, \dots, v_i, \dots, v_k)
+  \end{equation}
+  para quaisquer $v_i, v'_i \in \Vcal$,
+  $\alpha \in \realnumb$ e $1 \le i \le k$.
+  Uma tal função multilinear é chamada de \emph{tensor} de ordem $k$,
+  ou um \emph{$k$-tensor}.
+  O conjunto de todos os $k$-tensores é denotado por $\Tcal^k(\Vcal)$.
+\end{mydef}
+
+
+% -------------------------------------
+\begin{mydef}
+  Sejam \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{},
+  $S \in \Tcal^k(\Vcal)$ e $T \in \Tcal^l(\Vcal)$.
+  Definimos o \emph{produto tensorial} entre $S$ e $T$
+  como sendo o elemento
+  $S \otimes T \in \Tcal^{k+l}(\Vcal)$ tal que:
+  \begin{equation}
+    (S \otimes T)(v_1, \dots, v_k, v_{k+1}, \dots, v_{k+l})
+    = S(v_1, \dots, v_k)T(v_{k+1}, \dots, v_{k+l}).
+  \end{equation}
+\end{mydef}
+
+
+% -------------------------------------
+\begin{myteo}
+  Seja \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{}.
+  Então $\Tcal^k(\Vcal)$ é um espaço vetorial com as operações
+  \begin{equation}
+    (T_1 + T_2)(v_1, \dots, v_k) =
+    T_1(v_1, \dots, v_k) + T_2(v_1, \dots, v_k)
+  \end{equation}
+  e
+  \begin{equation}
+    (\alpha T)(v_1, \dots, v_k) =
+    \alpha (T(v_1, \dots, v_k))\,.
+  \end{equation}
+  Além disso, o produto tensorial satisfaz:
+  \begin{equation}
+    (S_1 + S_2) \otimes T = S_1 \otimes T + S_2 \otimes T
+  \end{equation}
+  \begin{equation}
+    S \otimes (T_1 + T_2) = S \otimes T_1 + S \otimes T_2
+  \end{equation}
+  \begin{equation}
+    (\alpha S) \otimes T = S \otimes (\alpha T) = \alpha (T \otimes S)
+  \end{equation}
+  \begin{equation}
+    (S \otimes T) \otimes U = S \otimes (T \otimes U)
+  \end{equation}
+\end{myteo}
+
+
+% -------------------------------------
+\begin{myteo}
+  Sejam \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{},
+  $\{v_1, \dots, v_n\}$ uma base de \Vcal{} e
+  $\{\varphi_1, \dots, \varphi_n\}$ a sua base dual.
+  Então, o conjunto de todos os tensores formados por produtos
+  de $k$ elementos da base dual:
+  {\Large
+    \begin{equation}
+      \{ \varphi_{i_1} \otimes \dots \otimes \varphi_{i_k}\}_{
+        1 \le i_1, \dots, i_k \le n}
+    \end{equation}
+  }
+  é uma base para $\Tcal^k(\Vcal)$
+  que então tem dimensão $n^k$
+\end{myteo}
+
+
+% -------------------------------------
+\begin{mydef}
+  Seja \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{}.
+  Um $k$-tensor $\omega \in \Tcal^k(\Vcal)$
+  é dito ser alternante se
+  \begin{equation}
+    \omega(v_1, \dots, v_i, \dots, v_j, \dots, v_k) =
+    - \omega(v_1, \dots, v_j, \dots, v_i, \dots, v_k)\,,
+  \end{equation}
+  para quaisquer $v_i \in \Vcal$.
+  Um $k$-tensor alternante é dito ser um \emph{$k$-vetor}
+  O conjunto de todos os $k$-vetores é denotador por
+  $\bigwedge^k (\Vcal)$.
+\end{mydef}
+
+
+% -------------------------------------
+\begin{myteo}
+  Seja \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{}.
+  $\bigwedge^k (\Vcal)$ é um subespaço vetorial de $\Tcal^k(\Vcal)$.
+\end{myteo}
+
+
+% -------------------------------------
+\begin{mydef}
+  Seja \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{}.
+  Definimos o \emph{alternador}, $\mathrm{Alt}$, por
+  \begin{equation}
+    (\mathrm{Alt}(T)) (v_1, \dots, v_k) =
+    \frac{1}{k!}
+    \sum_{\sigma \in S_k}
+    \mathrm{sgn}(\sigma) T(v_{\sigma(1)}, \dots, v_{\sigma(k)})\,,
+  \end{equation}
+  onde $S_k$ é o conjunto das permutações de $\{1, \dots, k\}$
+  e $\mathrm{sgn}(\sigma)$ é o sinal da permutação $\sigma$:
+  $+1$ para permutação par e $-1$ para permutação ímpar.
+\end{mydef}
+
+
+% -------------------------------------
+\begin{myteo}
+  Seja \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{}.
+  Então
+  \begin{enumerate}[label=\alph*)]
+  \item Se $T \in \Tcal^k(\Vcal)$,
+    então $\Alt (T) \in \bigwedge^k (\Vcal)$;
+  \item Se $\omega \in \bigwedge^k(\Vcal)$,
+    então $\Alt (\omega) = \omega$;
+  \item Se $T \in \Tcal^k(\Vcal)$,
+    então $\Alt (\Alt (T)) = \Alt(T)$
+  \end{enumerate}
+\end{myteo}
+
+
+% -------------------------------------
+\begin{mydef}
+  Sejam \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{},
+  $\omega \in \bigwedge^k(\Vcal)$ e $\eta \in \bigwedge^l(\Vcal)$.
+  Definimos o \emph{produto exterior} entre $\omega$ e $\eta$,
+  $\omega \wedge \eta \in \bigwedge^{k+l}(\Vcal)$, por:
+  \begin{equation}
+    (\omega \wedge \eta) = \frac{(k+l)!}{k!l!} \Alt(\omega \otimes \eta)
+  \end{equation}
+\end{mydef}
+
+
+% -------------------------------------
+\begin{myteo}[Propriedades do produto exterior]
+  Seja \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{}.
+  Então:
+  \begin{equation}
+    (\omega_1 + \omega_1) \wedge \eta
+    = \omega_1 \wedge \eta + \omega_2 \wedge \eta
+  \end{equation}
+  \begin{equation}
+    \omega \wedge (\eta_1 + \eta_2)
+    = \omega \wedge \eta_1 + \omega \wedge \eta_2
+  \end{equation}
+  \begin{equation}
+    (\alpha \omega) \wedge \eta
+    = \omega \wedge (\alpha \eta)
+    = \alpha (\eta \wedge \omega)
+  \end{equation}
+  \begin{equation}
+    \omega \wedge \eta = (-1)^{kl}\eta \wedge \omega
+  \end{equation}
+  \begin{equation}
+    (\omega \wedge \eta) \wedge \theta
+    = \omega \wedge (\eta \wedge \theta) =
+    \frac{(k+l+m)!}{k!l!m!}\Alt(\omega \otimes \eta \otimes \theta)
+  \end{equation}
+\end{myteo}
+
+
+% -------------------------------------
+\begin{myteo}
+  Sejam \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{},
+  $\{v_1, \dots, v_n\}$ uma base de \Vcal{} e
+  $\{\varphi_1, \dots, \varphi_n\}$ a sua base dual.
+  Então, o conjunto de todos os $k$-vetores formados por produtos
+  exteriores, com índices em ordem estritamente crescente,
+  de $k$ elementos da base dual:
+  {\Large
+    \begin{equation}
+      \{ \varphi_{i_1} \wedge \dots \wedge \varphi_{i_k}\}_{
+        1 \le i_1 < i_2 < \dots < i_k \le n}
+    \end{equation}
+  }
+  é uma base para $\bigwedge^k(\Vcal)$,
+  que então tem dimensão
+  ${n \choose k} = \frac{n!}{k!(n-k)!}$.
+\end{myteo}
+
+
+% -------------------------------------
+\begin{myteo}
+  Sejam \Vcal{} um espaço vetorial de dimensão $n$ sobre \realnumb{},
+  $\{v_1, \dots, v_n\}$ uma base de \Vcal{} e
+  $\omega \in \bigwedge^k(\Vcal)$.
+  Se $w_i = \sum_{j=1}^n a_{ij}v_j$, $i\in \{1, \dots, n\}$,
+  são $n$ vetores de \Vcal{},
+  então:
+  \begin{equation}
+    \omega(w_1, \dots, w_n) = \det(a_{ij}) \omega(v_1, \dots, v_n)\,.
+  \end{equation}
+  
+\end{myteo}
+
+
+% -------------------------------------
+\begin{mydef}[Pullback para tensores]
+  Sejam \Vcal{} e \Wcal{} espaços vetoriais sobre \realnumb{},
+  $f: \Vcal{} \to \Wcal$ uma transformação linear.
+  Definimos
+  \begin{equation}
+    \begin{split}
+      f^*: \Tcal^k(\Wcal) &\to \Tcal^k(\Vcal)\\
+      T &\mapsto f^*T \quad \text{tal que} \quad
+          f^*T(v_1, \dots, v_k) = T(f(v_1), \dots, f(v_k))
+    \end{split}\,,
+  \end{equation}
+  e chamamos $f^*T$ de o \emph{pullback} de $T$ por $f$.
+\end{mydef}
+
+
+% -------------------------------------
+\begin{myteo}
+  Sejam \Vcal{} e \Wcal{} espaços vetoriais sobre \realnumb{},
+  $f: \Vcal{} \to \Wcal$ uma transformação linear.
+  Então $f^*$ é uma transformação linear e valem:
+  \begin{equation}
+    f^*(S \otimes T) = (f^*S) \otimes (f^*T)
+  \end{equation}
+  \begin{equation}
+    f^*(\omega \wedge \eta) = (f^*\omega) \wedge (f^*\eta)
+  \end{equation}
+  onde
+  $S \in \Tcal^k(\Wcal)$,
+  $T \in \Tcal^l(\Wcal)$,
+  $\omega  \in \bigwedge^k(\Wcal)$
+  e $\eta \in \bigwedge^k(\Wcal)$.
+\end{myteo}  
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{myobs}
+  Por comodidade,
+  assumiremos a partir daqui, a menos que dito o contrário,
+  que \emph{função diferenciável}
+  se refere a uma função infinitamente diferenciável.
+\end{myobs}
+
+
+% -------------------------------------
+\begin{mydef}
+  Seja $U \subset \rn$. Uma \emph{$k$-forma diferencial} $\omega$ em $U$ é uma função definida em $U$ do tipo:
+  \begin{equation}
+    \omega : U \to \coprod_{p \in U} \bigwedge^k T_p U
+    \quad \text{ com } \quad \omega(p) \in \bigwedge^k T_p U \,,
+  \end{equation}
+  onde $\coprod$ denota a união disjunta.
+  O conjunto das $k$-formas diferenciais em $U$
+  é denotado por $\Omega^k(U)$.
+\end{mydef}
+
+
+% -------------------------------------
+\begin{myobs}
+  Identificamos $\bigwedge^0(\Vcal)$ com $\realnumb$
+  e então $\Omega^0(U) = C^\infty(U, \realnumb)$,
+  o conjunto das funções diferenciáveis de $U$ em $\realnumb$.
+\end{myobs}
+
+
+\theospace{3cm}
+
+
+% -------------------------------------
+\begin{mydef}\label{def:opera_formas}
+  Seja $U \subset \rn$.
+  Operações de soma entre formas
+  e multiplicação de formas por funções $f:U \to \realnumb$
+  são definidas em cada ponto de $U$ como as operações correspondentes
+  em $\bigwedge^k T_p U$
+\end{mydef}
+
+
+% -------------------------------------
+\begin{myteo}
+  Seja $U \subset \rn$.
+  O conjunto $\Omega^k(U)$ forma um espaço vetorial 
+  com as operações de soma e multiplicação por escalar como definidas
+  na Definição~\ref{def:opera_formas}.
+\end{myteo}
+
+
+\theospace{3cm}
+
+
+% -------------------------------------
+\begin{myobs}
+  Sejam $U \subset \rn$ e $\{e_1, e_2, \dots, e_n\}$ a base canônica de
+  $T_pU$ para cada $p \in U$.
+  As formas diferenciais associadas aos elementos da base dual
+  são denotadas por $dx^1$, $dx^2$, $\dots$, $dx^n$.
+  Em $\realnumb^3$ costumam ser denotadas por $dx$, $dy$ e $dz$.
+\end{myobs}
+
+
+
+% -------------------------------------
+\begin{myteo}
+  Sejam $U \subset \rn$ e $f: U \to \realnumb$ função diferenciável.
+  Então
+  \begin{equation}
+    \dd f = \pdv{f}{x^1} \dd x^1
+    + \cdots
+    + \pdv{f}{x^n} \dd x^n\,,
+  \end{equation}
+  onde $\dd f = f' \in \Omega^1(U)$ é a diferencial,
+  ou derivada, da função $f$.
+\end{myteo}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mydef}[Pullback para formas]
+  Sejam $D \subset \realnumb^d$ e $U \subset \rn$ abertos,
+  $\phi:D \to U$ uma função diferenciável
+  e $\omega \in \Omega^k(U)$, com $0 \le k \le n$.
+  Então, definimos $\phi^* \omega \in \Omega^k(D)$ por:
+  \begin{equation}
+    (\phi^* \omega)(y) = (\dd{\phi})^*\omega(\phi(y))\,,
+  \end{equation}
+  para cada $y \in D$. Isto é:
+  \begin{equation}
+    \begin{split}
+      (\phi^* \omega)(y)(v_1,\dots, v_k)
+      =&
+         [(\dd{\phi})^* \omega(\phi(y))] (v_1,\dots, v_k)\\
+      =&
+         \omega(\phi(y))  (\dd{\phi}(y)(v_1),\dots, \dd{\phi}(y)(v_k))\,,
+    \end{split}
+  \end{equation}
+  para cada $y \in D$ e $v_i \in T_yD$.
+  O operador $\phi^*$ é chamado de o \emph{pullback através de $\phi$}.
+\end{mydef}
+
+
+\theospace{3cm}
+
+
+% -------------------------------------
+\begin{myteo}[Propriedades do pullback]
+  Sejam $D \subset \realnumb^d$, $U \subset \rn$
+  e $V \subset \realnumb^m$ abertos,
+  $\phi:D \to U$ e $\psi:U \to V$ funções diferenciáveis,
+  $\omega \in \Omega^k(U)$,
+  $\eta \in \Omega^l(U)$,
+  $g: U \to \realnumb$ função diferenciável.
+  Então:
+  \begin{enumerate}[label=\alph*)]
+  \item $\phi^*(dx^i) = \sum_{j=1}^d\pdv{\phi^i}{x^j} \dd x^j$;
+  \item $\phi^*(\omega_1 + \omega_2) = \phi^*\omega_1 + \phi^*\omega_2$;
+  \item $\phi^*(g \cdot \omega) = (g \circ \phi) \cdot \phi^*\omega$;
+  \item $\phi^*(\omega \wedge \eta) = \phi^*\omega \wedge \phi^* \eta$;
+  \item $(\psi \circ \phi)^* = \phi^* \circ \psi^*$.
+  \end{enumerate}
+\end{myteo}
+
+
+\theospace{3cm}
+
+
+% -------------------------------------
+\begin{myteo}
+  Seja $U \subset \rn$ aberto e $\phi:U \to \rn$ diferenciável.
+  Então
+  \begin{equation}
+    \phi^*(h \dd{x^1} \wedge \cdots \wedge \dd{x^n})
+    = (h \circ \phi) (\det \dd{f}) \dd{x^1} \wedge \cdots \wedge \dd{x^n}
+  \end{equation}
+  
+\end{myteo}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mydef}[Derivada exterior]
+  Sejam $U \subset \rn$ aberto e
+  \begin{equation}
+    \omega = \sum_{i_1 < i_2 < \dots < i_k}
+    w_{i_1\, i_2 \, \dots \, i_k}
+    \dd{x^{i_1}} \wedge \cdots \wedge \dd{x^{i_k}} \,,
+  \end{equation}
+  uma $k$-forma em $U$.
+  Definimos então a \emph{derivada exterior} de $\omega$
+  como sendo $k+1$ forma $\dd{\omega} \in \Omega^{k+1}(U)$ por:
+  \begin{equation}
+    \begin{split}
+      \dd{\omega} =& \sum_{i_1 < i_2 < \dots < i_k}
+                     (\dd{w_{i_1 \, i_2 \, \dots \, i_k}})
+                     \dd{x^{i_1}} \wedge \cdots \wedge \dd{x^{i_k}}\\
+      =&
+         \sum_{i_1 < i_2 < \dots < i_k}
+         \sum_{j=1}^n
+         (\pdv{w_{i_1 \, i_2 \, \dots \, i_k}}{x^j})
+         \dd{x^j} \wedge \dd{x^{i_1}} \wedge \cdots \wedge \dd{x^{i_k}}\,.
+    \end{split}
+  \end{equation}
+
+\end{mydef}
+
+
+\theospace{3cm}
+
+
+% -------------------------------------
+\begin{myteo}
+  Sejam $U \subset \rn$ aberto,
+  $\omega \in \Omega^{k-1}$,
+  $p \in U$,
+  e $v_1, \dots, v_k \in T_pU \cong \rn$.
+  Então:
+  \begin{equation}
+    \dd{\omega} (p) (v_1, \dots, v_k) =
+    \sum_{j=1}^n (-1)^{j-1}
+    \dd \big(\omega\qty[v_1, \dots, \hat{v_j}, \dots, v_k]\big)
+    (x)(v_j)\,,
+  \end{equation}
+  onde, fixados $w_1, \dots, w_{k-1} \in \rn$,
+  \begin{equation}
+    \begin{split}
+      \omega\qty[w_1, \dots, w_{k-1}] : U &\to \realnumb\\
+      x &\mapsto \omega(x)(w_1, \dots, w_{k-1})\,.
+    \end{split}
+  \end{equation}
+  
+\end{myteo}
+
+
+
+\theospace{3cm}
+
+
+% -------------------------------------
+\begin{myteo}[Propriedades da derivada exterior]
+  Sejam $U \subset \rn$ aberto,
+  $\omega, \omega_1, \omega_2 \in \Omega^k(U)$,
+  $\eta \in \Omega^l(U)$
+  e $\phi:U \to \realnumb^m$ diferenciável.
+  Então:
+  \begin{enumerate}[label=\alph*)]
+  \item $\dd(\omega_1 + \omega_2) = \dd{\omega_1} + \dd{\omega_2}$;
+  \item $\dd(\omega \wedge \eta)
+    = \dd{\omega} \wedge \eta + (-1)^k \omega \wedge \dd{\eta}$;
+  \item $\dd(\dd{\omega}) = 0$, isto é, $\dd^2 = 0$;
+  \item $\dd(\phi^* \omega) = \phi^*(\dd{\omega})$, isto é,
+    a derivada exterior e o pullback comutam.
+  \end{enumerate}
+\end{myteo}
+
+
+\theonewpage
+
+
+% -------------------------------------
+\begin{mydef}[Integral de uma forma]
+  Assumindo $0 \le k \le n$,
+  sejam $D \subset \realnumb^k$ um conjunto J-mensurável,
+  $U \subset \rn$ um conjunto aberto,
+  $\phi : D \to U$ função diferenciável,
+  e $\omega \in \Omega^k(U)$ uma $k$-forma.
+  Definimos a \emph{integral orientada} de $\omega$
+  sobre $\phi$ por:
+  \begin{equation}
+    \begin{split}
+      \int_\phi \omega &= \int_D(\phi^* \omega) (y)
+                         (e_{(1,\dots,k)}) dy \\
+                       &= \int_D \omega(\phi(y))
+                         (\dd \phi(e_1), \dots, \dd \phi(e_k)) dy\,,
+    \end{split}
+  \end{equation}
+  onde $e_{(1,\dots,k)} = \qty{e_1, \dots, e_k}$ é a base canônica de
+  $\realnumb^k$.
+  Se $\phi$ for um mergulho,
+  a integral orientada de $\omega$
+  sobre a variedade $X = \phi(D)$ é definida como
+  \begin{equation}
+    \int_X \omega = \int_\phi \omega \,.
+  \end{equation}
+  
+
+\end{mydef}
+
+
+\theospace{4cm}
+
+
+% -------------------------------------
+\begin{mydef}
+  Seja $I^k = [0, 1]^k \subset \realnumb^k$.
+  Os conjuntos
+  \begin{equation}
+    I^k_{(i,0)} = \qty{
+      (x^1, \dots, x^{i-1}, 0, x^{i}, \dots, x^{k-1}) \in \realnumb^k :
+      x = (x^1, \dots, x^{k-1}) \in I^{k-1}
+    } \,,
+  \end{equation}
+  e
+  \begin{equation}
+    I^k_{(i,1)} = \qty{
+      (x^1, \dots, x^{i-1}, 1, x^{i}, \dots, x^{k-1}) \in \realnumb^k :
+      x = (x^1, \dots, x^{k-1}) \in I^{k-1}
+    } \,,
+  \end{equation}
+  são denominadas por \emph{face $(i,0)$ e face $(i,1)$},
+  respectivamente, de $I^k$.
+  A \emph{fronteira} de $I^k$ é definida como
+  a seguinte combinação linear formal (uma \emph{cadeia}):
+  \begin{equation}
+    \partial I^k = \sum_{i=1}^k \sum_{p\in \qty{0, 1}} (-1)^{i+p} I^k_{(i,p)}\,.
+  \end{equation}
+\end{mydef}
+
+
+\theospace{5cm}
+
+
+% -------------------------------------
+\begin{myteo}[Teorema de Stokes]
+  Assumindo $0 \le k \le n$,
+  sejam $I^k = [0, 1]^k \subset \realnumb^k$,
+  $U \subset \rn$ um conjunto aberto,
+  $\phi: I^k \to U$ função diferenciável,
+  $\omega \in \Omega^{k-1}(U)$ uma $(k-1)$-forma.
+  Então:
+  \begin{equation}
+    \int_\phi \dd \omega = \int_{\partial\phi} \omega \,.
+  \end{equation}
+  
+\end{myteo}
+
+
+
+
+
+
+
+
+
+\end{document}
+  
+%%% Local Variables:
+%%% ispell-local-dictionary: "brasileiro"
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+

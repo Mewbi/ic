@@ -1,0 +1,37 @@
+%% Commands for mathematical symbols
+\newcommand{\integers}{\ensuremath{\mathbb{Z}}}
+\newcommand{\rational}{\ensuremath{\mathbb{Q}}}
+\newcommand{\realnumb}{\ensuremath{\mathbb{R}}}
+\newcommand{\complex}{\ensuremath{\mathbb{C}}}
+\newcommand{\projective}{\ensuremath{\mathbb{P}}}
+\newcommand{\field}{\ensuremath{\mathbb{K}}}
+\newcommand{\x}{\ensuremath{\mathbf{x}}}
+\newcommand{\rn}{\ensuremath{\mathbb{R}^n}}
+\newcommand{\rnn}{\ensuremath{\mathbb{R}^m}}
+\newcommand{\rnm}{\ensuremath{\mathbb{R}^m}}
+\newcommand{\partition}{\ensuremath{\mathcal{P}}}
+\newcommand{\allpartition}[1]{\ensuremath{\mathfrak{p}(#1)}}
+\newcommand{\allriemannint}[1]{\ensuremath{\mathfrak{R}(#1)}}
+\newcommand{\deffunc}[5]{\ensuremath{
+\begin{array}{rl}
+ #1: #2 &\to     #3\\
+     #4 &\mapsto #5
+\end{array}
+}}
+\newcommand{\Acal}{\ensuremath{\mathcal{A}}}
+\newcommand{\Dcal}{\ensuremath{\mathcal{D}}}
+\newcommand{\Ical}{\ensuremath{\mathcal{I}}}
+\newcommand{\Tcal}{\ensuremath{\mathcal{T}}}
+\newcommand{\Vcal}{\ensuremath{\mathcal{V}}}
+\newcommand{\Wcal}{\ensuremath{\mathcal{W}}}
+
+\newcommand{\Alt}{\ensuremath{\mathrm{Alt}}}
+
+
+\def\upint{\mathchoice%
+    {\mkern13mu\overline{\vphantom{\intop}\mkern7mu}\mkern-20mu}%
+    {\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+    {\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+    {\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+  \int}
+\def\lowint{\mkern3mu\underline{\vphantom{\intop}\mkern7mu}\mkern-10mu\int}

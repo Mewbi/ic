@@ -80,7 +80,6 @@ vars_name = [
 
 ldg.init()
 
-
 results = result.Results()
 
 for geometry in geometries:

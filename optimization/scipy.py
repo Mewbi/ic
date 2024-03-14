@@ -157,8 +157,6 @@ class FunctionScipy(base.Function):
         grad = self.__grad(p)
         norm_grad = linalg.norm(grad)
 
-        print("\n Trying to converge: {}".format(p.tolist()))
-        
         for _ in range(max_iterations):
 
             grad = self.__grad(p)

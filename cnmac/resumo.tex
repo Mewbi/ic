@@ -46,6 +46,7 @@
 \usepackage[backend=biber, style=numeric-comp, maxnames=50]{biblatex}
 \addbibresource{refs.bib}
 \DeclareTextFontCommand{\emph}{\boldmath\bfseries}
+\DeclareMathOperator{\diag}{diag} % TODO: Adicionei esse comando, não sei se posso
 \DefineBibliographyStrings{brazil}{phdthesis = {Tese de doutorado}}
 \DefineBibliographyStrings{brazil}{mathesis = {Disserta\c{c}\~{a}o de mestrado}}
 \DefineBibliographyStrings{english}{mathesis = {Master dissertation}}
@@ -63,7 +64,7 @@
 \author{
     {\large Felipe F. G. S. Costa}\thanks{felipefernandesgsc@gmail.com} \\ % TODO: coloco meu email pessoal ou institucional? Posso colocar Felipe Fernandes G. S. Costa? 
     {\small ???, Santo André, SP} \\ % TODO: Coloco qual curso?
-    {\large Yuri A. Aoto}\thanks{autor3@email}  \\ % TODO: Coloco o Yuri 
+    {\large Yuri A. Aoto}\thanks{autor3@email}  \\ % TODO: Coloco Yuri aqui?
     {\small CMCC, Santo André, SP} \\ % TODO: Não sei se é esse a área mesmo
 }
 \criartitulo
@@ -74,42 +75,39 @@
 % TEXTO
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Este é o padrão (formato \LaTeX{} apenas) para a submissão de trabalhos da Categoria 1 do CNMAC, destinados à divulgação de pesquisas em andamento, com resultados preliminares, e pesquisas em nível de Iniciação Científica. \emph{Nesta categoria, os trabalhos devem ser submetidos em Português ou Inglês, em forma de resumo de, no máximo, duas páginas, incluindo-se as referências bibliográficas.} Os \emph{trabalhos submetidos} que \emph{não estiverem de acordo com o formato} apresentado por esse padrão \emph{serão rejeitados} pelo Comitê Editorial do evento, sem análise do mérito científico.
+Na área da química computacional, um de seus tópicos de interesse são a otimização de geometrias moleculares de reações químicas com uso de métodos iterativos. As funções de Superfície de Energia Potencial (SEP) descrevem qual a energia associada a uma configuração de moléculas, configurações essas representadas pelas distâncias de ligações dos átomos e suas angulações. Essas funções podem ser descritas no formato $F: R^k\to R$ com $k \in N$, por conta disso é comumente utilizado o método de Newton para a otimização dessas funções, ou seja, para localização de mínimos locais, que nesse contexto, podem representar a configuração ótima de uma molécula em um estado estacionário de uma reação química.
 
-Equações inseridas no resumo devem ser enumeradas sequencialmente e à direita no texto, por exemplo
+O método de Newton tende a apresentar resultados satisfatórios de convergência. Para casos suficientemente próximos dos pontos críticos a sua convergência é quadrátrica, e, existem teoremas\cite{calculo_numerico_aplicado} que garantem a sua convergência em uma determinada vizinhança do ponto crítico. Contudo, o método possui um custo computacional considerável, isso porque para cada etapa de iteração é necessário calcular $n^2$ derivadas segundas, sendo $n$ a dimensão da função a ser otimizada. Pelo fato de funções SEP usualmente não possuírem expressões analíticas, o cálculo de suas derivadas é feito numericamente, tornando-o custoso principalmente para funções complexas.
+
+O objetivo da pesquisa é desenvolver um método, baseando-se no método de Newton, que reduza o custo computancional de cada etapa de iteração, permanecendo com uma taxa de convergência similar ao método de Newton para problemas de otimização da química computacional. Para isso, será utilizado como função SEP\cite{fh2o_sep_fortran_module} de otimização a reação $F + H_2O \to FH + HO$. Essa reação possui 5 pontos estacionários com geometrias ótimas e valores de energia associados conhecidos\cite{fh2o_first_sep}. Dessa maneira, o método desenvolvido denominado CBPD, será validado otimizando geometrias próximas de ponto estacionário da reação.
+
+Tomando uma função $F: R^k \to R$ com $k \in N$ sendo $x_n \in R^k$ referente ao enésimo ponto do processo de otimização. Utilizando o método de Newton, um novo ponto $x_{n+1}$ é definido calculando
+%
 \begin{equation}
-\frac{\partial u}{\partial t}-\Delta u = f, \quad  \mathrm{em} \; \Omega. \label{Calor}
+  x_{n+1} = x_n - H_F(x_n)^{-1} \nabla F(x_n) \,,
 \end{equation}
-Consulte o arquivo \verb!.tex! para mais detalhes sobre o código-fonte gerador da equação \eqref{Calor}.
+%
+sendo $H_F(x_n)^{-1}$ a matriz inversa $k \times k$ da hessiana da função $F$ e $\nabla F$ o vetor gradiente da função $F$.
+No método CBPD, que se baseia em considerar cada derivada parcial um caso isolado de otimização, um novo ponto $x_{n+1}$ é definido calculando
+%
+\begin{equation}
+  x_{n+1} = x_n - \diag{\left(\frac{\partial^2 F}{\partial (x_{n})^2 }\right)}^{-1} \nabla F(x_n) \,,
+\end{equation}
+%
+sendo diag a matriz diagonal da matriz hessiana da função $F$.
 
-Tendo em vista tratar-se de um resumo, sugere-se evitar a inserção de seções, tabelas e figuras. Caso necessária, a inserção de tabela deve ser feita com o ambiente \verb!table!, sendo enumerada, disposta horizontalmente centralizada, próxima de sua referência no texto, e a legenda imediatamente acima dela. Por exemplo, consulte a Tabela \ref{tabela01}.
+O método CBPD por utilizar a matriz diagonal da matriz hessiana, implica que para cada etapa de iteração seja necessário calcular $n$ derivadas segundas, sendo $n$ a dimensão da função. Além disso, para diminuir o custo computacional do cálculo das derivadas parciais é utilizado uma aproximação do valor das derivadas baseado no método da Secante, que de acordo com o Teorema de Valor Médio\cite{calculo_1} afirma que existe uma reta tangente com valor exato da reta secante descrito por dois pontos de uma função caso a função seja diferenciável.
 
-\begin{table}[H]
-\caption{ {\small Categorias dos trabalhos.}}
-\centering
-\begin{tabular}{ccc}
-\hline
-Categoria do trabalho  & Número de páginas & Tipo do trabalho\\ \hline
-1          & 2  & $A$, $B$ e $C$    \\
-2          & entre 5 e 7  & apenas $C$ \\
-\hline
-\end{tabular}\label{tabela01}
-\end{table}
-
-A inserção de figura deve ser feita com o ambiente \verb!figure!, ela deve estar enumerada, disposta horizontalmente centralizada, próxima de sua referência no texto, e legenda imediatamente abaixo dela. \emph{Quando não própria, deve-se indicar/referências a fonte.} Consulte a Figura \ref{figura01}.
-
+Em termos de resultados, utilizando a função PES de estudo e criando cenários para convergência dos quais apenas uma variável de cada vez era alterada com taxas de variação de até 25\% do valor ótimo da configuração do ponto estacionário, foram calculados a taxa de sucesso de convergência tanto para o método CBPD, quanto para o método de Newton como apresentados na Figura \ref{figura01}.
+%
 \begin{figure}[H]
 \centering
-\includegraphics[width=.475\textwidth]{ex_fig}
-\caption{ {\small Exemplo de imagem. Fonte: indicar.}}
+\includegraphics[width=.475\textwidth]{image}
+\caption{ {\small Gráfico de taxa de convêngia do método CBPD em comparação com método de Newton com casos de variação de uma variável das configurações ótimas para cada ponto estacionário da reação. Fonte: autoria própria.}}
 \label{figura01}
 \end{figure}
-
-As referências bibliográficas devem ser inseridas conforme especificado neste padrão, sendo que serão automaticamente geradas em ordem alfabética pelo sobrenome do primeiro autor. Este {\it template} fornece suporte para a inserção de referências bibliográficas com o Bib\LaTeX{}. Os dados de cada referência do trabalho devem ser adicionados no arquivo \verb+refs.bib+ e a indicação da referência no texto deve ser inserida com o comando \verb+\cite+. Seguem alguns exemplos de referências: livro \cite{Boldrini}, artigos publicados em periódicos \cite{Contiero,Cuminato}, capítulo de livro \cite{daSilva}, dissertação de mestrado \cite{Diniz}, tese de doutorado \cite{Mallet}, livro publicado dentro de uma série \cite{Gomes}, trabalho publicado em anais de eventos \cite{Santos}, {\it website} e outros \cite{CNMAC}. Por padrão, os nomes de todos os autores da obra citada aparecem na bibliografia. Para obras com mais de três autores, é também possível indicar apenas o nome do primeiro autor, seguido da expressão et al. Para implementar essa alternativa, basta remover ``\verb+,maxnames=50+'' do comando correspondente do código-fonte. Sempre que disponível forneça o DOI, ISBN ou ISSN, conforme o caso.
-
-\section*{Agradecimentos (opcional)}
-Seção reservada aos agradecimentos dos autores, caso for pertinente. Por exemplo, agradecimento a fomentos. Se os autores optarem pela inclusão de Agradecimentos, a palavra ``(opcional)'' deve ser removida do título da seção.
-
+%
+Apesar do método CBPD apresentar um resultado inferior em taxa de convergência quando comparado com o método de Newton para a maioria dos pontos estacionários, alguns pontos estacionários possuem um sucesso de convergência satisfatório e equiparável ao método de Newton que possui um maior custo computacional relacionado. Diante disso, a depender dos cenários de convergência, o método CBPD pode ser uma alternativa para realizar o processo de otimização com um menor custo computacional.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % REFS BIBLIOGRÁFICAS

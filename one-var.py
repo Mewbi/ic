@@ -1,3 +1,4 @@
+import json
 from fh2o_module import li_dawes_guo as ldg
 from optimization import cbpd
 from optimization import result
@@ -19,8 +20,6 @@ MAX_ITERATIONS = 50
 TOLERANCE = 1e-5
 DIVERGE_VAL = 115.302739153
 ldg.init()
-
-
 
 def gen_conv_cases(geometry, variation, limit):
     cases = []
@@ -47,7 +46,6 @@ def gen_conv_cases(geometry, variation, limit):
                 "specie": specie,
                 "relevant_vars": relevant_vars,
             }
-            #print(case)
             cases.append(case)
 
         # Try converge in 0%
@@ -58,7 +56,6 @@ def gen_conv_cases(geometry, variation, limit):
             "specie": specie,
             "relevant_vars": relevant_vars,
         }
-        #print(case)
         cases.append(case)
 
         # 5 to 25 percent
@@ -73,7 +70,6 @@ def gen_conv_cases(geometry, variation, limit):
                 "specie": specie,
                 "relevant_vars": relevant_vars,
             }
-            #print(case)
             cases.append(case)
 
     return cases[:]
@@ -135,23 +131,25 @@ def try_converge_newton(case):
 def parse_results_metrics(r: result.Results):
     parsed = {}
     for result in r.results:
-        var = result.variable
-        if var not in parsed:
-            parsed[var] = {
+        specie = result.specie
+        if specie not in parsed:
+            parsed[specie] = {
                     "conv_success": 0,
                     "conv_fail": 0,
                     "total": 0,
                     "conv_percent": 0,
                 }
 
-        parsed["var"]["total"] += 1
+        parsed[specie]["total"] += 1
         if result.converge:
-            parsed["var"]["conv_success"] += 1
+            parsed[specie]["conv_success"] += 1
         else:
-            parsed["var"]["conv_fail"] += 1
+            parsed[specie]["conv_fail"] += 1
 
-    for var, values in parsed:
+    for specie, values in parsed.items():
         values["conv_percent"] = values["conv_success"] / values["total"]
+
+    return parsed
 
 results_cbpd = result.Results()
 
@@ -182,6 +180,16 @@ for geo in geometries:
     results_newton.normalize_final_points(geo["energy"])
 results_newton.csv('results/one_var_newton.csv')
 
-
 # Parse results
+parsed_cbpd = parse_results_metrics(results_cbpd)
+parsed_newton = parse_results_metrics(results_newton)
 
+print("\n--------------\n")
+print("\tCBPD")
+print("\n--------------\n")
+print(json.dumps(parsed_cbpd, indent = 2))
+
+print("\n--------------\n")
+print("\tNewton")
+print("\n--------------\n")
+print(json.dumps(parsed_newton, indent = 2))

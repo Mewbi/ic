@@ -5,3 +5,5 @@ cnmac/*.aux
 cnmac/*.log
 cnmac/*.xml
 cnmac/*.bcf
+cnmac/*.blg
+cnmac/*.bbl

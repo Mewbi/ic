@@ -46,13 +46,13 @@
 \usepackage[backend=biber, style=numeric-comp, maxnames=50]{biblatex}
 \addbibresource{refs.bib}
 \DeclareTextFontCommand{\emph}{\boldmath\bfseries}
-\DeclareMathOperator{\diag}{diag} % TODO: Adicionei esse comando, não sei se posso
 \DefineBibliographyStrings{brazil}{phdthesis = {Tese de doutorado}}
 \DefineBibliographyStrings{brazil}{mathesis = {Disserta\c{c}\~{a}o de mestrado}}
 \DefineBibliographyStrings{english}{mathesis = {Master dissertation}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\DeclareMathOperator{\diag}{diag}
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -62,10 +62,10 @@
 \title{Otimização de Geometria Molecular}
 
 \author{
-    {\large Felipe F. G. S. Costa}\thanks{felipefernandesgsc@gmail.com} \\ % TODO: coloco meu email pessoal ou institucional? Posso colocar Felipe Fernandes G. S. Costa? 
-    {\small ???, Santo André, SP} \\ % TODO: Coloco qual curso?
-    {\large Yuri A. Aoto}\thanks{autor3@email}  \\ % TODO: Coloco Yuri aqui?
-    {\small CMCC, Santo André, SP} \\ % TODO: Não sei se é esse a área mesmo
+    {\large Felipe Fernandes G. S. Costa}\thanks{fernandes.felipe@aluno.ufabc.edu.br} \\
+    {\small BC\&T/UFABC, Santo André, SP} \\
+    {\large Yuri Alexandre Aoto}\thanks{yuri.aoto@ufabc.edu.br} \\
+    {\small CMCC/UFABC, Santo André, SP} \\
 }
 \criartitulo
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -75,13 +75,13 @@
 % TEXTO
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Na área da química computacional, um de seus tópicos de interesse são a otimização de geometrias moleculares de reações químicas com uso de métodos iterativos. As funções de Superfície de Energia Potencial (SEP) descrevem qual a energia associada a uma configuração de moléculas, configurações essas representadas pelas distâncias de ligações dos átomos e suas angulações. Essas funções podem ser descritas no formato $F: R^k\to R$ com $k \in N$, por conta disso é comumente utilizado o método de Newton para a otimização dessas funções, ou seja, para localização de mínimos locais, que nesse contexto, podem representar a configuração ótima de uma molécula em um estado estacionário de uma reação química.
+Na área da química computacional, um de seus tópicos de interesse é a otimização de geometrias moleculares de reações químicas com uso de métodos iterativos. As funções de Superfície de Energia Potencial (SEP) descrevem qual a energia associada a uma configuração de moléculas, configurações essas representadas pelas distâncias de ligações dos átomos e suas angulações. Essas funções podem ser descritas no formato $F: U \subset R^k\to R$ com $k \in N$, por conta disso é comumente utilizado o método de Newton para a otimização dessas funções, ou seja, para localização de mínimos locais, que nesse contexto, podem representar a configuração ótima de uma molécula em um estado estacionário de uma reação química.
 
-O método de Newton tende a apresentar resultados satisfatórios de convergência. Para casos suficientemente próximos dos pontos críticos a sua convergência é quadrátrica, e, existem teoremas\cite{calculo_numerico_aplicado} que garantem a sua convergência em uma determinada vizinhança do ponto crítico. Contudo, o método possui um custo computacional considerável, isso porque para cada etapa de iteração é necessário calcular $n^2$ derivadas segundas, sendo $n$ a dimensão da função a ser otimizada. Pelo fato de funções SEP usualmente não possuírem expressões analíticas, o cálculo de suas derivadas é feito numericamente, tornando-o custoso principalmente para funções complexas.
+O método de Newton tende a apresentar resultados satisfatórios de convergência. Para casos suficientemente próximos dos pontos críticos a sua convergência é quadrátrica, e existem teoremas\cite{calculo_numerico_aplicado} que garantem a sua convergência em uma determinada vizinhança do ponto crítico. Contudo, o método possui um custo computacional considerável, isso porque para cada etapa de iteração é necessário calcular $k^2$ derivadas segundas e inverter uma matriz $k \times k$. Pelo fato de funções SEP usualmente não possuírem expressões analíticas, o cálculo de suas derivadas é feito numericamente, tornando-o custoso principalmente para funções que exigem alto tempo computacional.
 
-O objetivo da pesquisa é desenvolver um método, baseando-se no método de Newton, que reduza o custo computancional de cada etapa de iteração, permanecendo com uma taxa de convergência similar ao método de Newton para problemas de otimização da química computacional. Para isso, será utilizado como função SEP\cite{fh2o_sep_fortran_module} de otimização a reação $F + H_2O \to FH + HO$. Essa reação possui 5 pontos estacionários com geometrias ótimas e valores de energia associados conhecidos\cite{fh2o_first_sep}. Dessa maneira, o método desenvolvido denominado CBPD, será validado otimizando geometrias próximas de ponto estacionário da reação.
+O objetivo desse trabalho é desenvolver um método, baseando-se no método de Newton, que reduza o custo computancional de cada etapa de iteração, permanecendo com uma taxa de convergência similar ao método de Newton para problemas de otimização da química computacional. Para isso, será utilizado como função SEP\cite{fh2o_sep_fortran_module} de otimização a reação $F + H_2O \to FH + HO$. Essa reação possui 5 pontos estacionários com geometrias ótimas e valores de energia associados conhecidos\cite{fh2o_first_sep}. Dessa maneira, o método desenvolvido denominado CBPD (\textit{Convergence Based in Partials Derivatives}), será validado otimizando geometrias próximas de ponto estacionário da reação.
 
-Tomando uma função $F: R^k \to R$ com $k \in N$ sendo $x_n \in R^k$ referente ao enésimo ponto do processo de otimização. Utilizando o método de Newton, um novo ponto $x_{n+1}$ é definido calculando
+Seja $x_n \in R^k$ referente ao enésimo ponto do processo de otimização. Utilizando o método de Newton, um novo ponto $x_{n+1}$ é definido calculando
 %
 \begin{equation}
   x_{n+1} = x_n - H_F(x_n)^{-1} \nabla F(x_n) \,,
@@ -96,18 +96,18 @@ No método CBPD, que se baseia em considerar cada derivada parcial um caso isola
 %
 sendo diag a matriz diagonal da matriz hessiana da função $F$.
 
-O método CBPD por utilizar a matriz diagonal da matriz hessiana, implica que para cada etapa de iteração seja necessário calcular $n$ derivadas segundas, sendo $n$ a dimensão da função. Além disso, para diminuir o custo computacional do cálculo das derivadas parciais é utilizado uma aproximação do valor das derivadas baseado no método da Secante, que de acordo com o Teorema de Valor Médio\cite{calculo_1} afirma que existe uma reta tangente com valor exato da reta secante descrito por dois pontos de uma função caso a função seja diferenciável.
+O método CBPD por utilizar apenas a diagonal da matriz hessiana, implica que para cada etapa de iteração seja necessário calcular $k$ derivadas segundas e não é necessário inverter a matriz. Além disso, para diminuir o custo computacional do cálculo das derivadas parciais é utilizado uma aproximação do valor das derivadas baseado no método da Secante, que de acordo com o Teorema de Valor Médio\cite{calculo_1} afirma que existe uma reta tangente com inclinação exata ao da reta secante descrita por dois pontos de uma função caso a função seja diferenciável.
 
 Em termos de resultados, utilizando a função PES de estudo e criando cenários para convergência dos quais apenas uma variável de cada vez era alterada com taxas de variação de até 25\% do valor ótimo da configuração do ponto estacionário, foram calculados a taxa de sucesso de convergência tanto para o método CBPD, quanto para o método de Newton como apresentados na Figura \ref{figura01}.
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=.475\textwidth]{image}
+\includegraphics[width=.425\textwidth]{image}
 \caption{ {\small Gráfico de taxa de convêngia do método CBPD em comparação com método de Newton com casos de variação de uma variável das configurações ótimas para cada ponto estacionário da reação. Fonte: autoria própria.}}
 \label{figura01}
 \end{figure}
 %
-Apesar do método CBPD apresentar um resultado inferior em taxa de convergência quando comparado com o método de Newton para a maioria dos pontos estacionários, alguns pontos estacionários possuem um sucesso de convergência satisfatório e equiparável ao método de Newton que possui um maior custo computacional relacionado. Diante disso, a depender dos cenários de convergência, o método CBPD pode ser uma alternativa para realizar o processo de otimização com um menor custo computacional.
+Apesar do método CBPD apresentar um resultado inferior em taxa de convergência quando comparado com o método de Newton para a maioria dos pontos estacionários, alguns pontos estacionários possuem um sucesso de convergência satisfatório e equiparável ao método de Newton, que possui um maior custo computacional relacionado. Diante disso, a depender dos cenários de convergência, o método CBPD pode ser uma alternativa para realizar o processo de otimização com um menor custo computacional.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % REFS BIBLIOGRÁFICAS

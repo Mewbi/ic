@@ -59,10 +59,11 @@ geometries = [
         "relevant_vars": [True, False, True, False, False, False],
         "energy": -16.15134
     },
-    {
-        "specie": "P'-vdW (HO--FH)",
-        "stationary": [0.9735, 3.9974, 0.9220, 17.51, 46.76, 0.0001],
-        "relevant_vars": [True, True, True, True, True, True],
-        "energy": -20.29986
-    },
+    # Ignoring this to avoid incorrct metrics
+    # {
+    #     "specie": "P'-vdW (HO--FH)",
+    #     "stationary": [0.9735, 3.9974, 0.9220, 17.51, 46.76, 0.0001],
+    #     "relevant_vars": [True, True, True, True, True, True],
+    #     "energy": -20.29986
+    # },
 ]

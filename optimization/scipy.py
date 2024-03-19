@@ -121,7 +121,7 @@ class FunctionScipy(base.Function):
             x_new[i] = x[i]
         return x_new
 
-    def converge_newtown(self,
+    def converge_newton(self,
                          max_iterations = base.Function.DEFAULT_MAX_ITERATIONS,
                          tolerance = base.Function.DEFAULT_TOLERANCE,
                          gradient = "norm",

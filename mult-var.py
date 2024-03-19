@@ -1,79 +1,43 @@
 import json
+import random as rd
 from fh2o_module import li_dawes_guo as ldg
 from optimization import cbpd
 from optimization import result
 from optimization import scipy as scp
 from geometries import *
 
-vars_name = [
-    "R HO",
-    "R OH'",
-    "R H'F",
-    "θ HOH'",
-    "θ OH'F",
-    "φ HOH'F"
-]
-
-VARIATION_PERCENT = 0.05
-VARIATION_LIMIT = 5
+ANG_RANGE = 10
+BOND_RANGE = 0.3
 MAX_ITERATIONS = 50
 TOLERANCE = 1e-5
 DIVERGE_VAL = 115.302739153
+CASES_PER_GEOMETRY = 100
+
 ldg.init()
 
-def gen_conv_cases(geometry, variation, limit):
-    cases = []
-
-    point = geometry["stationary"]
+def gen_random_conv_case(geometry):
+    point = geometry["stationary"][:] # Copy array
     relevant_vars = geometry["relevant_vars"]
     specie = geometry["specie"]
-
+    
     for var_idx, is_relevant in enumerate(relevant_vars):
         if not is_relevant:
             continue
 
-        var_name = vars_name[var_idx]
+        var_range = BOND_RANGE
+        if var_idx > 2: # Means its an angle variation
+            var_range = ANG_RANGE
 
-        # -25 to -5 percent
-        for l in range(limit):
-            p = point[:]
-            p[var_idx] -= point[var_idx] * (variation * (limit - l))
-            v = int( (variation * (limit - l)) * 100)
-            case = {
-                "point": p,
-                "variation": v,
-                "variable": var_name,
-                "specie": specie,
-                "relevant_vars": relevant_vars,
-            }
-            cases.append(case)
+        p = rd.uniform(-var_range, var_range)
+        point[var_idx] += p
 
-        # Try converge in 0%
-        case = {
-            "point": point,
-            "variation": 0,
-            "variable": var_name,
-            "specie": specie,
-            "relevant_vars": relevant_vars,
-        }
-        cases.append(case)
-
-        # 5 to 25 percent
-        for l in range(limit):
-            p = point[:]
-            p[var_idx] += point[var_idx] * (variation * (l + 1))
-            v = int( (variation * (l + 1)) * 100)
-            case = {
-                "point": p,
-                "variation": v,
-                "variable": var_name,
-                "specie": specie,
-                "relevant_vars": relevant_vars,
-            }
-            cases.append(case)
-
-    return cases[:]
-
+    return {
+        "point": point,
+        "variation": -1,
+        "variable": "random",
+        "specie": specie,
+        "relevant_vars": relevant_vars,
+    }
 
 def try_converge_cbpd(case):
     p = case["point"]
@@ -128,41 +92,54 @@ def try_converge_newton(case):
     result.variation = v
     return result
 
+# Gen all cases
+all_cases = []
+for geo in geometries:
+    specie = geo['specie']
+    energy = geo['energy']
+    cases = []
+    for i in range(CASES_PER_GEOMETRY):
+        c = gen_random_conv_case(geo)
+        cases.append(c)
+
+    all_cases.append({
+            "cases": cases,
+            "energy": energy,
+            "specie": specie
+        })
+
+
+# CBPD
 results_cbpd = result.Results()
-
-for geo in geometries:
+for data in all_cases:
     partial_results = result.Results()
     print("\n--------------\n")
-    print("\tCBPD")
+    print("\tCBPD \t" + data["specie"])
     print("\n--------------\n")
-    cases = gen_conv_cases(geo, VARIATION_PERCENT, VARIATION_LIMIT)
-    for i, case in enumerate(cases):
-        r = try_converge_cbpd(case)
+    for c in data["cases"]:
+        r = try_converge_cbpd(c)
         partial_results.add_single_result(r)
 
-    for p in partial_results.results:
-        print(p.specie, p.variable, p.variation, p.init_value)
-
-    partial_results.normalize_final_points(geo["energy"])
+    partial_results.normalize_final_points(data["energy"])
     results_cbpd.add_multiple_results(partial_results.results)
-results_cbpd.csv('results/one_var_cbpd.csv')
 
+results_cbpd.csv('results/mult_var_cbpd.csv')
 
+# Newton
 results_newton = result.Results()
-
-for geo in geometries:
+for data in all_cases:
     partial_results = result.Results()
     print("\n--------------\n")
-    print("\tNewton")
+    print("\tNewton \t" + data["specie"])
     print("\n--------------\n")
-    cases = gen_conv_cases(geo, VARIATION_PERCENT, VARIATION_LIMIT)
-    for i, case in enumerate(cases):
-        r = try_converge_newton(case)
+    for c in data["cases"]:
+        r = try_converge_newton(c)
         partial_results.add_single_result(r)
 
-    partial_results.normalize_final_points(geo["energy"])
+    partial_results.normalize_final_points(data["energy"])
     results_newton.add_multiple_results(partial_results.results)
-results_newton.csv('results/one_var_newton.csv')
+
+results_newton.csv('results/mult_var_newton.csv')
 
 # Parse results
 parsed_cbpd = results_cbpd.get_results_metrics()
@@ -177,17 +154,3 @@ print("\n--------------\n")
 print("\tNewton")
 print("\n--------------\n")
 print(json.dumps(parsed_newton, indent = 2))
-
-print("\n\n--------------\n")
-print("\tLatex Data")
-print("\n--------------\n")
-print("\tCBPD")
-print("\n--------------\n")
-for it, data in parsed_cbpd["iterations"].items():
-    print("({}, {:.2f})".format(it, data["percent"]))
-
-print("\n--------------\n")
-print("\tNewton")
-print("\n--------------\n")
-for it, data in parsed_newton["iterations"].items():
-    print("({}, {:.2f})".format(it, data["percent"]))

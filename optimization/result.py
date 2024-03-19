@@ -2,6 +2,7 @@ import csv
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+from typing import List, Dict
 from matplotlib.animation import FuncAnimation
 
 from numpy import linalg
@@ -404,7 +405,7 @@ class Results():
         self.results = None
 
     @property
-    def results(self):
+    def results(self) -> List[Result]:
         return self._results
 
     @results.setter
@@ -423,7 +424,7 @@ class Results():
                 raise ValueError("Values of results list must a a Result object")
         self._results = results
 
-    def add_single_result(self, result):
+    def add_single_result(self, result: Result):
         if type(result) is not Result:
             raise ValueError("Result must a be a Result object")
 
@@ -433,7 +434,7 @@ class Results():
 
         self.results.append(result)
 
-    def add_multiple_results(self, results):
+    def add_multiple_results(self, results: List[Result]):
         try:
             iter(results)
         except:
@@ -463,12 +464,12 @@ class Results():
             if min_values.size == 0:
                 min_values = np.copy(point)
 
-            for i, value in enumerate(point):
-                if value > max_values[i]:
-                    max_values[i] = value
+            for j, value in enumerate(point):
+                if value > max_values[j]:
+                    max_values[j] = value
 
-                if value < min_values[i]:
-                    min_values[i] = value
+                if value < min_values[j]:
+                    min_values[j] = value
 
         for i, max_v in enumerate(max_values):
             min_v = min_values[i]
@@ -497,14 +498,77 @@ class Results():
 
             point = result._final_point
 
-            for i, value in enumerate(point):
-                value = self.__truncate(value, trunc_decimals[i])
-                point[i] = value
+            for j, value in enumerate(point):
+                value = self.__truncate(value, trunc_decimals[j])
+                point[j] = value
 
             result.final_point = point
             results[i] = result
 
         self.results = results
+
+    def get_results_metrics(self) -> Dict:
+        '''
+        Return result metrics
+
+        Convergence is related to each stactionaty point
+
+        Iterations is related only to convergence success
+        Key means number of iterations necessary to converge
+        Value means number of cases that it occoured
+        '''
+        metrics = {}
+
+        # Convergence tax
+        conv = {}
+        for result in self.results:
+            specie = result.specie
+            if specie not in conv:
+                conv[specie] = {
+                        "conv_success": 0,
+                        "conv_fail": 0,
+                        "total": 0,
+                        "conv_percent": 0,
+                    }
+
+            conv[specie]["total"] += 1
+            if result.converge:
+                conv[specie]["conv_success"] += 1
+            else:
+                conv[specie]["conv_fail"] += 1
+
+        for specie, values in conv.items():
+            values["conv_percent"] = (values["conv_success"] / values["total"]) * 100
+
+        metrics["convergence"] = conv
+
+        # Get total convergence
+        total = 0
+        for result in self.results:
+            if result.converge:
+                total += 1
+
+        # Iterations cases
+        iterations = {}
+        for result in self.results:
+            if not result.converge:
+                continue
+
+            it = result.iterations
+            if it not in iterations:
+                iterations[it] = {
+                        "qtd": 0,
+                        "percent": 0,
+                    }
+
+            iterations[it]["qtd"] += 1
+
+        for it, data in iterations.items():
+            data["percent"] = (data["qtd"] / total) * 100
+            iterations[it] = data
+
+        metrics["iterations"] = iterations
+        return metrics
 
 
     def __truncate(self, number, digits):

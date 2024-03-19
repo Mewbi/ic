@@ -1,6 +1,6 @@
 # Scientific Research
 
-This repository will store some stuff about my scientific research.
+This repository will store some stuff about my scientific research to [UFABC].
 
 Some codes and notes will not have a previous context.
 

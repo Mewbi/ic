@@ -1,0 +1,43 @@
+\begin{center}
+  
+  \begin{tikzpicture}[scale = 0.65]
+    \begin{axis}[
+      width=10cm,
+      height=8cm,
+      xlabel={Ponto Estacionário},
+      ylabel={Taxa de Convergência (\%)},
+      xtick=data,
+      xticklabels={Reagentes, R-vdW, TS, P-vdW, Produtos},
+      legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
+      ymin=0,
+      ymax=100,
+      grid=major,
+      grid style=dashed,
+      ymajorgrids=true,
+      ybar,
+      ytick={0,20,...,100},
+      yticklabel={\pgfmathprintnumber{\tick}\%}
+    ]
+
+      \addplot[color=blue, fill=blue!30] coordinates {
+        (1, 30.00)
+        (2, 4.00)
+        (3, 19.00)
+        (4, 31.00)
+        (5, 36.00)
+      };
+
+      \addplot[color=red, fill=red!30] coordinates {
+        (1, 59.00)
+        (2, 47.00)
+        (3, 47.00)
+        (4, 11.00)
+        (5, 63.00)
+      };
+
+      \legend{CBPD, Newton}
+
+    \end{axis}
+  \end{tikzpicture}
+
+\end{center}

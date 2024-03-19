@@ -5,7 +5,7 @@ Os resultados obtidos levam em consideração a quantidade de casos que houveram
 \subsection{Variando Uma Variável}
 \label{sec:res-one-var}
 
-Para os cenários onde uma variável de cada vez era afastado de seu estado otimizado, foi feita uma análise da taxa de sucesso de convergência por ponto estacionário como apresentado no gráfico \ref{fig:result-one-var-conv-tax}. Para os casos de sucesso de convergência, um histograma foi montado apresentando a quantidade de casos de convergência por número de iterações necessárias conforme apresentado no gráfico \ref{fig:result-one-var-conv-metric}.
+Para os cenários onde uma variável de cada vez era afastado de seu estado otimizado, foi feita uma análise da taxa de sucesso de convergência por ponto estacionário como apresentado no gráfico \ref{fig:result-one-var-conv-tax}. Para os casos de sucesso de convergência, um gráfico de dispersão foi montado apresentando o percentual da quantidade de casos de convergência por número de iterações necessárias conforme apresentado no gráfico \ref{fig:result-one-var-conv-metric}.
 
 \begin{figure}[h]
   \begin{subfigure}{.5\textwidth}
@@ -19,7 +19,7 @@ Para os cenários onde uma variável de cada vez era afastado de seu estado otim
     \begin{center}
       \input{figures/04_result_one_var_conv_metric}
     \end{center}
-    \caption{Quantidade de iterações necessárias para convergir para os métodos iterativos CBPD e Newton para a reação \ce{F + H2O -> FH + HO} nos casos de variação de uma variável.}
+    \caption{Percentual da quantidade de iterações necessárias para convergir para os métodos iterativos CBPD e Newton para a reação \ce{F + H2O -> FH + HO} nos casos de variação de uma variável.}
     \label{fig:result-one-var-conv-metric}
   \end{subfigure}
   \caption{Resultados dos casos de variação de uma variável.}
@@ -27,23 +27,21 @@ Para os cenários onde uma variável de cada vez era afastado de seu estado otim
 
 \subsection{Cenários Aleatórios de Convergência}
 
-Para os cenários de convergência nos quais todas as variáveis são aleatorizadas, foi feita uma análise similar à descrita na seção \ref{sec:res-one-var}. Uma análise da taxa de convergência por ponto estacionário é apresentada no gráfico \ref{fig:result-mult-var-conv-tax}, enquanto para os casos de sucesso convergência, um histograma foi montado apresentando a quantidade de casos de convergência por número de interações conforme apresentado no gráfico \ref{fig:result-mult-var-conv-metric}.
+Para os cenários de convergência nos quais todas as variáveis são aleatorizadas, foi feita uma análise similar à descrita na seção \ref{sec:res-one-var}. Uma análise da taxa de convergência por ponto estacionário é apresentada no gráfico \ref{fig:result-mult-var-conv-tax}, enquanto para os casos de sucesso convergência, um gráfico de dispersão foi montado apresentando o percetual da quantidade de casos de convergência por número de interações conforme apresentado no gráfico \ref{fig:result-mult-var-conv-metric}.
 
 \begin{figure}
   \begin{subfigure}{.5\textwidth}
     \begin{center}
-      \input{figures/03_result_one_var_conv_tax}
-%     \input{figures/05_result_mult_var_conv_tax}
+    \input{figures/05_result_mult_var_conv_tax}
     \end{center}
     \caption{Taxa de sucesso de convergência para os métodos iterativos CBPD e Newton para cada ponto estacionário da reação \ce{F + H2O -> FH + HO} nos cenários aleatórios de convergência.}
     \label{fig:result-mult-var-conv-tax}
   \end{subfigure}%
   \begin{subfigure}{.5\textwidth}
     \begin{center}
-      \input{figures/04_result_one_var_conv_metric}
-%     \input{figures/06_result_mult_var_conv_metric}
+    \input{figures/06_result_mult_var_conv_metric}
     \end{center}
-    \caption{Quantidade de iterações necessárias para convergir para os métodos iterativos CBPD e Newton para a reação \ce{F + H2O -> FH + HO} nos cenários aleatórios de convergência.}
+    \caption{Percentual da quantidade de iterações necessárias para convergir para os métodos iterativos CBPD e Newton para a reação \ce{F + H2O -> FH + HO} nos cenários aleatórios de convergência.}
     \label{fig:result-mult-var-conv-metric}
   \end{subfigure}
   \caption{Resultados dos cenários aleatórios de convergência.}

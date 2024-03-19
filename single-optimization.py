@@ -6,17 +6,26 @@ from optimization import scipy as scp
 
 ldg.init()
 
-#point = [0.9609, 0.9609, 10, 98.940315, 0.0001, 0.0001]
-point = [0.726975, 1.025, 1.3536, 103.2989, 118.2898, 68.3691]
-optimize_vars = [True, False, True, False, False, False]
-func = scp.FunctionScipy(ldg.pes, point, optimize_vars)
-#func = cbpd.FunctionCBPD(ldg.pes, point)
+def f(x):
+    return x[0] ** 5 + 2*x[0]**4 - 48*x[0]**3 + 126*x[0]**2 - 81 * x[0]
 
-result = func.converge_newtown(tolerance=0.00001,
-                               max_iterations=100,
-                               details=True)
+#point = [0.9609, 0.9609, 10, 98.940315, 0.0001, 0.0001]
+# point = [0.9728, 1.77, 0.9354, 86.92032, 173.6165, -0.0737]
+point = [2.0]
+optimize_vars = [True, True, True, True, True, True]
+func = scp.FunctionScipy(f, point, [True])
+# func = cbpd.FunctionCBPD(ldg.pes, point)
+
+# result = func.converge_numerically(tolerance=0.00001,
+#                                max_iterations=100,
+#                                #details=True
+#                             )
+result = func.converge_newton(tolerance = 0.000001,
+                              max_iterations= 100,
+                              details=True)
 
 print(result.final_point)
 print(result.convergence_steps)
-result.plot()
-result.save_steps()
+print("iterations: {}".format(result.iterations))
+# result.plot()
+# result.save_steps()

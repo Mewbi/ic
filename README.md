@@ -36,6 +36,8 @@ They are written using LaTeX and delve into the project's context, explain the a
 
 The content in this directory is an abstract to submit to 2024 congress.
 
+The abstract PDF could be read [here](cnmac/resumo.pdf)
+
 ## 📊 Optimization
 
 ### Example

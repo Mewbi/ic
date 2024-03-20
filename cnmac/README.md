@@ -1,42 +1,38 @@
-# tempCNMAC1
+# 📝 CNMAC
 
-Padrão LaTeX para submissão de trabalho/resumo na categoria 1 do CNMAC.
+LaTeX Template for submitting work/abstracts in category 1 of CNMAC.
 
-## Como compilar
+## 📄 Shorter Abstract
 
-	pdflatex resumo
-	bibtex resumo
-	pdflatex resumo
-	pdflatex resumo
+A otimização de geometrias moleculares de reações químicas é um dos tópicos de interesse na química computacional. O presente trabalho tem como objetivo propor um método iterativo de otimização, baseado nos métodos de Newton e Secante para realizar a convergência de funções de Superfície de Energia Potencial (SEP). O método CBPD (Convergence Bases in Partial DerivativeS) proposto apresenta um algoritmo com menos custo computacional envolvido quando comparado com o Método de Newton, comumente utilizado em cenários de otimização. Para medir a performance do Método CBPD foi utilizado a função SEP da reação F + H2O -> FH + HO e seus resultados foram comparados com o Método de Newton para os mesmos cenários de convergência.
 
-### Linux
+__Obs. It's wrote in Portuguese because was submited.__
 
-Alternativamente, em sistema operacional Linux ou compatível, pode-se compilar com
+## 🛠️ How to Build
 
-	$ make
+In terminal execute
 
-Para mais informações, consulte o arquivo `Makefile`.
+```bash
+pdflatex resumo.tex
+biber resumo
+pdflatex resumo.tex
+pdflatex resumo.tex
+```
 
-## Arquivos
+## 📂 Files
 
-Os dois arquivos que você precisará editar são:
+The two files able to edit are:
 
-- `resumo.tex`: arquivo principal contendo o código-fonte LaTeX do trabalho/resumo.
+- `resumo.tex`: main file containing the LaTeX source code of the work/abstract.
+- `ref.bib`: BibTeX/BibLaTeX format file containing bibliographic reference data.
 
-- `ref.bib`: arquivo formato BibTeX/BibLaTeX contendo os dados das referências bibliográficas.
+The file `pssbmac.cls` contains the definitions of the default document class to be generated. This file should be used as is and should not be altered.
 
-O arquivo `pssbmac.cls` contém as definições da classe do documento padrão a ser gerado. __Este arquivo deve ser utilizado como tal, não devendo ser alterado__.
+Other auxiliary files include:
 
-Os demais arquivos são auxiliares:
+- `resumo.pdf`: Generated PDF.
+- `image.jpg`: Image used in the abstract.
 
-- `resumo.pdf`: exemplo do PDF a ser gerado.
+## 🎓 Créditos
 
-- `ex_fig.jpg`: arquivo de imagem utilizada como exemplo.
-
-- `Makefile`: Makefile para geração do arquivo em terminal Linux ou compatível.
-
-- `.gitignore`: arquivo de configuração do Git.
-
-## Créditos
-
-Elaborado para SBMAC - Sociedade de Matemática Aplicada e Computacional (https://www.sbmac.org.br/).
+Developed for [SBMAC](https://www.sbmac.org.br/) - Society for Applied and Computational Mathematics.

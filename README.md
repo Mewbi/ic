@@ -1,78 +1,49 @@
-# Scientific Research
+# 🧪 Scientific Research
 
-This repository will store some stuff about my scientific research to [UFABC].
+This repository will store some stuff about my scientific research to [UFABC](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiiu-eFr4CFAxXrHLkGHSqNCxcQFnoECAgQAQ&url=https%3A%2F%2Fwww.ufabc.edu.br%2F&usg=AOvVaw1AKiSt62gZiblUScBnWY7c&opi=89978449).
 
 Some codes and notes will not have a previous context.
 
-## Thematic
+## ⚗️ Thematic
+
+This research is related to applied math about Optimization of Molecular Geometry. 
 
 The main thematic is Geometric Optimization.
 
-My notes could be found [here](https://energetic-blinker-147.notion.site/IC-5f13b1deac5f4073808ff39dc48a2302)
+Some previous research and general notes could be found in my [Notion](https://energetic-blinker-147.notion.site/IC-5f13b1deac5f4073808ff39dc48a2302).
 
-## Objetive
+## 🎯 Objetive
 
 The main objetive of this research is found a way to receive a generic function
 with `n` parameters, an initial point and return a point where the function
 converge, this point could be a local maximum, local minimum or a saddle.
 
-Some cases (probably most), we cannot found the exactly point where all partial
-derivatives is equal to zero. So this method have a tolerance value close to zero.
+To define a convergence, we check if `norm` of actual point (by default is Euclidian Norm)
+is equal os smaller than tolerance value (by default is 10e-5).
 
-## Method
+This method was called CBPD (Convergence Based in Partial Derivatives) and is
+bases in Newton's Method and Secant Method.
 
-This method is based to secant method to converge the function.
+## 📝 [Notes](notes/)
 
-## Example
+Notes are formal research documents that explain the project step by step.
+
+They are written using LaTeX and delve into the project's context, explain the algorithm logic, and present a performance comparison between CPBD and Newton's method to converge the SEP function of the F + H2O reaction.
+
+## 🔬 [CNMAC](cnmac/)
+
+[CNMAC](https://www.cnmac.org.br/novo/index.php/CNMAC) is a congress about applied math and computation.
+
+The content in this directory is an abstract to submit to 2024 congress.
+
+## 📊 Optimization
+
+### Example
 
 The following code is and example of a function `f(x,y) = -sin(x)*sin(y)`
-converging using numerical and analytical method.
-
-The difference between both method is, in analytical we must specify the
-function, an initial point and all partial derivaties of function. In numerical
-method, we just need specify the function and initial point.
+converging using numerical .
 
 ```python
-import math
-from optimization import optimization as op
-
-# The function
-def fn(p):
-    x = p[0]
-    y = p[1]
-    return -math.sin(x)*math.sin(y)
-
-# Partial derivative to X
-def dx_fn(p):
-    x = p[0]
-    y = p[1]
-    return -math.cos(x)*math.sin(y)
-
-# Partial derivative to Y
-def dy_fn(p):
-    x = p[0]
-    y = p[1]
-    return -math.cos(y)*math.sin(x)
-
-
-initial_point = [2.5, 0.8]
-func = op.Function(fn, initial_point)
-
-# Converge numerically
-try:
-    point = func.converge_numerically()
-    print("[ Numerically] - Converge point: {} ".format(point))
-except Exception as err:
-    print(err)
-
-
-# Converge analytically
-func.derivatives = [dx_fn, dy_fn]
-try:
-    point = func.converge_analytically()
-    print("[ Analytically ] - Converge point: {} ".format(point))
-except Exception as err:
-    print(err)
 ```
 
 Output
@@ -82,4 +53,3 @@ Output
 [ Analytically ] - Converge point: [1.5707965450768195, 1.5707963195694736]
 ```
 
-## Applying in Geometric Optimization

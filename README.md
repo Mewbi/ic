@@ -30,6 +30,8 @@ Notes are formal research documents that explain the project step by step.
 
 They are written using LaTeX and delve into the project's context, explain the algorithm logic, and present a performance comparison between CPBD and Newton's method to converge the SEP function of the F + H2O reaction.
 
+The PDF file could be read [here](notes/00_main.pdf)
+
 ## 🔬 [CNMAC](cnmac/)
 
 [CNMAC](https://www.cnmac.org.br/novo/index.php/CNMAC) is a congress about applied math and computation.

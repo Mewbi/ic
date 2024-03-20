@@ -4,7 +4,7 @@ LaTeX Template for submitting work/abstracts in category 1 of CNMAC.
 
 ## 📄 Shorter Abstract
 
-A otimização de geometrias moleculares de reações químicas é um dos tópicos de interesse na química computacional. O presente trabalho tem como objetivo propor um método iterativo de otimização, baseado nos métodos de Newton e Secante para realizar a convergência de funções de Superfície de Energia Potencial (SEP). O método CBPD (Convergence Bases in Partial DerivativeS) proposto apresenta um algoritmo com menos custo computacional envolvido quando comparado com o Método de Newton, comumente utilizado em cenários de otimização. Para medir a performance do Método CBPD foi utilizado a função SEP da reação F + H2O -> FH + HO e seus resultados foram comparados com o Método de Newton para os mesmos cenários de convergência.
+A otimização de geometrias moleculares de reações químicas é um dos tópicos de interesse na química computacional. O presente trabalho tem como objetivo propor um método iterativo de otimização, baseado nos métodos de Newton e Secante para realizar a convergência de funções de Superfície de Energia Potencial (SEP). O método CBPD (Convergence Bases in Partial Derivatives) proposto apresenta um algoritmo com menos custo computacional envolvido quando comparado com o Método de Newton, comumente utilizado em cenários de otimização. Para medir a performance do Método CBPD foi utilizado a função SEP da reação F + H2O -> FH + HO e seus resultados foram comparados com o Método de Newton para os mesmos cenários de convergência.
 
 __Obs. It's wrote in Portuguese because was submited.__
 
@@ -33,6 +33,6 @@ Other auxiliary files include:
 - `resumo.pdf`: Generated PDF.
 - `image.jpg`: Image used in the abstract.
 
-## 🎓 Créditos
+## 🎓 Credits
 
 Developed for [SBMAC](https://www.sbmac.org.br/) - Society for Applied and Computational Mathematics.

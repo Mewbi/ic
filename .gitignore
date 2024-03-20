@@ -7,3 +7,10 @@ cnmac/*.xml
 cnmac/*.bcf
 cnmac/*.blg
 cnmac/*.bbl
+notes/*.aux
+notes/*.log
+notes/*.xml
+notes/*.bcf
+notes/*.blg
+notes/*.bbl
+notes/*.ps

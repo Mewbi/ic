@@ -25,5 +25,6 @@
 \contentsline {section}{\numberline {6}Resultados}{16}{section.0.6}% 
 \contentsline {subsection}{\numberline {6.1}Variando Uma Vari\IeC {\'a}vel}{16}{subsection.0.6.1}% 
 \contentsline {subsection}{\numberline {6.2}Cen\IeC {\'a}rios Aleat\IeC {\'o}rios de Converg\IeC {\^e}ncia}{16}{subsection.0.6.2}% 
+\contentsline {section}{\numberline {7}Conclus\IeC {\~o}es}{18}{section.0.7}% 
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{\MakeTextUppercase {Refer\^encias}}{18}{section*.13}% 
+\contentsline {chapter}{\MakeTextUppercase {Refer\^encias}}{19}{section*.13}% 

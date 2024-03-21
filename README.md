@@ -42,18 +42,41 @@ The abstract PDF could be read [here](cnmac/resumo.pdf)
 
 ## 📊 Optimization
 
+This module contains the code related to optmization:
+
+- `base.py`: base code common to every optimization method
+- `cbpd.py`: contains the logic of CBPD method
+- `scipy.py`: contains some optimization methods from SciPy and my implementation of Newton's method
+- `result.py`: contains result data of convergence, which is used by all methods
+
 ### Example
 
-The following code is and example of a function `f(x,y) = -sin(x)*sin(y)`
-converging using numerical .
+The following code is an example of a convergence process of SEP used in this project
 
 ```python
+from fh2o_module import li_dawes_guo as ldg
+from optimization import cbpd
+
+ldg.init() # Required to SEP function works
+
+point = [0.9901, 1.8261, 1.0003, 112.1962, 170.6405, -8.7494] # Initial Point
+func = cbpd.FunctionCBPD(ldg.pes, point) # Create an object of optimization
+
+result = func.converge_numerically(tolerance=0.00001,
+                                max_iterations=100,
+                                norm="euclidian")
+
+print(result.final_point)
 ```
 
 Output
 
 ```bash
-[ Numerically] - Converge point: [1.5707915451117773, 1.5707913195622745] 
-[ Analytically ] - Converge point: [1.5707965450768195, 1.5707963195694736]
+Converge: True
+Iterations: 24
+Init Point: [0.9901, 1.8261, 1.0003, 112.1962, 170.6405, -8.7494]
+Final Point: [0.9728234257540236, 1.7700969608929964, 0.9354300701098185, 108.64886591218642, 173.61687633352184, 0.10001533816143876]
+Init Value: -19.63909180874393
+Final Value: -22.337468737466477
 ```
 

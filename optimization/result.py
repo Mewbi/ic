@@ -81,6 +81,16 @@ class Result:
         self.variation = variation
         self.convergence_steps = convergence_steps
 
+    def __str__(self):
+        return "Converge: {}\nIterations: {}\nInit Point: {}\nFinal Point: {}\nInit Value: {}\nFinal Value: {}".format(
+                self.converge,
+                self.iterations,
+                self.init_point,
+                self.final_point,
+                self.init_value,
+                self.final_value
+            )
+
     @property
     def converge(self):
         return self._converge

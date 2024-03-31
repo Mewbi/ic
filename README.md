@@ -66,7 +66,7 @@ result = func.converge_numerically(tolerance=0.00001,
                                 max_iterations=100,
                                 norm="euclidian")
 
-print(result.final_point)
+print(result)
 ```
 
 Output

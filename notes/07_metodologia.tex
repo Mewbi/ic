@@ -44,16 +44,16 @@ Esse método tem o processo de iteração interrompido caso a matriz hessiana po
 
 Os parâmetros dessa função descrevem a distância de ligação entre os átomos e os ângulos formados entre eles. Dependendo para qual ponto estacionário a geometria está sendo otimizada, alguns parâmetros não interferem no valor da função que retorna a energia associada a determinada configuração. Nesses casos, durante o processo de otimização é de interesse remover esses parâmetros na etapa de iteração, pois diminui a chance de se obter a matriz hessiana singular. Além disso, pelo fato de se estar calculando menos derivadas o processo de otimização fica mais rápido. 
 
-Usando como exemplo a etapa o primeiro ponto estácionário \ce{F + H2O}, apenas 3 variáveis são de interesse para se otimizar, como pode ser visualizado na tabela \ref{tab:relevant-var-example}.
+Usando como exemplo a etapa o primeiro ponto estácionário \ce{F + H2O}, apenas 3 coordenadas são de interesse para se otimizar, como pode ser visualizado na tabela \ref{tab:relevant-var-example}.
 
 \begin{table}[h]
 \centering
-  \caption{Variáveis de interesse para otimização do ponto estacionário \ce{F + H2O}.}
+  \caption{Coordenadas de interesse para otimização do ponto estacionário \ce{F + H2O}.}
 \label{tab:relevant-var-example}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}cccccccc@{}}
 \toprule
-  \multirow{2}{*}{Ponto Estacionário}  &  & \ce{H - O}   & \ce{O - H$'$} & \ce{HOH$'$} & \ce{H$'$-F}     & \ce{OH$'$F}     & \ce{HOH$'$F}  \\
+  \multirow{2}{*}{Ponto Estacionário}  &  & \ce{H - O}   & \ce{O - H$'$} & \ce{H$'$-F} & \ce{HOH$'$}     & \ce{OH$'$F}     & \ce{HOH$'$F}  \\
                                        &  &  ($x_1$)     &  ($x_2$)      &  ($x_3$)    &  ($x_4$)        &  ($x_5$)        &  ($x_6$) \\ \midrule
   \ce{F + H2O} & Otimizar & \checkmark & \checkmark &  & \checkmark &  & \\ \bottomrule
 \end{tabular}%
@@ -147,12 +147,12 @@ Aplicando o Método de Newton com base nos valores de referência dos pontos est
 
 \begin{table}[h]
 \centering
-\caption{Geometrias nos Pontos Estacionários. As variáveis relevantes referem-se as interações que mais influenciam no valor energético do ponto estacionário em estudo, essas variáveis são as que serão otimizadas. Os valores associados as demais variáveis são escolhidos de forma para não influenciar o processo de otimização.}
+\caption{Geometrias nos Pontos Estacionários. As coordenadas relevantes referem-se as interações que mais influenciam no valor energético do ponto estacionário em estudo, essas coordenadas são as que serão otimizadas. Os valores associados as demais coordenadas são escolhidos de forma para não influenciar o processo de otimização.}
 \label{tab:stacionary-config}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}cccccccc@{}}
 \toprule
-  \multirow{2}{*}{Ponto Estacionário}               &                  & \ce{H - O}   & \ce{O - H$'$} & \ce{HOH$'$} & \ce{H$'$-F}     & \ce{OH$'$F}     & \ce{HOH$'$F}  \\
+  \multirow{2}{*}{Ponto Estacionário}               &                  & \ce{H - O}   & \ce{O - H$'$} & \ce{H$'$-F} & \ce{HOH$'$}    & \ce{OH$'$F}     & \ce{HOH$'$F}  \\
                                                     &                  &  ($x_1$)     &  ($x_2$)      &  ($x_3$)    &  ($x_4$)        &  ($x_5$)        &  ($x_6$) \\ \midrule
   \multirow{2}{*}{\ce{F + H2O}}                     & Vars. Relevantes & \checkmark   & \checkmark    &             & \checkmark      &                 &               \\ \cmidrule(l){2-8} 
                                                     & Valor            & 0.9609 \AA   & 0.9609 \AA    & 20 \AA      & \ang{104.1477}  & \ang{300}       & \ang{300}     \\ \midrule
@@ -236,22 +236,22 @@ O procedimento é repetido até atingir o critério de convergência (\ref{eq:co
 
 \subsection{Avaliando Eficiência do Algoritmo}
 
-\subsubsection{Variando Uma Variável}
+\subsubsection{Variando uma Coordenada}
 
-A primeira estratégia que será utilizada é, para cada ponto estacionário, como que o algoritmo se comporta quando apenas uma variável se distância da conformação ideal. Nessa abordagem todas as variáveis ficam em seu valor ótimo com exceção da variável que está variando. Dessa maneira estaremos trabalhando com um problema em apenas uma dimensão.
+A primeira estratégia que será utilizada é, para cada ponto estacionário, como que o algoritmo se comporta quando apenas uma coordenada se distância da conformação ideal. Nessa abordagem todas as coordendas ficam em seu valor ótimo com exceção da coordenda que está variando. Dessa maneira estaremos trabalhando com um problema em apenas uma dimensão.
 
-Para cada ponto estacionário da reação será analisado uma variável relevante de cada vez, variando ela em \textit{-25\%, -20\%, -15\%, 10\%, -5\%, 0\%, 5\%, 10\%, 15\%, 20\%, 25\%} do seu valor otimizado.
+Para cada ponto estacionário da reação será analisado uma coordenada relevante de cada vez, variando ela em \textit{-25\%, -20\%, -15\%, 10\%, -5\%, 0\%, 5\%, 10\%, 15\%, 20\%, 25\%} do seu valor otimizado.
 
-Exemplificando para o caso \ce{F + H2O} haverão 11 cenários de tentativa de convergência para a primeira variável (Ligação \ce{H + O}) como apresentados na tabela \ref{tab:conv_one_var}. O mesmo processo será feito para todas as demais variáveis relevantes.
+Exemplificando para o caso \ce{F + H2O} haverão 11 cenários de tentativa de convergência para a primeira coordenada (Ligação \ce{H + O}) como apresentados na tabela \ref{tab:conv_one_var}. O mesmo processo será feito para todas as demais coordenadas relevantes.
 
 \begin{table}[h]
   \centering
-    \caption{Cenários de convergência do método de variação de uma variável para a variável \ce{H-O} do ponto estacionário \ce{F + H2O}}
+    \caption{Cenários de convergência do método de variação de uma coordenada para a coordenada \ce{H-O} do ponto estacionário \ce{F + H2O}}
     \label{tab:conv_one_var}
     \begin{adjustbox}{width=0.6\textwidth}
     \begin{tabular}{@{}ccccccc@{}}
       \toprule
-      \multirow{2}{*}{Caso} &  \ce{H - O} & \ce{O - H$'$} & \ce{HOH$'$} & \ce{H$'$-F}     & \ce{OH$'$F}     & \ce{HOH$'$F}  \\
+      \multirow{2}{*}{Caso} &  \ce{H - O} & \ce{O - H$'$} & \ce{H$'$-F}  & \ce{HOH$'$}     & \ce{OH$'$F}     & \ce{HOH$'$F}  \\
           & ($x_1$) & ($x_2$) & ($x_3$) & ($x_4$) &  ($x_5$)  &  ($x_6$) \\ \midrule
       1   & 0.7207 \AA & 0.9609 \AA & 20 \AA & \ang{104.1477} & \ang{300} & \ang{300} \\ \midrule
       2   & 0.7687 \AA & 0.9609 \AA & 20 \AA & \ang{104.1477} & \ang{300} & \ang{300} \\ \midrule
@@ -270,7 +270,7 @@ Exemplificando para o caso \ce{F + H2O} haverão 11 cenários de tentativa de co
 
 \subsubsection{Cenários Aleatórios de Convergência}
 
-A segunda métrica que será utilizada busca explorar a convergência quando múltiplas variáveis não estão em sua configuração ótima. Para isso, para cada etapa da reação química que possui a sua configuração otimizada, serão geradas 100 configurações distorciadas, nas quais a variação máxima para as ligações serão de $\pm 0.3$ \AA{} e para ângulos serão de $\pm \ang{10}$. Os valores mínimos e máximos para cada estado estácionário podem ser verificados na tabela \ref{tab:min-max-config-values}.
+A segunda métrica que será utilizada busca explorar a convergência quando múltiplas coordenadas não estão em sua configuração ótima. Para isso, para cada etapa da reação química que possui a sua configuração otimizada, serão geradas 100 configurações distorciadas, nas quais a variação máxima para as ligações serão de $\pm 0.3$ \AA{} e para ângulos serão de $\pm \ang{10}$. Os valores mínimos e máximos para cada estado estácionário podem ser verificados na tabela \ref{tab:min-max-config-values}.
 
 \begin{table}[h]
 \centering
@@ -279,7 +279,7 @@ A segunda métrica que será utilizada busca explorar a convergência quando mú
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}cccccccc@{}}
 \toprule
-  \multirow{2}{*}{Ponto Estacionário}               &            & \ce{H - O}   & \ce{O - H$'$} & \ce{HOH$'$} & \ce{H$'$-F}     & \ce{OH$'$F}     & \ce{HOH$'$F}  \\
+  \multirow{2}{*}{Ponto Estacionário}               &            & \ce{H - O}   & \ce{O - H$'$} & \ce{H$'$-F} & \ce{HOH$'$}     & \ce{OH$'$F}     & \ce{HOH$'$F}  \\
                                                     &            &  ($x_1$)     &  ($x_2$)      &  ($x_3$)    &  ($x_4$)        &  ($x_5$)        &  ($x_6$) \\ \midrule
   \multirow{2}{*}{\ce{F + H2O}}                     & Valor Mín. & 0.6609 \AA   & 0.6609 \AA    & 19.7 \AA    & \ang{94.1477}  & \ang{290}  & \ang{290} \\ \cmidrule(l){2-8} 
                                                     & Valor Máx. & 1.2609 \AA   & 1.2609 \AA    & 20.3 \AA    & \ang{114.1477}  & \ang{310}  & \ang{310} \\ \midrule

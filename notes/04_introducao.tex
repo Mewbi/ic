@@ -2,18 +2,17 @@
 
 A otimização geométrica de estruturas moleculares é um ramo de pesquisa da química
 computacional que busca por meio de algoritmos identificar conformações moleculares que
-são estáveis, ou que sejam uma configuração de uma etapa de uma reação química. Tais
-conformações são relevantes de serem conhecidas não somente para ter conhecimento sobre
-como funcionam as reações, mas também podem ser aplicadas em um novo contexto, como
-por exemplo, a criação de novos fármacos.
+são estáveis, ou que sejam uma configuração de uma etapa de uma reação química. É de interesse compreender essas conformações não apenas para o entendimento dos mecanismos das reações, mas também para aplicações práticas, como o desenvolvimento de novos fármacos.
 
-Toda molécula possui uma Superfície de Energia Potencial (PES, do inglês Potential
-Energy Surface), variando a configuração da molécula (mudando o tamanho das ligações ou
-os ângulos entre ligações) irá proporcionar variações na energia necessária para manter a
-molécula naquele estado. Dessa forma, a otimização geométrica busca identificar os pontos
-estacionários na PES, que representam as conformações estáveis da molécula ou estados de
-transição. [1]
+O conceito de Superfície de Energia Potencial (do inglês, \textit{Potential Energy Surface - PES}) descreve que para cada configuração de uma molécula, i.e, o tamanho das ligações e ângulos em que os átomos estão arranjados, existe um valor de de energia associado. Dado que uma PES pode estar associada a uma função, localizar os mínimos locais dessa função (pontos estacionários), representa localizar configuções de moléculas com menores valores de energia associado. Configurações estáveis de uma molécula ou estados de transição costumam estar associados com menos valores de energia. % Acho que da para referenciar algo aqui
 
+
+% Falar de métodos iterativos
+% Abordar que funções PES não costumam ter expressões analiticas e que os valores das derivadas tendem a ser calculados por aproximação.
+
+
+
+%%%%% Trocar
 Existem diversos métodos utilizados na química computacional para otimizar uma
 função, sendo um dos conceitualmente mais simples o Método de Newton que é um processo
 iterativo que converge para máximos locais, mínimos locais ou pontos de sela, que são
@@ -22,7 +21,14 @@ zero [4] . Outro método que vale destaque é o Método da Secante para localiza
 função unidimensional. Ele pode ser utilizado para evitar o uso da derivada da função no
 Método de Newton de identificação de raízes, o que é conveniente para evitar o custo
 computacional de se calcular a derivada de uma função, que costuma ser alto [5] .
+%%%%%
 
+
+O objetivo de estudo do projeto é a construção de um algoritmo baseado no Método de Newton e Método da Secante, que permita realizar a otimização de funções PES. O algoritmo trata o processo de otimização de uma função multidimensional como uma soma de funções unidimensionais. No caso, é feito a otimização de cada derivada parcial da função multidimensional utilizando o Método de Newton e aproximando os valores das derivadas parciais utilizando o Método da Secante.
+
+% Falar com qual reação que o projeto está trabalhando.
+
+%%%%% Trocar
 Um algoritmo que identifica as raízes das derivadas parciais de uma função é um
 algoritmo de otimização, que pode ser utilizado para otimizar funções de PES e obter a
 conformação molecular nesses estados [1] . O objeto de estudo do projeto será a construção de
@@ -36,3 +42,7 @@ que descreve a reação entre flúor e água (\ce{F + H2O -> FH + HO}) [2,3] e a
 Espera-se que capacidade de convergência, isto é, a velocidade, precisão e número de
 iterações necessárias para convergir uma função deva ser similar ao Método de Newton que
 utiliza-se dos gradiente e hessianas da função para realizar a otimização da função.
+%%%%
+
+% Falo como o resumo é organizado aqui?
+% Vi que isso eh usado em artigos, mas não sei se faz sentido no resumo, já que ele ja possui sumário.

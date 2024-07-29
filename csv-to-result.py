@@ -2,7 +2,7 @@ import csv
 import sys
 from optimization import result
 
-def parse_csv(filepath):
+def parse_csv(filepath, ignore_not_converge = True):
     results = result.Results()
     with open(filepath, 'r') as file:
         reader = csv.reader(file, delimiter=',')
@@ -21,7 +21,7 @@ def parse_csv(filepath):
             init_value = row[6]
             final_value = row[7]
 
-            if not converge:
+            if not converge and ignore_not_converge:
                 continue
 
 
@@ -43,8 +43,18 @@ if len(sys.argv) != 2:
     sys.exit()
 
 filepath = sys.argv[1]
-results = parse_csv(filepath)
+results = parse_csv(filepath, False)
 parsed = results.get_results_metrics()
+
+
+print("\n\n--------------\n")
+print("\tLatex Data - stacionaty, percent")
+print("\n--------------\n")
+order_conv = ["HO+HF", "R-vdW (F--H2O)", "TS", "P-vdW (HO--HF)", "F + H2O"]
+
+for i, conv in enumerate(order_conv):
+    data = parsed["convergence"][conv]
+    print("\t({}, {:.2f})".format(i+1, data["conv_percent"]))
 
 print("\n--------------\n")
 print("\tLatex Data - iterations, percent")

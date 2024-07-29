@@ -143,7 +143,7 @@ for geo in geometries:
     for p in partial_results.results:
         print(p.specie, p.variable, p.variation, p.init_value)
 
-    partial_results.normalize_final_points(geo["energy"])
+    # partial_results.normalize_final_points(geo["energy"])
     results_cbpd.add_multiple_results(partial_results.results)
 results_cbpd.csv('results/one_var_cbpd.csv')
 
@@ -160,7 +160,7 @@ for geo in geometries:
         r = try_converge_newton(case)
         partial_results.add_single_result(r)
 
-    partial_results.normalize_final_points(geo["energy"])
+    # partial_results.normalize_final_points(geo["energy"])
     results_newton.add_multiple_results(partial_results.results)
 results_newton.csv('results/one_var_newton.csv')
 
@@ -181,13 +181,30 @@ print(json.dumps(parsed_newton, indent = 2))
 print("\n\n--------------\n")
 print("\tLatex Data")
 print("\n--------------\n")
-print("\tCBPD")
+
+order_conv = ["HO+HF", "R-vdW (F--H2O)", "TS", "P-vdW (HO--HF)", "F + H2O"]
+print("\n--------------\n")
+print("\tCBPD - Convergence Tax")
+print("\n--------------\n")
+for i, conv in enumerate(order_conv):
+    data = parsed_cbpd["convergence"][conv]
+    print("({}, {:.2f})".format(i+1, data["conv_percent"]))
+
+print("\n--------------\n")
+print("\tNewton - Convergence Tax")
+print("\n--------------\n")
+for i, conv in enumerate(order_conv):
+    data = parsed_newton["convergence"][conv]
+    print("({}, {:.2f})".format(i+1, data["conv_percent"]))
+
+print("\n--------------\n")
+print("\tCBPD - Iterations")
 print("\n--------------\n")
 for it, data in parsed_cbpd["iterations"].items():
     print("({}, {:.2f})".format(it, data["percent"]))
 
 print("\n--------------\n")
-print("\tNewton")
+print("\tNewton - Iterations")
 print("\n--------------\n")
 for it, data in parsed_newton["iterations"].items():
     print("({}, {:.2f})".format(it, data["percent"]))

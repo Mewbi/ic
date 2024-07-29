@@ -101,10 +101,11 @@ class Function:
         new[index] += self.DEFAULT_GAP_NUMERICAL
         f = self._function
         d = ( f(new) - f(old) ) / ( 2 * self.DEFAULT_GAP_NUMERICAL )
+
         return d
     
     def euclidian_norm(self, funcs, x):
-        sum = 0
+        sum_values = 0
         optimize = self.optimize_vars
         if len(optimize) == 0:
             optimize = [True] * len(funcs)
@@ -112,9 +113,8 @@ class Function:
         for i, func in enumerate(funcs):
             if optimize[i] is not True:
                 continue
-            sum += func(x)
-
-        return np.square(sum)
+            sum_values += ( func(x) ) ** 2
+        return np.sqrt(sum_values)
 
     def maximum_norm(self, funcs, x):
         max = 0

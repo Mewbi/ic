@@ -1,6 +1,7 @@
 # CBPD
 # Convergence Based in Partials Derivatives
 
+from math import isnan
 import numpy as np
 
 from optimization import base
@@ -49,12 +50,17 @@ class FunctionCBPD(base.Function):
         try:
             v = old_point - f(old_points) * (( (old_point-new_point) / ( f(old_points) - f(new_points) ) ))
         except ZeroDivisionError:
-            return old_point
+            v = old_point # Convert numpy value to python native value
+        
+        if np.isnan(v) or np.isinf(v):
+            v = old_point
+
         return v
 
     def __converge_method(self, gap, n, tolerance, numerical, norm):
         derivatives = self.derivatives_numerical if numerical else self.derivatives
         old = self._point
+        norm_value = 0
         for iteration in range(n):
             new = []
             for i, derivative in enumerate(derivatives):
@@ -64,11 +70,11 @@ class FunctionCBPD(base.Function):
                 new.append(self.__converge_step(derivative, old_point, old, new_points, new_points[i]))
             
             old = np.copy(new)
-            value = norm(derivatives, new)
-            if value <= tolerance:
-                return True, np.copy(new), iteration + 1
+            norm_value = norm(derivatives, new)
+            if not np.isnan(norm_value) and norm_value <= tolerance:
+                return True, np.copy(new), iteration + 1, norm_value
 
-        return False, np.copy(old), n
+        return False, np.copy(old), n, norm_value
 
     def converge_analytically(self, 
                               gap = base.Function.DEFAULT_GAP, 
@@ -109,13 +115,14 @@ class FunctionCBPD(base.Function):
 
         init_point = self.point
         init_value = self.function(self.point)
-        converge, point, iterations = self.__converge_method(gap, max_iterations, tolerance, False, norm_func)
+        converge, point, iterations, norm_value = self.__converge_method(gap, max_iterations, tolerance, False, norm_func)
         final_value = self.function(point)
 
         r = result.Result(
                 converge          = converge,
                 init_point        = init_point,
                 final_point       = point,
+                gradient          = f"{norm_value:.1e}",
                 init_value        = init_value,
                 final_value       = final_value,
                 iterations        = iterations,
@@ -157,7 +164,7 @@ class FunctionCBPD(base.Function):
 
         init_point = self.point
         init_value = self.function(self.point)
-        converge, point, iterations = self.__converge_method(gap, max_iterations, tolerance, True, norm_func)
+        converge, point, iterations, norm_value = self.__converge_method(gap, max_iterations, tolerance, True, norm_func)
         point = point.tolist()
         final_value = self.function(point)
 
@@ -165,6 +172,7 @@ class FunctionCBPD(base.Function):
                 converge          = converge,
                 init_point        = init_point,
                 final_point       = point,
+                gradient          = f"{norm_value:.1e}",
                 init_value        = init_value,
                 final_value       = final_value,
                 iterations        = iterations,

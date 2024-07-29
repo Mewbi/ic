@@ -124,7 +124,7 @@ class FunctionScipy(base.Function):
     def converge_newton(self,
                          max_iterations = base.Function.DEFAULT_MAX_ITERATIONS,
                          tolerance = base.Function.DEFAULT_TOLERANCE,
-                         gradient = "norm",
+                         norm = "euclidian",
                          details = False):
         '''
         Finds the closest convergence point based on the initial point using scipy methods 
@@ -145,6 +145,10 @@ class FunctionScipy(base.Function):
                 A Result object with informations about convergence process
         '''
 
+        def lin_grad(_, p):
+            grad = self.__grad(p)
+            return linalg.norm(grad)
+
         init_point = self.point
         init_value = self.function(init_point)
         converge = False
@@ -152,22 +156,28 @@ class FunctionScipy(base.Function):
         iterations = 0
         p = np.copy(self.point)
 
+        if norm == "euclidian":
+            norm_func = self.euclidian_norm
+        elif norm == "maximum":
+            norm_func = self.maximum_norm
+        else:
+            norm_func = lin_grad
 
         np.set_printoptions(linewidth=100)
         grad = self.__grad(p)
         norm_grad = linalg.norm(grad)
 
         for _ in range(max_iterations):
-
+            norm_grad = norm_func(self.derivatives_numerical, p)
             grad = self.__grad(p)
-            norm_grad = linalg.norm(grad)
+            # norm_grad = linalg.norm(grad)
             if norm_grad < tolerance:
                 converge = True
                 break
             
             hess = self.__hess(p)
             det = linalg.det(hess)
-            if det == 0: # Cannot get inv matrix when det is zero
+            if abs(det) <= 1e-8: # Cannot get inv matrix when det is zero
                 print("Matriz Singular")
                 break
 

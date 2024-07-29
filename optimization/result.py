@@ -540,7 +540,6 @@ class Results():
                         "total": 0,
                         "conv_percent": 0,
                     }
-
             conv[specie]["total"] += 1
             if result.converge:
                 conv[specie]["conv_success"] += 1

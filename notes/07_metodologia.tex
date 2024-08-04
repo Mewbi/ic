@@ -1,4 +1,5 @@
 \section{Metodologia}
+\label{sec:methodology}
 
 A metodologia adotada para desenvolver um algoritmo de otimização consiste em definir os parâmetros de referência que buscamos atingir, desenvolver o algoritmo de otimização e aplicá-lo em cada ponto estacionário da reação buscando obter os mesmos resultados de referência.
 
@@ -6,13 +7,12 @@ A metodologia adotada para desenvolver um algoritmo de otimização consiste em 
 
 O artigo \cite{fh2o_first_sep} apresenta as conformações otimizadas para cada etapa da reação. Porém existe uma diferença do ponto mínimo apresentado no artigo com o obtido no módulo fortran$^{ \cite{fh2o_sep_fortran_module} }$ com interface em python, que retorna o valor de energia associado a uma determinada conformação geométrica. Dessa forma, é necessário reajustar as configurações de referência com base no módulo fortran.
 
-% TODO: remover a citação de outras libs já que elas não foram usadas nos testes.
 O processo de ajuste dos parâmetros de referência foi feito com diferentes métodos de otimização e foi escolhido o que apresentou as melhores taxas de convergência. Os métodos usados foram:
 %
 \begin{itemize}[itemsep=0pt,parsep=0pt]
-  \item BFGS - Presente na biblioteca Scipy
-  \item CG - Presente na biblioteca Scipy
-  \item Newton CG - Presente na biblioteca Scipy
+  \item BFGS - Presente na biblioteca Scipy \cite{scipy}
+  \item CG - Presente na biblioteca Scipy \cite{scipy}
+  \item Newton CG - Presente na biblioteca Scipy \cite{scipy}
   \item Método de Newton
 \end{itemize}
 %
@@ -20,13 +20,13 @@ Dos métodos utilizados o que se apresentou mais eficaz foi o Método de Newton,
 
 \subsubsection{Otimização com Método de Newton}
 
-Como apresentado na equação \eqref{eq:newton_generalization}, cada etapa de iteração é feita calculando o inverso do Jacobiano da função $G: {\mathds{R}^k\to\mathds{R}^k}, k \in \mathds{N}$. Porém no cenário de estudo dessa pesquisa temos uma função $F: {\mathds{R}^k\to\mathds{R}}, k \in \mathds{N}$, e para buscar o seu mínimo local, devemos localizar o ponto do domínio em que a norma do gradiente da função ($\nabla F$) seja zero. Dessa maneira, a etapa de iteração é calculada %TODO
+Como apresentado na equação \eqref{eq:newton_generalization}, cada etapa de iteração é feita calculando o inverso do Jacobiano da função $G: {\mathds{R}^k\to\mathds{R}^k}, k \in \mathds{N}$. Porém no cenário de estudo dessa pesquisa temos uma função $F: {\mathds{R}^k\to\mathds{R}}, k \in \mathds{N}$, e para buscar o seu mínimo local, devemos localizar o ponto do domínio em que a norma do gradiente da função ($\nabla F$) seja zero. Dessa maneira, a etapa de iteração é calculada
 %
 \begin{equation}
   \mathbf{x}_{n+1} = \mathbf{x}_n - H_F(\mathbf{x}_n)^{-1} \nabla F(\mathbf{x}_n) \,,
 \end{equation}
 %
-sendo $H_F(\mathbf{x}_n)^{-1}$ a matriz inversa $k \times k$ do Hessiano da função $F$ e $\nabla F$ o vetor gradiente da função $F$. Note que $F$ e $\mathbf{x}_n$ são, respectivamente, a função PES e as configurações da geometria da moléculas conforme descrito na seção \ref{sec:module_pes}. 
+sendo $H_F(\mathbf{x}_n)^{-1}$ a matriz inversa $k \times k$ do Hessiano da função $F$ e $\nabla F$ o vetor gradiente da função $F$. Note que $F$ e $\mathbf{x}_n$ são, respectivamente, a função SEP e as configurações da geometria da moléculas conforme descrito na seção \ref{sec:module_pes}. 
 
 O vetor gradiente e a matriz hessiana utilizam das primeiras e segundas derivadas parciais respectivamente para serem calculadas. Por estarmos tratando de funções numéricas, não é possível obter uma expressão analítica das derivadas parciais. Nesse caso, está sendo feito o cálculo da derivada parcial numericamente utilizando a expressão
 %

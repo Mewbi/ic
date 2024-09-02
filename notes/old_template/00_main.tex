@@ -1,7 +1,15 @@
-\documentclass[a4paper,12pt]{article}
+ % Formatação BR ABNT
+\documentclass[
+    article,
+    12pt,
+    oneside,
+    a4paper,
+    brazil,
+    sumario=traditional
+]{abntex2}
 
 % Pacotes
-%\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=2cm]{geometry} % TODO: Talvez ajustar esse import
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=2cm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{csquotes}
 \usepackage{listings}
@@ -74,54 +82,61 @@
     tabsize=2
 }
 \lstset{style=mystyle}
+\fancyhead[R]{Otimização de Geometria Molecular}
 
+% Configuração
+% Biblatex
+%\bibliographystyle{plain} % We choose the "plain" reference style
+%\addbibresource{ref.bib}
 
-\input{./01_cabecalho}
-%\bibliographystyle{plain}
 
 \begin{document}
+\input{01_capa}
+\clearpage
 
-\input{./02_capa}
+\input{02_folha_de_rosto}
+\clearpage
 
-%Sumário
+% header
+\setlength{\headheight}{35pt}
+\pagestyle{fancy}
+%\begin{boldmath}
+ 
+%\maketitle
+
+\newpage
 \tableofcontents
-
 \newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Início %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Comando para determinar espaçamento entre linhas (1,5 nesse caso)
-\onehalfspacing
-{
+\input{03_resumo}
+\clearpage
 
-%Define como tópico/seção do projeto (irá aparecer automaticamente no sumário)  
-  \input{03_resumo}
-  %\clearpage
+\input{04_introducao}
+\clearpage
 
-  \input{04_introducao}
-  %\clearpage
+\input{06_definicoes}
+\clearpage
 
-  \input{06_definicoes}
-  %\clearpage
+\input{05_fundamentacao_teorica}
+\clearpage
 
-  \input{05_fundamentacao_teorica}
-  %\clearpage
+\input{07_metodologia}
 
-  \input{07_metodologia}
-  %\clearpage
+\clearpage
 
-  \input{08_resultados}
-  %\clearpage
+\input{08_resultados}
+\clearpage
 
-  \input{09_conclusoes}
-  \clearpage
+\input{09_conclusoes}
+\clearpage
 
-}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Final %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Referências}
 \newpage
-
-%Referências bibliográficas 
-
-%\bibliography{ref.bib}
-
+%\bibliography{ref} % Entries are in the refs.bib file
+%\printbibliography
+%\end{boldmath}
 \bibliography{ref}{}
 \bibliographystyle{plain}
-
 \end{document}

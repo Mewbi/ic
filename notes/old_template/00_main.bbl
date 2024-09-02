@@ -1,0 +1,44 @@
+\begin{thebibliography}{1}
+
+\bibitem{fh2o_first_sep}
+Jun Li, Richard Dawes, and Hua Guo.
+\newblock {An ab initio based full-dimensional global potential energy surface
+  for FH2O(X2A') and dynamics for the F + H2O $\to$ HF + HO reaction}.
+\newblock {\em The Journal of Chemical Physics}, 137(9):094304, 09 2012.
+
+\bibitem{fh2o_sep_fortran_module}
+Jun Li, Bin Jiang, and Hua Guo.
+\newblock Permutation invariant polynomial neural network approach to fitting
+  potential energy surfaces. ii. four-atom systems.
+\newblock {\em The Journal of Chemical Physics}, 13910:204103, 11 2013.
+
+\bibitem{geometry_optimization}
+H.~Bernhard Schlegel.
+\newblock Geometry optimization.
+\newblock {\em WIREs Computational Molecular Science}, 1(5):790--809, 2011.
+
+\bibitem{calculo_1}
+J.~Stewart.
+\newblock {\em C{\'A}LCULO VOLUME 1 - TRADU{\c{C}}{\~A}O DA 6{\textregistered}
+  EDI{\c{C}}{\~A}O NORTE-AMERICANA.}
+\newblock Cengage Learning Edi{\c{c}}{\~o}es Ltda., 2010.
+
+\bibitem{calculo_numerico_aplicado}
+J.V.C. Vargas and L.K. Araki.
+\newblock {\em C{\'a}lculo Num{\'e}rico Aplicado}.
+\newblock MANOLE, 2016.
+
+\bibitem{scipy}
+Pauli Virtanen, Ralf Gommers, Travis~E. Oliphant, Matt Haberland, Tyler Reddy,
+  David Cournapeau, Evgeni Burovski, Pearu Peterson, Warren Weckesser, Jonathan
+  Bright, St{\'e}fan~J. {van der Walt}, Matthew Brett, Joshua Wilson, K.~Jarrod
+  Millman, Nikolay Mayorov, Andrew R.~J. Nelson, Eric Jones, Robert Kern, Eric
+  Larson, C~J Carey, {\.I}lhan Polat, Yu~Feng, Eric~W. Moore, Jake
+  {VanderPlas}, Denis Laxalde, Josef Perktold, Robert Cimrman, Ian Henriksen,
+  E.~A. Quintero, Charles~R. Harris, Anne~M. Archibald, Ant{\^o}nio~H. Ribeiro,
+  Fabian Pedregosa, Paul {van Mulbregt}, and {SciPy 1.0 Contributors}.
+\newblock {{SciPy} 1.0: Fundamental Algorithms for Scientific Computing in
+  Python}.
+\newblock {\em Nature Methods}, 17:261--272, 2020.
+
+\end{thebibliography}

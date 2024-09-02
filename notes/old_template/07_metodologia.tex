@@ -3,18 +3,13 @@
 
 A metodologia adotada para desenvolver um algoritmo de otimização consiste em definir os parâmetros de referência que buscamos atingir, desenvolver o algoritmo de otimização e aplicá-lo em cada ponto estacionário da reação buscando obter os mesmos resultados de referência.
 
-% TODO: (verificar se encaixa bem aqui) colocar gerar uma citação do repositório no Github https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files e comentar que o código de toda implementação está disponível lá.
-
 \subsection{Parâmetros de Referência}
 
-O artigo \cite{fh2o_first_sep} apresenta as conformações otimizadas para cada etapa da reação. Porém existe uma diferença do ponto mínimo apresentado no artigo com o obtido no módulo fortran\cite{fh2o_sep_fortran_module} com interface em python, que retorna o valor de energia associado a uma determinada conformação geométrica. Dessa forma, é necessário reajustar as configurações de referência com base no módulo fortran.
+O artigo \cite{fh2o_first_sep} apresenta as conformações otimizadas para cada etapa da reação. Porém existe uma diferença do ponto mínimo apresentado no artigo com o obtido no módulo fortran$^{ \cite{fh2o_sep_fortran_module} }$ com interface em python, que retorna o valor de energia associado a uma determinada conformação geométrica. Dessa forma, é necessário reajustar as configurações de referência com base no módulo fortran.
 
 O processo de ajuste dos parâmetros de referência foi feito com diferentes métodos de otimização e foi escolhido o que apresentou as melhores taxas de convergência. Os métodos usados foram:
 %
-%\begin{itemize}[itemsep=0pt,parsep=0pt]
-\begin{itemize}
-  \setlength\itemsep{0pt}
-  \setlength\parsep{0pt}
+\begin{itemize}[itemsep=0pt,parsep=0pt]
   \item BFGS - Presente na biblioteca Scipy \cite{scipy}
   \item CG - Presente na biblioteca Scipy \cite{scipy}
   \item Newton CG - Presente na biblioteca Scipy \cite{scipy}

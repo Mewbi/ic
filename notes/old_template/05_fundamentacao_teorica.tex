@@ -1,6 +1,6 @@
 \section{Fundamentação Teórica}
 \label{sec:teorical-base}
-  O processo de otimização pode ser realizado com diferentes métodos, que nesse contexto possuem o mesmo objetivo, localizar as raízes de uma função, seja essa função fornecida analiticamente ou numericamente. Todo método existente possui seus pontos positivos e negativos dentre os demais, seja por sua eficiência, facilidade de implementação ou custo computacional relacionado a cada etapa da iteração. A pesquisa está se embasando principalmente sobre o Método de Newton, que satisfazendo seus critérios de convergência \cite{calculo_numerico_aplicado} é classificado como estável, ou seja, a cada iteração é obtido um novo ponto mais próximo da região de convergência que possui um erro relativo menor quando comparado com a etapa anterior.
+  O processo de otimização pode ser realizado com diferentes métodos, que nesse contexto possuem o mesmo objetivo, localizar as raízes de uma função, seja essa função fornecida analiticamente ou numericamente. Todo método existente possui seus pontos positivos e negativos dentre os demais, seja por sua eficiência, facilidade de implementação ou custo computacional relacionado a cada etapa da iteração. A pesquisa está se embasando principalmente sobre o Método de Newton, que satisfazendo seus critérios de convergência$^{ \cite{calculo_numerico_aplicado} }$ é classificado como estável, ou seja, a cada iteração é obtido um novo ponto mais próximo da região de convergência que possui um erro relativo menor quando comparado com a etapa anterior.
 
 \subsection{Método de Newton}
 \label{sec:newton-method}
@@ -42,7 +42,7 @@ Podemos tomar o inverso dessa expressão, e, para casos em quem que a distância
   \Bigg( \frac{f(x_{n-2} + h) - f(x_{n-2})}{h} \Bigg)^{-1} \approx \Bigg( \lim\limits_{h\to0}\frac{f(x_{n-2}+h)-f(x_{n-2})}{h} \Bigg)^{-1} = \Bigg( \frac{df}{dx}(x_{n-2}) \Bigg)^{-1}
 \end{equation}
 %
-Considerando que a função $f$ é diferenciável, o Teorema do Valor Médio\cite{calculo_1} afirma que existe uma reta tangente entre os dois pontos $x_{n-1}$ e $x_{n-2}$ que o seu valor é exatamente o valor da reta secante calculada.
+Considerando que a função $f$ é diferenciável, o Teorema do Valor Médio$^{ \cite{calculo_1} }$ afirma que existe uma reta tangente entre os dois pontos $x_{n-1}$ e $x_{n-2}$ que o seu valor é exatamente o valor da reta secante calculada.
 
 \subsection{Método de Newton Multidimensional}
 
@@ -61,10 +61,7 @@ sendo $J_F(\mathbf{x}_n)^{-1}$ a matriz inversa $k \times k$ do Jacobiano da fun
 
 Nessa pesquisa será estudada a reação de \ce{F + H2O -> FH + HO} que passa por 5 pontos estacionários. Cada ponto estacionário possui uma conformação específica que permitem que os reagentes interajam. No caso em estudo são:
 %
-%\begin{itemize}[itemsep=0pt,parsep=0pt]
-\begin{itemize}
-  \setlength\itemsep{0pt}
-  \setlength\parsep{0pt}
+\begin{itemize}[itemsep=0pt,parsep=0pt]
   \item Reagentes
   \item R-vdW
   \item TS
@@ -87,7 +84,7 @@ Cada ponto estacionário é caracterizado por uma geometria específica que poss
 \subsection{Módulo Fortran para Função SEP}
 \label{sec:module_pes}
 
-Nessa pesquisa, será utilizado um módulo implementado em Fortran\cite{fh2o_sep_fortran_module}, o qual possui uma interface em Python. Essa interface permite a inserção de configurações geométricas da reação \ce{F + H2O -> FH + HO} como entrada e, como resultado, retorna o valor da energia associada a essa configuração. A função em Python recebe como parâmetro uma lista de tamanho 6, $\mathbf{x}_n \in \mathds{R}^6$, que representam cada configuração da reação e recebe como retorno o valor de energia associado em kcal/mol.
+Nessa pesquisa, será utilizado um módulo implementado em Fortran$^{ \cite{fh2o_sep_fortran_module} }$, o qual possui uma interface em Python. Essa interface permite a inserção de configurações geométricas da reação \ce{F + H2O -> FH + HO} como entrada e, como resultado, retorna o valor da energia associada a essa configuração. A função em Python recebe como parâmetro uma lista de tamanho 6, $\mathbf{x}_n \in \mathds{R}^6$, que representam cada configuração da reação e recebe como retorno o valor de energia associado em kcal/mol.
 
 \begin{table}[h]
     \centering

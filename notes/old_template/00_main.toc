@@ -1,0 +1,30 @@
+\changetocdepth {4}
+\babel@toc {brazil}{}\relax 
+\contentsline {chapter}{Sum\'ario}{3}{section*.2}%
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\contentsline {section}{\numberline {1}Resumo}{4}{section.0.1}%
+\contentsline {section}{\numberline {2}Introdução}{5}{section.0.2}%
+\contentsline {section}{\numberline {3}Definições}{6}{section.0.3}%
+\contentsline {subsection}{\numberline {3.1}Otimização}{6}{subsection.0.3.1}%
+\contentsline {subsection}{\numberline {3.2}Iterações}{6}{subsection.0.3.2}%
+\contentsline {section}{\numberline {4}Fundamentação Teórica}{7}{section.0.4}%
+\contentsline {subsection}{\numberline {4.1}Método de Newton}{7}{subsection.0.4.1}%
+\contentsline {subsection}{\numberline {4.2}Método da Secante}{7}{subsection.0.4.2}%
+\contentsline {subsection}{\numberline {4.3}Método de Newton Multidimensional}{8}{subsection.0.4.3}%
+\contentsline {subsection}{\numberline {4.4}Reação \ce {F + H2O -> FH + HO}}{8}{subsection.0.4.4}%
+\contentsline {subsection}{\numberline {4.5}Módulo Fortran para Função SEP}{9}{subsection.0.4.5}%
+\contentsline {section}{\numberline {5}Metodologia}{10}{section.0.5}%
+\contentsline {subsection}{\numberline {5.1}Parâmetros de Referência}{10}{subsection.0.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Otimização com Método de Newton}{10}{subsubsection.0.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}Evitando Casos de Matriz Singular}{11}{subsubsection.0.5.1.2}%
+\contentsline {subsection}{\numberline {5.2}Funcionamento CBPB}{12}{subsection.0.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Interpretação do Método}{13}{subsubsection.0.5.2.1}%
+\contentsline {subsection}{\numberline {5.3}Avaliando Eficiência do Algoritmo}{14}{subsection.0.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Variando uma Coordenada}{14}{subsubsection.0.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Cenários Aleatórios de Convergência}{14}{subsubsection.0.5.3.2}%
+\contentsline {section}{\numberline {6}Resultados}{16}{section.0.6}%
+\contentsline {subsection}{\numberline {6.1}Variando Uma Variável}{16}{subsection.0.6.1}%
+\contentsline {subsection}{\numberline {6.2}Cenários Aleatórios de Convergência}{16}{subsection.0.6.2}%
+\contentsline {section}{\numberline {7}Conclusões}{18}{section.0.7}%
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\contentsline {chapter}{\MakeUppercase []{Refer\^encias}}{19}{section*.13}%

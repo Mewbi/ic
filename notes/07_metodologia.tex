@@ -1,9 +1,7 @@
 \section{Metodologia}
 \label{sec:methodology}
 
-A metodologia adotada para desenvolver um algoritmo de otimização consiste em definir os parâmetros de referência que buscamos atingir, desenvolver o algoritmo de otimização e aplicá-lo em cada ponto estacionário da reação buscando obter os mesmos resultados de referência.
-
-% TODO: (verificar se encaixa bem aqui) colocar gerar uma citação do repositório no Github https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files e comentar que o código de toda implementação está disponível lá.
+A metodologia adotada para desenvolver um algoritmo de otimização consiste em definir os parâmetros de referência que buscamos atingir, desenvolver o algoritmo de otimização e aplicá-lo em cada ponto estacionário da reação buscando obter os mesmos resultados de referência. Todos os códigos gerados e utilizados para obter os resultados desse projeto estão disponíveis no repositório do GitHub\cite{Research_Software_Algorithm_2023}.
 
 \subsection{Parâmetros de Referência}
 
@@ -174,7 +172,8 @@ Aplicando o Método de Newton com base nos valores de referência dos pontos est
 }
 \end{table}
 
-\subsection{Funcionamento CBPB}
+\subsection{Funcionamento CBPD}
+\label{sec:cbpd-process}
 
 O método CBDP (Convergence Based in Partial Derivatives) de otimização, desenvolvido nessa pesquisa, se baseia em otimizar uma função localizando a raíz de cada uma das suas derivadas parciais individualmente. Dada uma função $F: \mathds{R}^k \to \mathds{R}, k \in \mathds{N}$ o método busca identificar o ponto em que o módulo do valor máximo das deriviadas parciais seja menor que um valor de tolerância, sendo um valor próximo de zero
 %

@@ -5,7 +5,7 @@
 \subsection{Método de Newton}
 \label{sec:newton-method}
 
-O Método de Newton, dado um ponto inicial, utilizando a derivada da função em estudo, se obtém um próximo ponto mais próximo da região de convergência. Nesse processo, iniciamos de um ponto inicial arbitrário da função e traçamos uma reta tangente da função no ponto, ou seja, verificamos o valor da derivada no ponto e utilizamos para definir uma função afim $g: {\mathds{R}\to\mathds{R}}$ com $g(x) = ax + b$, $a, b \in \mathds{R}$. Com a função afim definida no ponto, identificamos a raiz da função, ou seja, definimos o ponto em que $g(x)=0$.
+No Método de Newton, dado um ponto inicial, utilizando a derivada da função em estudo, se obtém um próximo ponto mais próximo da região de convergência. Nesse processo, iniciamos de um ponto inicial arbitrário da função e traçamos uma reta tangente da função no ponto, ou seja, verificamos o valor da derivada no ponto e utilizamos para definir uma função afim $g: {\mathds{R}\to\mathds{R}}$ com $g(x) = ax + b$, $a, b \in \mathds{R}$. Com a função afim definida no ponto, identificamos a raiz da função, ou seja, definimos o ponto em que $g(x)=0$.
 
 Podemos calcular o ponto $x_n$ em que $g(x) = 0$ da seguinte maneira:
 %
@@ -18,16 +18,16 @@ Realizamos novamente o processo anterior, agora para o ponto $f(x_n)$. Para cada
 
 \subsection{Método da Secante}
 
-O Método da Secante, utiliza dois pontos da função para calcular o próximo ponto da iteração com o objetivo que seja mais próximo da raíz da função. Cada iteração é calculada com base na reta formada pelos dois pontos anteriores, que será secante ao gráfico da função. Dessa forma, o ponto $x_n$ é definido:
+O Método da Secante utiliza dois pontos da função para calcular o próximo ponto da iteração com o objetivo que seja mais próximo da raíz da função. Cada iteração é calculada com base na reta formada pelos dois pontos anteriores, que será secante ao gráfico da função. Dessa forma, o ponto $x_n$ é definido:
 %
 \begin{equation}
-  x_n = x_{n-1} - f(x_{n-1}) \frac{x_{n-1} - x_{n-2}}{f(x_{n-1}) - f(x_{n-2})}
+  x_n = x_{n-1} - f(x_{n-1}) \frac{x_{n-1} - x_{n-2}}{f(x_{n-1}) - f(x_{n-2})} \,.
 \end{equation}
 %
 Trazendo enfoque na etapa de iteração, mais precisamente no termo relativo a reta secante
 %
 \begin{equation}
-  \frac{x_{n-1} - x_{n-2}}{f(x_{n-1}) - f(x_{n-2})} \,.
+  \frac{x_{n-1} - x_{n-2}}{f(x_{n-1}) - f(x_{n-2})} \,,
 \end{equation}
 %
 se definirmos $x_{n-1} = x_{n-2} + h$ com $h \in \mathds{R}$ temos
@@ -42,11 +42,11 @@ Podemos tomar o inverso dessa expressão, e, para casos em quem que a distância
   \Bigg( \frac{f(x_{n-2} + h) - f(x_{n-2})}{h} \Bigg)^{-1} \approx \Bigg( \lim\limits_{h\to0}\frac{f(x_{n-2}+h)-f(x_{n-2})}{h} \Bigg)^{-1} = \Bigg( \frac{df}{dx}(x_{n-2}) \Bigg)^{-1}
 \end{equation}
 %
-Considerando que a função $f$ é diferenciável, o Teorema do Valor Médio\cite{calculo_1} afirma que existe uma reta tangente entre os dois pontos $x_{n-1}$ e $x_{n-2}$ que o seu valor é exatamente o valor da reta secante calculada.
+Além disso, notemos que a função $f$ é diferenciável, o Teorema do Valor Médio\cite{calculo_1} afirma que existe uma reta tangente entre os dois pontos $x_{n-1}$ e $x_{n-2}$ que o seu valor é exatamente o valor da reta secante calculada.
 
 \subsection{Método de Newton Multidimensional}
 
-O Método de Newton Multidimensional consiste em uma generalização do Método de Newton porém para casos que possam envolver funções multidimensionais. Supondo uma função $F: {\mathds{R}^k\to\mathds{R}^k}$ com $k \in \mathds{N}$ sendo $\mathbf{x}_n \in \mathds{R}^k$ referente ao enésimo ponto do processo de otimização. Um novo ponto $\mathbf{x}_{n+1}$ é definido:
+O Método de Newton Multidimensional consiste em uma generalização do Método de Newton porém para casos que possam envolver funções multidimensionais. Sejam uma função $F: {\mathds{R}^k\to\mathds{R}^k}$ com $k \in \mathds{N}$ e $\mathbf{x}_n \in \mathds{R}^k$ referente ao enésimo ponto do processo de otimização. Um novo ponto $\mathbf{x}_{n+1}$ é definido por:
 %
 \begin{equation}
   \label{eq:newton_generalization}
@@ -55,7 +55,7 @@ O Método de Newton Multidimensional consiste em uma generalização do Método 
 %
 sendo $J_F(\mathbf{x}_n)^{-1}$ a matriz inversa $k \times k$ do Jacobiano da função $F$.
 
-É importante se atentar nesse método sobre quais condições a etapa de iteração pode performar. Nesse caso é sempre necessário verificar se a matriz $J_F(\mathbf{x}_n)$ é inversível, ou seja, $\det(J_F(\mathbf{x}_n)) \neq 0$, pois nesses casos não é possível dar sequência no processo de otimização.
+É importante se atentar nesse método sobre quais condições a etapa de iteração pode performar. Nesse caso é sempre necessário verificar se a matriz $J_F(\mathbf{x}_n)$ é inversível, ou seja, $\det(J_F(\mathbf{x}_n)) \neq 0$, pois caso contrário não é possível dar sequência no processo de otimização.
 
 \subsection{Reação \ce{F + H2O -> FH + HO}}
 

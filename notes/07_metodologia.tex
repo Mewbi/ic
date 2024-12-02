@@ -13,9 +13,9 @@ O processo de ajuste dos parâmetros de referência foi feito com diferentes mé
 \begin{itemize}
   \setlength\itemsep{0pt}
   \setlength\parsep{0pt}
-  \item BFGS - Presente na biblioteca Scipy \cite{scipy}
-  \item CG - Presente na biblioteca Scipy \cite{scipy}
-  \item Newton CG - Presente na biblioteca Scipy \cite{scipy}
+  \item BFGS - Presente na biblioteca SciPy \cite{scipy}
+  \item CG - Presente na biblioteca SciPy \cite{scipy}
+  \item Newton CG - Presente na biblioteca SciPy \cite{scipy}
   \item Método de Newton
 \end{itemize}
 %
@@ -29,7 +29,7 @@ Como apresentado na equação \eqref{eq:newton_generalization}, cada etapa de it
   \mathbf{x}_{n+1} = \mathbf{x}_n - H_F(\mathbf{x}_n)^{-1} \nabla F(\mathbf{x}_n) \,,
 \end{equation}
 %
-sendo $H_F(\mathbf{x}_n)^{-1}$ a matriz inversa $k \times k$ do Hessiano da função $F$ e $\nabla F$ o vetor gradiente da função $F$. Note que $F$ e $\mathbf{x}_n$ são, respectivamente, a função SEP e as configurações da geometria da moléculas conforme descrito na seção \ref{sec:module_pes}. 
+sendo $H_F(\mathbf{x}_n)^{-1}$ a matriz inversa $k \times k$ da hessiana da função $F$ e $\nabla F$ o vetor gradiente da função $F$. Note que $F$ e $\mathbf{x}_n$ são, respectivamente, a função SEP e as configurações da geometria da moléculas conforme descrito na seção \ref{sec:module_pes}. 
 
 O vetor gradiente e a matriz hessiana utilizam das primeiras e segundas derivadas parciais respectivamente para serem calculadas. Por estarmos tratando de funções numéricas, não é possível obter uma expressão analítica das derivadas parciais. Nesse caso, está sendo feito o cálculo da derivada parcial numericamente utilizando a expressão
 %
@@ -38,13 +38,11 @@ O vetor gradiente e a matriz hessiana utilizam das primeiras e segundas derivada
   \frac{\partial F}{\partial x_i} \approx \frac{F(\mathbf{x}+h \mathbf{e}_i) - F(\mathbf{x}-h \mathbf{e}_i)}{2h} \,,
 \end{equation}
 %
-onde $\mathbf{e}_i$ o iésimo vetor da base canônica de $\mathds{R}^k$ e o valor de $h = 10^{-6}$.
-
-Dessa maneira é obtido uma média das derivadas parciais que tenderiam para direita e para a esquerda.
+onde $\mathbf{e}_i$ o iésimo vetor da base canônica de $\mathds{R}^k$ e o valor de $h = 10^{-6}$. Dessa maneira é obtido uma média das derivadas parciais que tenderiam para direita e para a esquerda.
 
 \subsubsection{Evitando Casos de Matriz Singular}
 
-Esse método tem o processo de iteração interrompido caso a matriz hessiana possuir determinante igual a zero (matriz singular), que são os casos em que a matriz não possui inversa. Essa situação ocorre quando ao menos um valor do gradiente da função é zero, pois no momento de calcular a matriz hessiana haverá ao menos uma linha ou coluna com todos os valores zerados, consequentemente o determinante da matriz hessiana também será zero.
+Esse método tem o processo de iteração interrompido caso a matriz hessiana possuir determinante igual a zero (matriz singular), que são os casos em que a matriz não possui inversa. Notamos que no nosso problema essa situação ocorre quando ao menos um valor do gradiente da função é localmente constante igual a zero, ou seja, a função é localmente constante ao variar uma das coordenada. Isso ocorre, pois no momento de calcular a matriz hessiana haverá ao menos uma linha ou coluna com todos os valores zerados, consequentemente o determinante da matriz hessiana também será zero.
 
 Os parâmetros dessa função descrevem a distância de ligação entre os átomos e os ângulos formados entre eles. Dependendo para qual ponto estacionário a geometria está sendo otimizada, alguns parâmetros não interferem no valor da função que retorna a energia associada a determinada configuração. Nesses casos, durante o processo de otimização é de interesse remover esses parâmetros na etapa de iteração, pois diminui a chance de se obter a matriz hessiana singular. Além disso, pelo fato de se estar calculando menos derivadas o processo de otimização fica mais rápido. 
 
@@ -64,7 +62,7 @@ Usando como exemplo a etapa o primeiro ponto estácionário \ce{F + H2O}, apenas
 }
 \end{table}
 
-Dessa forma, reduzimos a complexidade do cálculo da matriz hessiana e do vetor gradiente, que deixa de ser calculada como 
+Dessa forma, reduzimos a complexidade do cálculo da matriz hessiana e do vetor gradiente, que deixam de serem calculadas por:
 %
 \begin{equation}
   H_F =
@@ -122,7 +120,7 @@ Dessa forma, reduzimos a complexidade do cálculo da matriz hessiana e do vetor 
   \end{bmatrix} \,,
 \end{equation}
 %
-passando a ser calculada
+passando a serem calculadas por:
 %
 \begin{equation}
   H_F = 
@@ -175,11 +173,11 @@ Aplicando o Método de Newton com base nos valores de referência dos pontos est
 \subsection{Funcionamento CBPD}
 \label{sec:cbpd-process}
 
-O método CBDP (Convergence Based in Partial Derivatives) de otimização, desenvolvido nessa pesquisa, se baseia em otimizar uma função localizando a raíz de cada uma das suas derivadas parciais individualmente. Dada uma função $F: \mathds{R}^k \to \mathds{R}, k \in \mathds{N}$ o método busca identificar o ponto em que o módulo do valor máximo das deriviadas parciais seja menor que um valor de tolerância, sendo um valor próximo de zero
+O método CBDP (Convergence Based in Partial Derivatives) de otimização, desenvolvido nessa pesquisa, se baseia em otimizar uma função localizando a raíz de cada uma das suas derivadas parciais individualmente. Dada uma função $F: \mathds{R}^k \to \mathds{R}, k \in \mathds{N}$, o método busca identificar o ponto em que a norma euclidiana das derivadas parciais seja menor que um valor de tolerância, sendo um valor próximo de zero
 %
 \begin{equation}
   \label{eq:convergence-criteria}
-  \max_{i \in \{1,...,k\} } \Bigg| \frac{ \partial F}{\partial x_i} \Bigg| < \text{tolerance} \approx 0 \,.
+  \sqrt{ \mathlarger{\mathlarger{\sum}}_{i = 1}^{k} \Bigg| \frac{ \partial F}{\partial x_i} \Bigg| ^ 2 } < \text{tolerance} \approx 0 \,.
 \end{equation}
 %
 Nesse método, cada etapa da iteração é calculada
@@ -188,13 +186,13 @@ Nesse método, cada etapa da iteração é calculada
   \mathbf{x}_{n+1} = \mathbf{x}_n - \diag{\left(\frac{\partial^2 F}{\partial (x_{n})^2 }\right)}^{-1} \nabla F(\mathbf{x}_n) \,,
 \end{equation}
 %
-sendo diag a matriz diagonal da matriz hessiana da função $F$. Cada coordenada $(x_{n+1})_i$ do vetor $\mathbf{x}_{n+1}$ pode ser calculada
+sendo diag a matriz diagonal da matriz hessiana da função $F$. Cada coordenada $(x_{n+1})_i$ do vetor $\mathbf{x}_{n+1}$ pode ser calculada por
 %
 \begin{equation}
   (x_{n+1})_i = (x_{n})_i - \left( \frac{\partial^2 F}{\partial (x_{n})_i^2 } \right)^{-1} \frac{\partial F}{\partial (x_{n})_i} , i \in \{1,...,k\} \,,
 \end{equation}
 %
-em que utilizando da notação definida em \eqref{eq:partial_derivative} definimos
+em que, utilizando da notação definida em \eqref{eq:partial_derivative}, definimos
 %
 \begin{equation}
   \label{eq:partial-derivative-aprox}
@@ -218,7 +216,7 @@ Tomamos como exemplo a função $F(x,y) = 1.5x^2 + 1.2y^2 - 0.25x^4 - 0.3y^4$ co
   \end{split}
 \end{equation} 
 %
-Uma etapa de iteração para calcular o ponto $\mathbf{P}_1 = (x_1,y_1)$ é feito calculando
+Uma etapa de iteração para calcular o ponto $\mathbf{P}_1 = (x_1,y_1)$ é feita calculando
 \begin{equation}
   \begin{split}
     x_1 = x_0 - \frac{1}{3x_0 - x_0^3} F(x_0, y_0) = 0.05\\
@@ -226,7 +224,7 @@ Uma etapa de iteração para calcular o ponto $\mathbf{P}_1 = (x_1,y_1)$ é feit
   \end{split}
 \end{equation}
 %
-definindo $\mathbf{P}_1 = (x_1,y_1) = (0.05, -0.65)$. Geometricamente esse processo é interpretado como na figura \ref{fig:cbpd_geom_interp}.
+obtendo $\mathbf{P}_1 = (x_1,y_1) = (0.05, -0.65)$. Geometricamente esse processo é interpretado como na figura \ref{fig:cbpd_geom_interp}.
 
 \begin{figure}
   \begin{center}
@@ -243,7 +241,7 @@ O procedimento é repetido até atingir o critério de convergência (\ref{eq:co
 
 \subsubsection{Variando uma Coordenada}
 
-A primeira estratégia que será utilizada é, para cada ponto estacionário, como que o algoritmo se comporta quando apenas uma coordenada se distância da conformação ideal. Nessa abordagem todas as coordendas ficam em seu valor ótimo com exceção da coordenda que está variando. Dessa maneira estaremos trabalhando com um problema em apenas uma dimensão.
+A primeira estratégia que será utilizada é, para cada ponto estacionário, como que o algoritmo se comporta quando apenas uma coordenada se distancia da conformação ideal. Nessa abordagem todas as coordendas ficam em seu valor ótimo com exceção da coordenda que está variando. Dessa maneira estaremos trabalhando com um problema em apenas uma dimensão.
 
 Para cada ponto estacionário da reação será analisado uma coordenada relevante de cada vez, variando ela em \textit{-25\%, -20\%, -15\%, 10\%, -5\%, 0\%, 5\%, 10\%, 15\%, 20\%, 25\%} do seu valor otimizado.
 
